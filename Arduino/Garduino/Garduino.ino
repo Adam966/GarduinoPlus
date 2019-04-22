@@ -7,12 +7,16 @@
 #include "DHT.h"
 #include <PID_v1.h>
 #include <math.h>
+#include <LiquidCrystal_I2C.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #define sendInterval 30000
-#define pourInterval 10000
+#define pourInterval 7000
+#define lcdInterval 5000
 unsigned long previousMillisSend = 0;
 unsigned long previousMillisPour = 0;
+unsigned long btnSec = 0;
+  
 
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
@@ -21,6 +25,9 @@ unsigned long previousMillisPour = 0;
 #define humidityTemperatureAir 23
 #define vccHum 32
 #define vccWat 4 
+#define LCD_SCL 22
+#define LCD_SDA 21
+#define lcdBtn 5
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 SocketIoClient webSocket;
@@ -28,6 +35,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
 DHT dht(humidityTemperatureAir, DHT11);
 LinkedList<char*> offlineData;
+LiquidCrystal_I2C lcd(0x27,16,2);
 
 ////////////////////////////////////////////////// SETUP /////////////////////////////////////////////
 void setup() {
@@ -76,10 +84,15 @@ void setup() {
     webSocket.on("water", pourFlower);
     //webSocket.on("soilHumidity", getMaxMin);
     
-    //PIN
+    //PIN INITALIZATION
     pinMode(pump, OUTPUT);
     pinMode(vccHum, OUTPUT);
     pinMode(vccWat, OUTPUT);
+    pinMode(lcdBtn, INPUT);
+    
+    //LCD INITALIZATION
+    lcd.init();  
+    lcd.noDisplay();                    
 }
 
 /////////////////////////////////////////// WIFI reconection /////////////////////////////////////
@@ -247,12 +260,49 @@ void startPump() {
   delay(7000);
   digitalWrite(pump, LOW); 
   measureData();   
-}  
+} 
 
-/////////////////////////////////////////////// LOOP ///////////////////////////////////////////
+///////////////////////////////////// LCD AND LED ///////////////////////////////////////////////////
+ 
+//SET LCD DISPLAY 
+void setLcd() {
+  lcd.backlight();
+  lcd.setCursor(0,0);
+  lcd.print("Humidity: " + String(getSoilHumidity()));
+
+  for(int i = 0; i<3; i++) {
+    delay(5000);
+       switch(i) {
+        case 0:
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print("Temperature: " + String(getTemperature()) + "%");
+          break;
+        case 1:
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print("SoilHumidity:" + String(getSoilHumidity()) + "%");
+          break;
+        case 2:
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print("WaterLevel: " + String(getWaterSurface()) + "%");
+          break;
+      } 
+    }
+}
+
+/////////////////////////////////////////////// MAIN LOOP ///////////////////////////////////////////
 void loop() {
     webSocket.loop();
     wifiConection();
+
+    if (digitalRead(lcdBtn))
+      setLcd();
+    else {
+      lcd.noDisplay();
+      lcd.noBacklight();
+    }    
     
     if (millis() - previousMillisSend >= sendInterval) {
       previousMillisSend = millis();    
