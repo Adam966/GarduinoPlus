@@ -13,10 +13,16 @@
 #define sendInterval 30000
 #define pourInterval 7000
 #define lcdInterval 5000
+
 unsigned long previousMillisSend = 0;
 unsigned long previousMillisPour = 0;
 unsigned long btnSec = 0;
-  
+
+const int freq = 5000;
+const int redChannel = 0;
+const int blueChannel = 1;
+const int greenChannel = 2;
+const int resolution = 8;
 
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
@@ -25,9 +31,14 @@ unsigned long btnSec = 0;
 #define humidityTemperatureAir 23
 #define vccHum 32
 #define vccWat 4 
+
 #define LCD_SCL 22
 #define LCD_SDA 21
 #define lcdBtn 5
+
+#define pinR 19
+#define pinG 18
+#define pinB 17
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 SocketIoClient webSocket;
@@ -93,6 +104,15 @@ void setup() {
     //LCD INITALIZATION
     lcd.init();  
     lcd.noDisplay();                    
+
+    //RGB LED
+    ledcSetup(redChannel, freq, resolution);
+    ledcSetup(blueChannel, freq, resolution);
+    ledcSetup(greenChannel, freq, resolution);
+    
+    ledcAttachPin(pinR, redChannel);
+    ledcAttachPin(pinB, blueChannel);
+    ledcAttachPin(pinG, greenChannel);
 }
 
 /////////////////////////////////////////// WIFI reconection /////////////////////////////////////
@@ -289,6 +309,24 @@ void setLcd() {
           lcd.print("WaterLevel: " + String(getWaterSurface()) + "%");
           break;
       } 
+    }
+}
+
+//RGB LED
+void setRGBLed(float waterLevel) {
+    if(waterLevel < 25) {
+      ledcWrite(blueChannel, 255);
+    }
+    else if(waterLevel > 50) {
+      ledcWrite(redChannel, 255);
+      ledcWrite(greenChannel, 128);
+      ledcWrite(blueChannel, 128);
+    } else if(waterLevel > 75) {
+       ledcWrite(redChannel, 197);
+       ledcWrite(greenChannel, 25);
+       ledcWrite(blueChannel, 157);
+    } else if(waterLevel >= 100) {
+      ledcWrite(greenChannel, 255);
     }
 }
 
