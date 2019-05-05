@@ -8,11 +8,14 @@
 #include <PID_v1.h>
 #include <math.h>
 #include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #define sendInterval 30000
 #define pourInterval 7000
 #define lcdInterval 5000
+
+String ipServer = "147.232.158.152";
 
 unsigned long previousMillisSend = 0;
 unsigned long previousMillisPour = 0;
@@ -23,6 +26,10 @@ const int redChannel = 0;
 const int blueChannel = 1;
 const int greenChannel = 2;
 const int resolution = 8;
+
+String ssid;
+String pswd;
+int address;
 
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
@@ -80,20 +87,24 @@ void setup() {
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
     Serial.println(WiFi.SSID(0));
-    
+
+    //save passwrod and ssid 
+    EEPROM.put(address, WiFi.SSID());
+    address+=sizeof(WiFi.SSID());
+    EEPROM.put(address, WiFi.psk());
   
     //establish time client
     timeClient.begin();
     timeClient.setTimeOffset(3600);
 
     //establish socketIO connection
-    webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
+    webSocket.begin(ipServer, 1205, "/socket.io/?transport=websocket");
     webSocket.on("disconnect", disconection);
     webSocket.on("connect", conection);
 
     //socket event on 
     webSocket.on("water", pourFlower);
-    //webSocket.on("soilHumidity", getMaxMin);
+    webSocket.on("soilHumidity", getMin);
     
     //PIN INITALIZATION
     pinMode(pump, OUTPUT);
@@ -119,8 +130,7 @@ void setup() {
 void wifiConection() {
  if (WiFi.status() != WL_CONNECTED) {
 
-    WiFi.beginSmartConfig();
-    delay(500);
+    WiFi.begin(ssid, pswd);
     Serial.print(".");
     
     if (WiFi.status() == WL_CONNECTED) {
@@ -133,12 +143,13 @@ void wifiConection() {
       timeClient.setTimeOffset(3600);
     
       //establish socketIO connection
-      webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
+      webSocket.begin(ipServer, 1205, "/socket.io/?transport=websocket");
       webSocket.on("disconnect", disconection);
       webSocket.on("connect", conection);
   
       //socket event on 
       webSocket.on("water", pourFlower);
+      webSocket.on("soilHumidity", getMin);
     }
   }
 }
@@ -269,7 +280,7 @@ void conection(const char * payload, size_t length) {
 //DISONNECTION
 void disconection(const char * payload, size_t length) {
    Serial.println("Client disconnected from server.");
-   webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
+   webSocket.begin(ipServer, 1205, "/socket.io/?transport=websocket");
    webSocket.emit("join", "\"arduinoclient\"");
    webSocket.emit("getSoilHumidity");
 }
@@ -281,6 +292,11 @@ void startPump() {
   digitalWrite(pump, LOW); 
   measureData();   
 } 
+
+int getMin() {
+  
+  return minHumidity;
+}
 
 ///////////////////////////////////// LCD AND LED ///////////////////////////////////////////////////
  
@@ -345,5 +361,9 @@ void loop() {
     if (millis() - previousMillisSend >= sendInterval) {
       previousMillisSend = millis();    
       measureData();
+
+      if (getmin() < getSoilHumidity()) {
+        pourWater();
+      }
     }
 }
