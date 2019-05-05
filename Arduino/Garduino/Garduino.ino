@@ -15,8 +15,6 @@
 #define pourInterval 7000
 #define lcdInterval 5000
 
-String ipServer = "147.232.158.152";
-
 unsigned long previousMillisSend = 0;
 unsigned long previousMillisPour = 0;
 unsigned long btnSec = 0;
@@ -30,6 +28,8 @@ const int resolution = 8;
 String ssid;
 String pswd;
 int address;
+
+int minHumidity = 0;
 
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
@@ -98,7 +98,7 @@ void setup() {
     timeClient.setTimeOffset(3600);
 
     //establish socketIO connection
-    webSocket.begin(ipServer, 1205, "/socket.io/?transport=websocket");
+    webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
     webSocket.on("disconnect", disconection);
     webSocket.on("connect", conection);
 
@@ -130,7 +130,10 @@ void setup() {
 void wifiConection() {
  if (WiFi.status() != WL_CONNECTED) {
 
-    WiFi.begin(ssid, pswd);
+    EEPROM.get(address, pswd);
+    address-= sizeof(pswd);
+    EEPROM.get(address, ssid); 
+    
     Serial.print(".");
     
     if (WiFi.status() == WL_CONNECTED) {
@@ -143,7 +146,7 @@ void wifiConection() {
       timeClient.setTimeOffset(3600);
     
       //establish socketIO connection
-      webSocket.begin(ipServer, 1205, "/socket.io/?transport=websocket");
+      webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
       webSocket.on("disconnect", disconection);
       webSocket.on("connect", conection);
   
@@ -280,7 +283,7 @@ void conection(const char * payload, size_t length) {
 //DISONNECTION
 void disconection(const char * payload, size_t length) {
    Serial.println("Client disconnected from server.");
-   webSocket.begin(ipServer, 1205, "/socket.io/?transport=websocket");
+   webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
    webSocket.emit("join", "\"arduinoclient\"");
    webSocket.emit("getSoilHumidity");
 }
@@ -293,9 +296,8 @@ void startPump() {
   measureData();   
 } 
 
-int getMin() {
-  
-  return minHumidity;
+void getMin(const char * payload, size_t length) {
+  minHumidity = 0;
 }
 
 ///////////////////////////////////// LCD AND LED ///////////////////////////////////////////////////
@@ -362,8 +364,8 @@ void loop() {
       previousMillisSend = millis();    
       measureData();
 
-      if (getmin() < getSoilHumidity()) {
-        pourWater();
+      if (minHumidity < getSoilHumidity()) {
+        startPump();
       }
     }
 }
