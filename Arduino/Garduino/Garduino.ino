@@ -34,18 +34,20 @@ int minHumidity = 0;
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
 #define waterSurf 34
-#define pump 24
+#define pump 27
 #define humidityTemperatureAir 23
 #define vccHum 32
 #define vccWat 4 
 
 #define LCD_SCL 22
 #define LCD_SDA 21
-#define lcdBtn 5
+#define lcdBtn 2
 
 #define pinR 19
 #define pinG 18
 #define pinB 17
+
+#define EEPROM_SIZE 1
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 SocketIoClient webSocket;
@@ -84,21 +86,29 @@ void setup() {
 
     Serial.println("");
     Serial.println("WiFi connected.");
+    Serial.println(WiFi.SSID(0));
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
-    Serial.println(WiFi.SSID(0));
 
-    //save passwrod and ssid 
+    //save wifi ssid and password to EEPROM
+    EEPROM.begin(EEPROM_SIZE);
     EEPROM.put(address, WiFi.SSID());
-    address+=sizeof(WiFi.SSID());
+    address+=sizeof(String);
     EEPROM.put(address, WiFi.psk());
+
+    EEPROM.get(address, pswd);
+    Serial.println(pswd);
+
+    address-=sizeof(String);
+    EEPROM.get(address, ssid);
+    Serial.println(ssid);
   
     //establish time client
     timeClient.begin();
     timeClient.setTimeOffset(3600);
 
     //establish socketIO connection
-    webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
+    webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
     webSocket.on("disconnect", disconection);
     webSocket.on("connect", conection);
 
@@ -109,7 +119,7 @@ void setup() {
     //PIN INITALIZATION
     pinMode(pump, OUTPUT);
     pinMode(vccHum, OUTPUT);
-    pinMode(vccWat, OUTPUT);
+    //pinMode(vccWat, OUTPUT);
     pinMode(lcdBtn, INPUT);
     
     //LCD INITALIZATION
