@@ -5,6 +5,8 @@ import StatDetail from './Screens/StatDetail';
 import ValuesSettings from './Screens/ValuesSettings';
 import Logo from './Screens/Logo';
 import Notification from './Screens/Notification'; 
+import AddPlant from './Screens/AddPlant'; 
+import Camera from './Screens/Camera'; 
 
 import {createSwitchNavigator, createAppContainer, createStackNavigator, createDrawerNavigator} from 'react-navigation';
 import {Dimensions} from 'react-native'
@@ -23,6 +25,8 @@ const AppNavigation = createStackNavigator(
       PlantInfoRoute: PlantInfo,
       StatDetailRoute: StatDetail,
       ValuesSettingRoute: ValuesSettings,
+      AddPlantRoute: AddPlant,
+      CameraRoute: Camera
   }
 )
 

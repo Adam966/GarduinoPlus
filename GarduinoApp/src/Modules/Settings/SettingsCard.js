@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardItem, Form, Item, Label, Input, Text } from 'native-base';
+import { Form, Item, Label, Input, Text, Content, Container } from 'native-base';
 import { StyleSheet, Dimensions } from 'react-native';
 
 export default class SettingsCard extends Component {
@@ -11,34 +11,24 @@ export default class SettingsCard extends Component {
 
   render() {
     return (
-        <Card bordered style={styles.box}>
-            <CardItem header>
-                <Text>Temperature</Text>
-            </CardItem>
-            <CardItem>
-                <Form>
-                    <Item stackedLabel>
-                        <Label>Min Value</Label>
-                        <Input keyboardType="numeric"/>
-                    </Item>
-                </Form>  
-            </CardItem>
-            <CardItem>
-                <Form>
-                    <Item stackedLabel>
-                        <Label>Max Value</Label>
-                        <Input keyboardType="numeric"/>
-                    </Item>
-                </Form>  
-            </CardItem>
-        </Card>
+        <Container style={styles.box}>
+            <Content header style={{zIndex: 2}}><Text style={styles.header}>Temperature</Text></Content>
+                <Text>Min. value</Text>
+                <Item style={{width: 40, marginBottom: 10}}>
+                  <Input keyboardType = 'numeric' />
+                </Item>
+                <Text>Max. value</Text>
+                <Item style={{width: 40, marginBottom: 30}}>
+                  <Input keyboardType = 'numeric' />
+                </Item>
+        </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
     box: {
-        height: 200,
+        height: 220,
         width: Dimensions.get('window').width - 30,
         position: 'relative',
         display: 'flex',
@@ -46,5 +36,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 0.3,
         borderRadius: 5,
+        backgroundColor: '#F0FEFF',
+        marginVertical: 15,
+    },
+    header: {
+        marginRight: 215,
+        marginTop: 10,
+        fontWeight: 'bold',
+    },
+    value: {
+        marginBottom: 70
     },
   });

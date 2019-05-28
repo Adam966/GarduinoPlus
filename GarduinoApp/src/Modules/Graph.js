@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { LineChart } from 'react-native-chart-kit'
-import { Container, Content } from 'native-base';
+import { Content } from 'native-base';
 import { Dimensions } from 'react-native';
 
 export default class componentName extends Component {
@@ -27,22 +27,27 @@ export default class componentName extends Component {
                         ]
                     }]
                 }} 
-                    width={Dimensions.get('window').width} // from react-native
+                    width={Dimensions.get('window').width - 30} 
                     height={220}
-                    yAxisLabel={'$'}
+                    yAxisLabel={'°C'}
                     chartConfig={{
                     backgroundColor: '#d2e3e5',
-                    backgroundGradientFrom: '#fb8c00',
-                    backgroundGradientTo: '#ffa726',
-                    decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    backgroundGradientFrom: '#F0FEFF',
+                    backgroundGradientTo: '#F0FEFF',
+                    color: (opacity = 1) => `rgba(31, 49, 58, ${opacity})`,
+                    decimalPlaces: 2, 
+                    strokeWidth: 2,
                     style: {
                         borderRadius: 16
                     }
                 }}
                 bezier
                 style={{
-                    borderRadius: 16
+                    borderRadius: 16,
+                    marginVertical: 15,
+                    borderWidth: 0.3,
+                    borderRadius: 5,
+                    borderColor: '#1f313a',
                  }}
             />
             

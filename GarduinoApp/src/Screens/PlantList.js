@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { TouchableOpacity} from 'react-native'
-import { Container, Body, Content, Text, Button, Header, Left, Title, Footer, FooterTab, Icon, Drawer  } from 'native-base';
+import { TouchableOpacity, StyleSheet} from 'react-native'
+import { Container, Body, Content, Text, Button, Header, Left, Title, Footer, FooterTab, Icon, Thumbnail  } from 'native-base';
 
 import Plant from '../Modules/PlantStyle/Plant';
 
@@ -26,9 +26,10 @@ export default class PlantList extends Component {
               <Icon name='md-menu' />
             </Button>
           </Left>
-          <Body>
-            <Title>User Name</Title>
+          <Body>    
+            <Thumbnail small source={require('../../assets/person.jpg')} /> 
           </Body>
+          <Text style={styles.name}>User Name</Text>
         </Header>
         <Body>
           <Content style={{backgroundColor: '#d2e3e5'}}>
@@ -67,7 +68,7 @@ export default class PlantList extends Component {
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
             <Button
-              onPress={() => this.props.navigation.navigate('ValuesSettingRoute')}
+              onPress={() => this.props.navigation.navigate('AddPlantRoute')}
             >
               <Text style={{color: 'white'}}>Add Plant</Text>
             </Button>
@@ -77,3 +78,13 @@ export default class PlantList extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  name: {
+    marginRight: 85,
+    fontSize: 25, 
+    fontWeight: '300',
+    color: 'white',
+    paddingTop: 10
+  }
+});

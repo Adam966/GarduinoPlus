@@ -23,7 +23,7 @@ export default class Info extends Component {
 
 const styles = {
   box: {
-    height: 150,
+    height: 220,
     width: Dimensions.get('window').width - 30,
     position: 'relative',
     display: 'flex',

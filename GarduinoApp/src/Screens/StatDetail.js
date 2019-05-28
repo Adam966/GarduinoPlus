@@ -30,7 +30,7 @@ export default class StatDetail extends Component {
           </Body>
           <Text style={styles.name}>Plant name</Text>  
         </Header>
-        <Body style={{margin: 30}}>
+        <Body >
           <Graph />
         </Body>
         <Footer>

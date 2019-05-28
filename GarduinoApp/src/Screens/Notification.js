@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { } from 'react-native';
-import { Container, ListItem, Left, Button, Icon, Body, Text, Header, Title } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Container, ListItem, Left, Button, Icon, Body, Text, Header, Thumbnail } from 'native-base';
 
 export default class Notification extends Component {
   static navigationOptions = {
@@ -16,9 +16,10 @@ export default class Notification extends Component {
     return (
       <Container style={{backgroundColor: '#d2e3e5'}}>
         <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
-          <Left>
-            <Title>Garduino</Title>
-          </Left>
+          <Body>    
+              <Thumbnail small source={require('../../assets/person.jpg')} /> 
+            </Body>
+          <Text style={styles.name}>User Name</Text>
         </Header>
             <ListItem icon>
               <Left>
@@ -54,3 +55,14 @@ export default class Notification extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  name: {
+    marginRight: 85,
+    fontSize: 25, 
+    fontWeight: '300',
+    color: 'white',
+    paddingTop: 10
+  }
+});
+
