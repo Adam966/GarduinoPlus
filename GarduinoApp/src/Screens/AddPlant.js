@@ -9,9 +9,20 @@ export default class AddPlant extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        hasCameraPermission: null,
+        type: Camera.Constants.Type.back
     };
   }
 
+  checkPermision() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+
+    const { hasCameraPermission } = this.state;
+    if (hasCameraPermission === true) {
+        this.props.navigation.navigate('CameraRoute')
+    }
+  }
 
   render() {
       
@@ -32,7 +43,7 @@ export default class AddPlant extends Component {
             <Body>
                 <Content style={styles.box}>
                     <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('CameraRoute')}
+                        onPress={() => checkPermision()}
                     >
                         <Thumbnail large source={require('../../assets/plant.png')} style={{marginLeft: 120}}></Thumbnail>
                     </TouchableOpacity>
