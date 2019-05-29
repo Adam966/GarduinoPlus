@@ -18,55 +18,6 @@ overflow-x:hidden;
 
 }
 
-#fixedBox {
-
-height:15vw;
-width:15vw;
-background:#BDCCCE;
-border-radius:8px;
-/*display:flex;
-flex-direction: column;
-justify-content:space-between;*/
-margin-top:3%;
--webkit-transition: all .2s linear 0s;
-transition: all .2s linear 0s;
-position:relative;
-cursor:pointer;
-margin-left:7vw;
-	
-}
-
-#icon {
-
-width:100%;
-height:100%;
-background:url(../img/iconAdd.svg) center / contain no-repeat;
-background-size: 120px 120px;
-
-}
-
-#addedPlant {
-
-height:15vw;
-width:15vw;
-background:#F0FEFF;
-border-radius:8px;
-/*display:flex;
-flex-direction: column;
-justify-content:space-between;*/
-margin-top:3%;
-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-/*display:flex;
-flex-direction: column;
-justify-content:space-between;*/
-margin-top:3%;
--webkit-transition: all .2s linear 0s;
-transition: all .2s linear 0s;
-margin-left:7vw;
-margin-bottom:4%;
-
-}
-
 #middleWrapper.-darkmode {
 	
 height:auto;
@@ -113,6 +64,101 @@ transition: all .2s linear 0s;
 
 }
 
+.register {
+
+    height: 25vw;
+    width: 27vw;
+    /*background:red;*/
+    background: #F0FEFF;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    margin-top: 1%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:1%;
+    margin: auto;
+    align-self:center;
+}
+
+
+
+.btnBkg {
+
+    background:#223139;
+    height:90px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.label {
+    background-color:#F5FEFF;
+    border:2px solid #D5E0E0;
+    border-radius:0.5em;
+    width:20vw;
+    height:2vw;
+    font-size:15px;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    padding-left:2%;
+    font-size:13px;
+    color:#BBC7C8;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    padding-left:2%;
+    font-size:13px;
+    color:#BBC7C8;
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    padding-left:2%;
+    font-size:13px;
+    color:#BBC7C8;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    padding-left:2%;
+    font-size:13px;
+    color:#BBC7C8;
+  }
+
+.label:focus::-webkit-input-placeholder { color:transparent; }
+.label:focus:-moz-placeholder { color:transparent; }
+
+.label:focus{
+  outline: none;
+}
+
+
+.formHeading {
+    color: #BBC7C8;
+    font-size: 30px;
+}
+
+
+.registerBtn {
+
+    height: 2.5em;
+    width: 6em;
+    background: #F0FEFF;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    -webkit-transition: all .2s linear 0s;
+    transition: all .2s linear 0s;
+    text-align: center;
+    line-height: 2.5em;
+    color: #97AFAD;
+    cursor: pointer;
+    margin-left: 0.3vw;
+    outline:none;
+    border:none;
+
+}
+
+
 @media (max-width: 590px) {
 
 
@@ -120,6 +166,7 @@ transition: all .2s linear 0s;
 
 /*background:red;*/
 flex-direction:column;
+
 
 }
 
@@ -129,6 +176,17 @@ flex-direction:column;
 flex-direction:column;
 
 }
+
+  .label{
+    /*  background:red;*/
+      width:60vw;
+      height:7vw;
+  }  
+      .register{
+       /* background:red;*/
+        height: 85vw;
+        width: 87vw;
+    }  
 
 }
 
@@ -139,6 +197,7 @@ flex-direction:column;
 /*background:grey;*/
 flex-direction:column;
 
+
 }
 
 #middleSettings.-darkmode {
@@ -147,6 +206,18 @@ flex-direction:column;
 flex-direction:column;
 
 }
+
+  .label{
+     /* background:black;*/
+      width:45vw;
+      height:5.5vw;
+  }  
+
+    .register{
+      /*  background:black;*/
+        height: 65vw;
+        width: 67vw;
+    }  
 
 }
 
@@ -168,6 +239,17 @@ flex-direction: column;
 
 }
 
+  .label{
+      /*background:grey;*/
+      width:31vw;
+      height:3.5vw;
+  }  
+
+    .register{
+    /*   background:grey;*/
+       height: 44vw;
+       width: 46vw;
+    }  
 
 }
 
@@ -187,6 +269,18 @@ flex-direction: row;
 
 }
 
+  .label{
+     /* background:yellow;*/
+      width:27vw;
+      height:2.7vw;
+  }  
+
+    .register{
+       /* background:yellow;*/
+        height: 33vw;
+        width: 35vw;
+    }  
+
 }
 
 @media (min-width: 1200px) {
@@ -205,6 +299,19 @@ flex-direction: row;
 flex-direction: row;
 
 }
+
+  .label{
+     /* background:green;*/
+      width:24vw;
+      height:2.5vw;
+  }  
+
+      .register{
+      /*  background:green;*/
+        height: 30vw;
+        width: 32vw;
+        /*background: #F0FEFF;*/
+    }  
 
 }
 
@@ -226,6 +333,17 @@ flex-direction: row;
 
 }
 
+  .label{
+     /* background:blue;*/
+      width:20vw;
+      height:2vw;
+  }  
+
+  .register{
+      /* background:blue;*/
+       height: 25vw;
+       width: 27vw;
+    }  
 
 
 }
