@@ -9,15 +9,17 @@
 #include <math.h>
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
+#include <ArduinoLowPower.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #define sendInterval 30000
-#define pourInterval 7000
+#define pourInterval 5000
 #define lcdInterval 5000
 
 unsigned long previousMillisSend = 0;
 unsigned long previousMillisPour = 0;
 unsigned long btnSec = 0;
+int sleepTime = 30 * 1000;
 
 const int freq = 5000;
 const int redChannel = 0;
@@ -25,9 +27,8 @@ const int blueChannel = 1;
 const int greenChannel = 2;
 const int resolution = 8;
 
-String ssid;
-String pswd;
-int address;
+static char ssid[33] = {0}; 
+static char password[65] = {0};
 
 int minHumidity = 0;
 
@@ -47,7 +48,8 @@ int minHumidity = 0;
 #define pinG 18
 #define pinB 17
 
-#define EEPROM_SIZE 1
+#define SSID_EEPROM_ADDRESS 0
+#define PASSWORD_EEPROM_ADDRESS sizeof(ssid)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 SocketIoClient webSocket;
@@ -86,29 +88,18 @@ void setup() {
 
     Serial.println("");
     Serial.println("WiFi connected.");
-    Serial.println(WiFi.SSID(0));
+    Serial.println(WiFi.SSID());
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
 
-    //save wifi ssid and password to EEPROM
-    EEPROM.begin(EEPROM_SIZE);
-    EEPROM.put(address, WiFi.SSID());
-    address+=sizeof(String);
-    EEPROM.put(address, WiFi.psk());
-
-    EEPROM.get(address, pswd);
-    Serial.println(pswd);
-
-    address-=sizeof(String);
-    EEPROM.get(address, ssid);
-    Serial.println(ssid);
-  
+    saveWifiData(WiFi.psk(), WiFi.SSID());
+    
     //establish time client
     timeClient.begin();
     timeClient.setTimeOffset(3600);
 
     //establish socketIO connection
-    webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
+    webSocket.begin("192.168.1.18", 1205, "/socket.io/?transport=websocket");
     webSocket.on("disconnect", disconection);
     webSocket.on("connect", conection);
 
@@ -135,16 +126,37 @@ void setup() {
     ledcAttachPin(pinB, blueChannel);
     ledcAttachPin(pinG, greenChannel);
 }
+/////////////////////////////////////////// SAVE WIFI DATA TO EEPROM /////////////////////////////
+void saveWifiData(String PASSWORD, String SSIDd) {
+  PASSWORD.toCharArray(password,sizeof(password));
+  SSIDd.toCharArray(ssid,sizeof(ssid));
+
+  EEPROM.put(SSID_EEPROM_ADDRESS, ssid);
+  EEPROM.put(PASSWORD_EEPROM_ADDRESS, password);
+}
+
+void getWiFiSettings(String * PASSWORD, String * SSID1)
+{
+  EEPROM.get(SSID_EEPROM_ADDRESS, ssid);
+  EEPROM.get(PASSWORD_EEPROM_ADDRESS, password);
+
+  * PASSWORD = String(password);
+  * SSID1 = String(ssid);
+  Serial.println(*SSID1);
+  Serial.println(*PASSWORD);
+}
 
 /////////////////////////////////////////// WIFI reconection /////////////////////////////////////
 void wifiConection() {
- if (WiFi.status() != WL_CONNECTED) {
+ if (WiFi.status() != WL_CONNECTED) { 
+    String PASS = "";
+    String SSID1 = "";
+    getWiFiSettings(&PASS, &SSID1);
 
-    EEPROM.get(address, pswd);
-    address-= sizeof(pswd);
-    EEPROM.get(address, ssid); 
+    PASS.toCharArray(password, 65);
+    SSID1.toCharArray(ssid, 33);
     
-    Serial.print(".");
+    WiFi.begin(ssid, password);
     
     if (WiFi.status() == WL_CONNECTED) {
       Serial.println("");
@@ -357,12 +369,21 @@ void setRGBLed(float waterLevel) {
       ledcWrite(greenChannel, 255);
     }
 }
+/////////////////////////////////////////////// SLEEP ARDUINO ///////////////////////////////////////
+void sleep() {
+  Serial.println("Sleep"); 
+  LowPower.sleep(sleepTime);
+}
 
 /////////////////////////////////////////////// MAIN LOOP ///////////////////////////////////////////
 void loop() {
-    webSocket.loop();
+    sleep();
+    
     wifiConection();
+    webSocket.loop();
 
+    Serial.println("Awake");
+    
     if (digitalRead(lcdBtn))
       setLcd();
     else {
