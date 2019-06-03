@@ -35,13 +35,16 @@ export default class AddPlant extends Component {
                     >
                         <Thumbnail large source={require('../../assets/plant.png')} style={{marginLeft: 120}}></Thumbnail>
                     </TouchableOpacity>
-                    <Item style={{marginVertical: 20 }}>
+                    <Item style={{marginVertical: 10 }}>
                         <Input placeholder="Your plant name"/>
                     </Item>
-                    <Item style={{marginVertical: 20 }}>
+                    <Item style={{marginVertical: 10 }}>
+                        <Input keyboardType = 'numeric' placeholder="Arduino serial number"/>
+                    </Item>
+                    <Item style={{marginVertical: 10 }}>
                         <Input placeholder="Type WiFi name"/>
                     </Item>
-                    <Item style={{marginVertical: 20 }}>
+                    <Item style={{marginVertical: 10 }}>
                         <Input placeholder="Type WiFi password"/>
                     </Item>
                     <Button block style={{backgroundColor: '#1f313a'}}>

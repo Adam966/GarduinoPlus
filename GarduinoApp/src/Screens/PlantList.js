@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { TouchableOpacity, StyleSheet} from 'react-native'
+import { TouchableOpacity, StyleSheet, AsyncStorage} from 'react-native'
 import { Container, Body, Content, Text, Button, Header, Left, Title, Footer, FooterTab, Icon, Thumbnail  } from 'native-base';
 
 import Plant from '../Modules/PlantStyle/Plant';
@@ -15,7 +15,43 @@ export default class PlantList extends Component {
     };
   };
 
+  componentWillMount() {
+    this.getUser();
+  }; 
+
+  async getUser() {
+    try {
+      let User = await AsyncStorage.getItem('User');
+      this.setState({user: User});
+      console.log('Plantlist: ' + this.state.user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   render() {
+      
+  const data = [
+    {
+        PlantName: "Kaktus"
+    },
+    {
+      PlantName: "Karafiat"
+    },
+    {
+      PlantName: "Ruža",
+    },
+    {
+      PlantName: "Ruža",
+    },
+    {
+      PlantName: "Ruža",
+    },
+    {
+      PlantName: "Ruža",
+    }
+  ];
+
     return (
       <Container>
         <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
@@ -29,40 +65,20 @@ export default class PlantList extends Component {
           <Body>    
             <Thumbnail small source={require('../../assets/person.jpg')} /> 
           </Body>
-          <Text style={styles.name}>User Name</Text>
+          <Text style={styles.name}>User name</Text>
         </Header>
-        <Body>
-          <Content style={{backgroundColor: '#d2e3e5'}}>
-              <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
-                style = {{margin: 10, marginBottom: 0}}
-              >
-                <Plant/>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
-                style = {{margin: 10, marginBottom: 0}}
-              >
-                <Plant/>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
-                style = {{margin: 10, marginBottom: 0}}
-              >
-                <Plant/>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
-                style = {{margin: 10, marginBottom: 0}}
-              >
-                <Plant/>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
-                style = {{margin: 10, marginBottom: 0}}
-              >
-                <Plant/>
-              </TouchableOpacity>
+        <Body style={{backgroundColor: '#d2e3e5'}}>
+          <Content>
+
+          {data.map(element => (             
+                   <TouchableOpacity 
+                     onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
+                     style = {{margin: 10, marginBottom: 0}}
+                   >
+                     <Plant name={element.PlantName}/>
+                   </TouchableOpacity>  
+          ))}
+          
           </Content>
         </Body>
         <Footer>

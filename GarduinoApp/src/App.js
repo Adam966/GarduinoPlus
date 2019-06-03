@@ -7,6 +7,7 @@ import Logo from './Screens/Logo';
 import Notification from './Screens/Notification'; 
 import AddPlant from './Screens/AddPlant'; 
 import TakePhoto from './Screens/TakePhoto';
+import Person from './Screens/Person';
 
 import {createSwitchNavigator, createAppContainer, createStackNavigator, createDrawerNavigator} from 'react-navigation';
 import {Dimensions} from 'react-native'
@@ -27,7 +28,8 @@ const AppNavigation = createStackNavigator(
       StatDetailRoute: StatDetail,
       ValuesSettingRoute: ValuesSettings,
       AddPlantRoute: AddPlant,
-      CameraRoute: TakePhoto
+      CameraRoute: TakePhoto,
+      PersonRoute: Person
   }
 )
 

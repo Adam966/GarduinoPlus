@@ -16,6 +16,30 @@ export default class PlantInfo extends Component {
   }
 
   render() {
+    const data = [
+      {
+        index: 'Temperature',
+        value: '25 °C',
+        height: '60%'
+      },
+      {
+        index: 'Air Humidity',
+        value: '40 %',
+        height: '40%'
+      },
+      {
+        index: 'Soil Humidity',
+        value: '25 %',
+        height: '10%'
+      },
+      {
+        index: 'Water Level',
+        value: '90 %',
+        height: '90%'
+      },
+    ]
+   
+
     return (
     <Container style={{backgroundColor: '#d2e3e5'}}>
       <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
@@ -32,11 +56,15 @@ export default class PlantInfo extends Component {
         <Text style={styles.name}>Plant name</Text>  
       </Header>
       <Body>
-        <Content style={{backgroundColor: '#d2e3e5', marginTop: 15}}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('StatDetailRoute')}>
-            <Info />
-          </TouchableOpacity>
+        <Content style={{backgroundColor: '#d2e3e5'}}>
+
+          {data.map(element => (
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('StatDetailRoute')}>
+              <Info value={element.value} height={element.height} name={element.index} />
+            </TouchableOpacity>
+          ))}
+
         </Content>
       </Body>
         <Footer>

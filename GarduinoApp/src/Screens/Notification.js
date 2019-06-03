@@ -33,7 +33,9 @@ export default class Notification extends Component {
             </ListItem>
             <ListItem icon>
               <Left>
-                <Button transparent>
+                <Button transparent
+                  onPress={() => this.props.navigation.navigate('PersonRoute')}
+                >
                   <Icon  name='person' style={{ color: '#1f313a', fontSize: 33}}/>
                 </Button> 
               </Left>

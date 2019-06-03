@@ -13,9 +13,10 @@ export default class Info extends Component {
   render() {
     return (
       <Container style={styles.box}>
-        <Content header style={{zIndex: 2}}><Text style={styles.header}>Temperature</Text></Content>
-        <Content style={{zIndex: 2}}><Text style={styles.value}>100</Text></Content>
-        <Content style={styles.overlay}></Content>
+        <Content header style={{zIndex: 2}}><Text style={styles.header}>{this.props.name}</Text></Content>
+        <Content style={{zIndex: 2}}><Text style={styles.value}>{this.props.value}</Text></Content>
+        <Content style={{ zindex: 1, backgroundColor: 'green', position: 'absolute', bottom: 0, height: this.props.height, width: '100%'}}>
+        </Content>
       </Container>
     );
   }
@@ -32,10 +33,12 @@ const styles = {
     borderWidth: 0.3,
     borderRadius: 5,
     backgroundColor: '#F0FEFF',
+    marginVertical: 10,
   },
   header: {
     marginRight: 215,
     marginTop: 10,
+    fontWeight: 'bold',
   },
   value: {
     position: 'relative',
@@ -45,7 +48,7 @@ const styles = {
     backgroundColor: 'green',
     position: 'absolute',
     bottom: 0,
-    height: '50%',
+    height: '80%',
     width: '100%'
   }
 }

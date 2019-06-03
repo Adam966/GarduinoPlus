@@ -3,13 +3,20 @@ import { Card, CardItem, Text, Left, Right, Thumbnail } from 'native-base';
 import { StyleSheet } from 'react-native';
 
 export default class Plant extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  };
+
+
   render() {
     return (
           <Card style={styles.container}>
             <CardItem style={{backgroundColor: '#F0FEFF'}}>
               <Left>
                 <Thumbnail source={require('../../../assets/plant.png')} />
-                <Text style={styles.name}>Plant name</Text>  
+                <Text style={styles.name}>{this.props.name}</Text>  
               </Left>
             </CardItem>
           </Card>
