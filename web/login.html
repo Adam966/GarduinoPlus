@@ -8,12 +8,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
-<script src="js/floweradd.script.js"></script>
+<script src="js/login.js"></script>
 </head>
 <body>
 
 	<div id="barUp">
-        <input type="button" class="colorChange" id="onoffSwitch">
     </div>
 
     <div id="nameWrapper">
@@ -21,10 +20,10 @@
 
     <div id="middleWrapper">
 
-        <form class="login">
+        <form id="login">
             <div class="formHeading">Login</div>
-            <input type="text" class="label" placeholder="Username"/>
-            <input type="password" class="label" placeholder="Password"/>
+            <input type="text" class="label" placeholder="E-mail" id="email"/>
+            <input type="password" class="label" placeholder="Password" id="password"/>
             <div class="btnBkg">
                 <input type="button" value="Submit" class="loginBtn">
             </div>

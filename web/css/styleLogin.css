@@ -83,7 +83,7 @@ transition: all .2s linear 0s;
 
 }
 
-.login {
+#login {
     height: 18vw;
     width: 27vw;
     /*background:red;*/
@@ -176,7 +176,7 @@ flex-direction:column;
       height:7vw;
   }  
 
-      .login {
+      #login {
         /*background:red;*/
         height: 70vw;
         width: 79vw;
@@ -207,7 +207,7 @@ flex-direction:column;
       height:5.5vw;
   }  
 
-  .login {
+  #login {
       /*background:black;*/
       height: 50vw;
       width: 59vw;
@@ -239,7 +239,7 @@ flex-direction: column;
       height:3.5vw;
   }  
 
-  .login {
+  #login {
       /*background:grey;*/
       height: 34vw;
       width: 43vw;
@@ -270,7 +270,7 @@ flex-direction: row;
   }  
 
 
-  .login {
+  #login {
       /*background:yellow;*/
       height: 28vw;
       width: 37vw;
@@ -301,7 +301,7 @@ flex-direction: row;
       height:2.5vw;
   }  
 
-  .login {
+  #login {
      /*background:green;*/
      height: 24vw;
      width: 33vw;
@@ -335,7 +335,7 @@ flex-direction: row;
   }  
 
 
-  .login {
+  #login {
      /* background:blue;*/
      height: 18vw;
      width: 27vw;

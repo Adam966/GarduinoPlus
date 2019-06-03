@@ -64,7 +64,7 @@ transition: all .2s linear 0s;
 
 }
 
-.register {
+#register {
 
     height: 25vw;
     width: 27vw;
@@ -182,7 +182,7 @@ flex-direction:column;
       width:60vw;
       height:7vw;
   }  
-      .register{
+      #register{
        /* background:red;*/
         height: 85vw;
         width: 87vw;
@@ -213,7 +213,7 @@ flex-direction:column;
       height:5.5vw;
   }  
 
-    .register{
+    #register{
       /*  background:black;*/
         height: 65vw;
         width: 67vw;
@@ -245,7 +245,7 @@ flex-direction: column;
       height:3.5vw;
   }  
 
-    .register{
+    #register{
     /*   background:grey;*/
        height: 44vw;
        width: 46vw;
@@ -275,7 +275,7 @@ flex-direction: row;
       height:2.7vw;
   }  
 
-    .register{
+    #register{
        /* background:yellow;*/
         height: 33vw;
         width: 35vw;
@@ -306,7 +306,7 @@ flex-direction: row;
       height:2.5vw;
   }  
 
-      .register{
+      #register{
       /*  background:green;*/
         height: 30vw;
         width: 32vw;
@@ -339,7 +339,7 @@ flex-direction: row;
       height:2vw;
   }  
 
-  .register{
+  #register{
       /* background:blue;*/
        height: 25vw;
        width: 27vw;
