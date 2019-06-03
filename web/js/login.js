@@ -10,14 +10,16 @@ $(document).ready(() => {
 
 		console.log(email+"	"+password);
 
-		if(email.trim()==null || email.trim()==""|| email ===" " 
-		|| password.trim()==null || password.trim()==""|| password ===" " ){
-			console.log("error whitespaces");
+		if(email.trim()==null || email.trim()==""|| email ===" "){
+			console.log("error email whitespaces");
 		}
-		else
-		{
+		else if(password.trim()==null || password.trim()==""|| password ===" " ){
+			console.log("error password whitespaces");
+		}
+		else{
 
-		 $.ajax({
+		$.ajax({
+
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
 		      url: "http://localhost:5432/login",
@@ -34,18 +36,19 @@ $(document).ready(() => {
 		           }
 		           
 			      },
-			      error: function (xhr, textStatus, errorThrown) { 
+			   error: function (xhr, textStatus, errorThrown) { 
 			      	console.log(xhr.status);
 			      	console.log(textStatus);
 			      	
 			      	if(xhr.status == 403){
 			      	console.log("bad login");
-			      	}
+			    }
 
 		      }	
 		 });
-
-		 }
+		
+		}
+		
 	});
 
 });
