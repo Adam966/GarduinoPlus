@@ -14,21 +14,55 @@ font-family: 'Exo 2', sans-serif;
 }
 
 .loginHref {
-	background: yellow;
 	width:6em;
 	height:100%;
 	display:flex;
 	align-items: center;
 	justify-content: center;
+	color:#707F87;
+	-webkit-transition: background-color 0.5s ease-in-out;
+    -ms-transition: background-color 0.5s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
+
+    -webkit-transition: color 0.5s ease-in-out;
+    -ms-transition: color 0.5s ease-in-out;
+    transition: color 0.5s ease-in-out;
 }
 
 .registerHref {
-	background: green;
 	width:6em;
 	height:100%;
 	display:flex;
 	align-items: center;
 	justify-content: center;
+	color:#707F87;
+	-webkit-transition: background-color 0.5s ease-in-out;
+    -ms-transition: background-color 0.5s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
+
+    -webkit-transition: color 0.5s ease-in-out;
+    -ms-transition: color 0.5s ease-in-out;
+    transition: color 0.5s ease-in-out;
+}
+
+.loginHref:hover {
+	width:6em;
+	height:100%;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	color:white;
+	background:#1B2B33;
+}
+
+.registerHref:hover {
+	width:6em;
+	height:100%;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	color:white;
+	background:#1B2B33;
 }
 
 a {
@@ -57,7 +91,6 @@ box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 .navigationWrap {
 
 float:right;
-background: red;
 height:100%;
 display:flex;
 flex-direction: row;
