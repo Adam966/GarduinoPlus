@@ -1,0 +1,144 @@
+let database = require('./sequelize');
+let worker = require('./worker');
+
+const app = require('express')();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+const bodyParser = require("body-parser");
+let jwt = require('jsonwebtoken');
+let config = require('./config');
+let middleware = require('./middleware');
+let handler = require('./handler');
+
+app.use(bodyParser.json());
+console.log("Everything is up");
+
+io.set('origins', '*:*');
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
+    next();
+  });  
+
+let arduinoClient = [];
+let webClient = [];
+
+
+console.log("Server started");
+io.on('connection', socket =>{ 
+    console.log("Client connected");
+
+    socket.on('setIdentifierA', data => {
+
+        let clientInfo = new Object();
+        clientInfo.socketID = socket.id;
+        clientInfo.ardunioSerial = data.ArduinoSerial;
+        arduinoClient.push(clientInfo);
+    });
+
+    socket.on('setIdentifierW', data => {
+
+        let clientInfo = new Object();
+        clientInfo.socketID = socket.id;
+        clientInfo.userID = data.IDUser;
+        clientInfo.arduinoSerial = data.ArduinoSerial;
+        webClient.push(clientInfo);
+    });
+
+	socket.on('arduinoData', data =>{   
+        data = JSON.parse(data);
+        worker.writeData(data);
+        worker.serialMatch(webClient, data.ArduinoSerial, result =>{
+            if(result > -1)
+            {
+                console.log("Latest data sent to client");
+                io.to(webClient[result].socketID).emit('weatherData', data);
+            }
+        });
+        
+    });
+
+    socket.on('water', (data) => {
+        worker.serialMatch(arduinoClient, data.ArduinoSerial, result =>{
+            if(result > -1)
+            {
+                console.log("Water the plant");
+                io.to(arduinoClient[result].socketID).emit('water');
+            }
+        });
+    });
+
+    socket.on('getSoilHumidity', (data)=>{
+        worker.serialMatch(arduinoClient, data.ArduinoSerial, result =>{
+            if(result > -1)
+            {
+                console.log("SENDINGHUMIDITY");
+                worker.getSoilHumidity(data.ArduinoSerial, humData =>{
+                    io.to(arduinoClient[result].socketID).emit(humData);
+                });
+            }
+        });
+    });
+    
+    socket.on('disconnect', ()=>{
+        console.log('Client has disconnected');
+        worker.disconnectMatch(webClient, socket.id, result =>{
+            if(result > -1)
+            {
+                webClient.splice(result,1);
+            }
+            else
+            {
+                worker.disconnectMatch(arduinoClient, socket.id, result =>{
+                    if(result > -1){arduinoClient.splice(result,1);}
+                });  
+            }
+        });
+    });
+});
+
+app.post('/register', (req, res) =>{
+    worker.registerUser(req.body, success =>{
+        if(success)
+        {
+            console.log("User successfully registered");
+            res.status(200).send();
+        }
+        else
+        {
+            res.status(403).send();
+        }
+    });
+});
+
+app.post('/login', (req, res) =>{
+    worker.getUser(req.body, result =>{
+        console.log(result);
+        if(result != "Error")
+        {
+            result = JSON.parse(result);
+            let token = jwt.sign({Email:result[0].Email},
+                config.secret,{ expiresIn: '12h'}
+            );
+            console.log(token);
+            let respObj = {ID: result[0].ID, Name: result[0].Name, Email: result[0].ID, Token:token};
+            res.status(200).send(JSON.stringify(respObj));
+        }
+        else
+        {
+            console.log("Error Login");
+            res.status(403).send();
+        }
+    });
+});
+
+app.post('/plantData', middleware.checkToken, handler.plantData);
+
+app.put('/minmax', middleware.checkToken, handler.writeMinMax);
+
+app.post('/minmax', middleware.checkToken, handler.getMinMax);
+
+app.post('/plants', middleware.checkToken, handler.getUserPlants);
+
+server.listen(1205);
