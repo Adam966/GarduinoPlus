@@ -42,14 +42,18 @@ io.on('connection', socket =>{
         let clientInfo = new Object();
         clientInfo.socketID = socket.id;
         clientInfo.userID = data.IDUser;
-        clientInfo.arduinoSerial = data.ArduinoSerial;
+        clientInfo.arduinoSerial = [];
+        for(let i = 0; i<data.ArduinoSerial.length; i++)
+        {
+            clientInfo.arduinoSerial[i] = data.ArduinoSerial[i];
+        }
         webClient.push(clientInfo);
     });
 
 	socket.on('arduinoData', data =>{   
         data = JSON.parse(data);
         worker.writeData(data);
-        worker.serialMatch(webClient, data.ArduinoSerial, result =>{
+        worker.serialMatchW(webClient, data.ArduinoSerial, result =>{
             if(result > -1)
             {
                 console.log("Latest data sent to client");
@@ -60,7 +64,7 @@ io.on('connection', socket =>{
     });
 
     socket.on('water', (data) => {
-        worker.serialMatch(arduinoClient, data.ArduinoSerial, result =>{
+        worker.serialMatchA(arduinoClient, data.ArduinoSerial, result =>{
             if(result > -1)
             {
                 console.log("Water the plant");
@@ -70,7 +74,7 @@ io.on('connection', socket =>{
     });
 
     socket.on('getSoilHumidity', (data)=>{
-        worker.serialMatch(arduinoClient, data.ArduinoSerial, result =>{
+        worker.serialMatchA(arduinoClient, data.ArduinoSerial, result =>{
             if(result > -1)
             {
                 console.log("SENDINGHUMIDITY");
@@ -83,14 +87,14 @@ io.on('connection', socket =>{
     
     socket.on('disconnect', ()=>{
         console.log('Client has disconnected');
-        worker.disconnectMatch(webClient, socket.id, result =>{
+        worker.disconnectMatchW(webClient, socket.id, result =>{
             if(result > -1)
             {
                 webClient.splice(result,1);
             }
             else
             {
-                worker.disconnectMatch(arduinoClient, socket.id, result =>{
+                worker.disconnectMatchA(arduinoClient, socket.id, result =>{
                     if(result > -1){arduinoClient.splice(result,1);}
                 });  
             }
@@ -122,7 +126,7 @@ app.post('/login', (req, res) =>{
                 config.secret,{ expiresIn: '12h'}
             );
             console.log(token);
-            let respObj = {ID: result[0].ID, Name: result[0].Name, Email: result[0].ID, Token:token};
+            let respObj = {ID: result[0].ID, Name: result[0].Name, Email: result[0].Email, Token:token};
             res.status(200).send(JSON.stringify(respObj));
         }
         else

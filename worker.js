@@ -16,7 +16,7 @@ module.exports = {
         found(-1);
     },
 
-    serialMatch(array, serial, found)
+    serialMatchA(array, serial, found)
     {
         for(let i=0; i < array.length; i++)
         {
@@ -25,6 +25,22 @@ module.exports = {
                 found(i);
                 break;
             }
+        }
+        found(-1);
+    },
+
+    serialMatchW(array, serial, found)
+    {
+        for(let i=0; i < array.length; i++)
+        {
+          for(let j = 0; j<array[i].arduinoSerial.length; j++)
+          {
+            if(array[i].arduinoSerial[j] == serial)
+            {
+                found(i);
+                break;
+            }
+          }
         }
         found(-1);
     },
@@ -212,7 +228,7 @@ module.exports = {
     getMinMax(arduinoSerial, data) //returns the minimal and maximal values
     {
         plantCare.findAll({
-            attributes:["PlantName", "TempMin", "TempMax", "AirHumMin", "AirHumMax", "SoilHumMin", "SoilHumMax"],
+            attributes:["ArduinoSerial", "PlantName", "TempMin", "TempMax", "AirHumMin", "AirHumMax", "SoilHumMin", "SoilHumMax"],
             where: {
                 ArduinoSerial: arduinoSerial
             },
@@ -248,7 +264,7 @@ module.exports = {
     getUserPlants(UserID, data)
     {
       plantCare.findAll({
-        attributes:["ArduinoSerial"],
+        attributes:["ArduinoSerial", "PlantName"],
         where: {
             IDUser: UserID
         },
