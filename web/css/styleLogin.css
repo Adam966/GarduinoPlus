@@ -84,8 +84,8 @@ transition: all .2s linear 0s;
 }
 
 #login {
-    height: 18vw;
-    width: 27vw;
+    height: 22em;
+    width: 31em;
     /*background:red;*/
     background: #F0FEFF;
     border-radius: 8px;
@@ -113,28 +113,29 @@ transition: all .2s linear 0s;
     background-color:#F5FEFF;
     border:2px solid #D5E0E0;
     border-radius:0.5em;
-    width:20vw;
-    height:2vw;
+    width:25em;
+    height:2.5em;
     font-size:15px;
+    text-indent:10px;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    padding-left:2%;
+    text-indent:10px;
     font-size:13px;
     color:#BBC7C8;
   }
   ::-moz-placeholder { /* Firefox 19+ */
-    padding-left:2%;
+    text-indent:10px;
     font-size:13px;
     color:#BBC7C8;
   }
   :-ms-input-placeholder { /* IE 10+ */
-    padding-left:2%;
+    text-indent:10px;
     font-size:13px;
     color:#BBC7C8;
   }
   :-moz-placeholder { /* Firefox 18- */
-    padding-left:2%;
+    text-indent:10px;
     font-size:13px;
     color:#BBC7C8;
   }
@@ -150,196 +151,4 @@ transition: all .2s linear 0s;
 .formHeading {
     color: #BBC7C8;
     font-size: 30px;
-}
-
-
-@media (max-width: 590px) {
-
-
-#middleSettings {
-
-/*background:red;*/
-flex-direction:column;
-
-}
-
-#middleSettings.-darkmode {
-
-/*background:red;*/
-flex-direction:column;
-
-}
-
-  .label{
-    /*  background:red;*/
-      width:60vw;
-      height:7vw;
-  }  
-
-      #login {
-        /*background:red;*/
-        height: 70vw;
-        width: 79vw;
-    }
-
-}
-
-@media (min-width: 590px) {
-
-#middleSettings{
-
-/*background:grey;*/
-flex-direction:column;
-
-
-}
-
-#middleSettings.-darkmode {
-
-/*background:grey;*/
-flex-direction:column;
-
-}
-
-  .label{
-     /* background:black;*/
-      width:45vw;
-      height:5.5vw;
-  }  
-
-  #login {
-      /*background:black;*/
-      height: 50vw;
-      width: 59vw;
-  }
-
-}
-
-
-@media (min-width: 768px) {
-
-
-#middleSettings {
-
-/*background:green;*/
-flex-direction: column;
-
-}
-
-#middleSettings.-darkmode {
-
-/*background:green;*/
-flex-direction: column;
-
-}
-
-  .label{
-      /*background:grey;*/
-      width:31vw;
-      height:3.5vw;
-  }  
-
-  #login {
-      /*background:grey;*/
-      height: 34vw;
-      width: 43vw;
-  }
-
-}
-
-@media (min-width: 992px) {
-
-#middleSettings {
-
-/*background:yellow;*/
-flex-direction: row;
-
-}
-
-#middleSettings.-darkmode {
-
-/*background:yellow;*/
-flex-direction: row;
-
-}
-
-  .label{
-     /* background:yellow;*/
-      width:27vw;
-      height:2.7vw;
-  }  
-
-
-  #login {
-      /*background:yellow;*/
-      height: 28vw;
-      width: 37vw;
-  }
-
-}
-
-@media (min-width: 1200px) {
-
-#middleSettings{
-
-/*background:blue;*/
-flex-direction: row;
-
-}
-
-
-#middleSettings.-darkmode {
-
-/*background:blue;*/
-flex-direction: row;
-
-}
-
-  .label{
-     /* background:green;*/
-      width:24vw;
-      height:2.5vw;
-  }  
-
-  #login {
-     /*background:green;*/
-     height: 24vw;
-     width: 33vw;
-     /*background: #F0FEFF;*/
-  }
-
-}
-
-
-@media (min-width: 1400px) {
-
-
-#middleSettings{
-
-/*background:black;*/
-flex-direction: row;
-
-}
-
-#middleSettings.-darkmode{
-
-/*background:black;*/
-flex-direction: row;
-
-}
-
-  .label{
-     /* background:blue;*/
-      width:20vw;
-      height:2vw;
-  }  
-
-
-  #login {
-     /* background:blue;*/
-     height: 18vw;
-     width: 27vw;
-  }
-
-
 }
