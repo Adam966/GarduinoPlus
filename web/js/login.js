@@ -2,6 +2,7 @@ $(document).ready(() => {
 	console.log("test login");
 
     const loginBtn = $(".loginBtn");
+    const errorBox = $(".errorBox");
 
 	loginBtn.click(() => {
 		console.log("test loginBtn");
@@ -11,10 +12,12 @@ $(document).ready(() => {
 		console.log(email+"	"+password);
 
 		if(email.trim()==null || email.trim()==""|| email ===" "){
-			console.log("error email whitespaces");
+			//console.log("Error email has whitespaces");
+			errorBox.html("Error email is empty");
 		}
 		else if(password.trim()==null || password.trim()==""|| password ===" " ){
-			console.log("error password whitespaces");
+			//console.log("Error password has whitespaces");
+			errorBox.html("Error password is empty");
 		}
 		else{
 

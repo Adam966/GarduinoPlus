@@ -2,6 +2,7 @@ $(document).ready(() => {
 	console.log("test registration");
 
 	const registerBtn = $(".registerBtn");
+	const errorBox = $(".errorBox");
 
 	registerBtn.click(() => {
 		console.log("test registerBtn");
@@ -13,13 +14,17 @@ $(document).ready(() => {
 		console.log(username+" "+email+" "+password+" "+rePassword);
 
 		if(password != rePassword){
-			console.log("password and re-entered password must be same!");
+			//console.log("Password and re-entered password must be same!");
+			errorBox.html("Password and re-entered password must be same!");
 		}else if(username.trim()==null || username.trim()==""|| username ===" "){
-			console.log("error username whitespaces");
+			//console.log("Error username has whitespaces");
+			errorBox.html("Error username is empty");
 		}else if(email.trim()==null || email.trim()==""|| email ===" "){
-			console.log("error email whitespaces");
+			//console.log("Error email has whitespaces");
+			errorBox.html("Error email is empty");
 		}else if(password.trim()==null || password.trim()==""|| password ===" "){
-			console.log("error password whitespaces");
+			//console.log("Error password has whitespaces");
+			errorBox.html("Error password is empty");
 		}
 		else{
 			$.ajax({
