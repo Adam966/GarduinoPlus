@@ -40,6 +40,49 @@ cursor:pointer;
 
 }
 
+
+.logoutBtn {
+
+float: right;
+border: none;
+outline: none;
+height: 100%;
+min-height: 80px;
+width: 100px;
+background: url(../img/iconLogout.svg) center / contain no-repeat;
+background-size: 60px 60px;
+cursor: pointer;
+
+}
+
+.logoutBtn:hover {
+
+float: right;
+border: none;
+outline: none;
+height: 100%;
+min-height: 80px;
+width: 100px;
+background: url(../img/iconLogoutHover.svg) center / contain no-repeat;
+background-size: 60px 60px;
+cursor: pointer;
+
+}
+
+.logoutBtn:active {
+
+float: right;
+border: none;
+outline: none;
+height: 100%;
+min-height: 80px;
+width: 100px;
+background: url(../img/iconLogoutClick.svg) center / contain no-repeat;
+background-size: 60px 60px;
+cursor: pointer;
+
+}
+
 #conditionWrapper {
 
 height:100%;
