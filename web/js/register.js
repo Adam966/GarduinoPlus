@@ -25,7 +25,7 @@ $(document).ready(() => {
 			$.ajax({
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
-		      url: "http://localhost:5432/login",
+		      url: "http://localhost:1205/register",
 		      data: "{\"Name\":\""+username+"\",\"Email\":\""+email+"\",\"Password\":\""+password+"\"}",
 		      success: function (result,textStatus,xhr) {
 		           console.log("it works");
@@ -34,7 +34,7 @@ $(document).ready(() => {
 
 		           if(xhr.status == 200){
 		           	//location.href = "main.html";
-		           	console.log("successful login");
+		           	console.log("successful registration");
 		           	console.log(result);
 		           }
 		           

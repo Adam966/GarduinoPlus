@@ -19,10 +19,9 @@ $(document).ready(() => {
 		else{
 
 		$.ajax({
-
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
-		      url: "http://localhost:5432/login",
+		      url: "http://localhost:1205/login",
 		      data: "{\"Email\":\""+email+"\",\"Password\":\""+password+"\"}",
 		      success: function (result,textStatus,xhr) {
 		           console.log("it works");
