@@ -40,6 +40,10 @@ $(document).ready(() => {
 		           if(xhr.status == 200){
 		           	//location.href = "main.html";
 		           	console.log("successful registration");
+		           	username.val("");
+		           	email.val("");
+		           	password.val("");
+		           	rePassword.val("");
 		           	console.log(result);
 		           }
 		           

@@ -34,6 +34,8 @@ $(document).ready(() => {
 		           if(xhr.status == 200){
 		           	//location.href = "main.html";
 		           	console.log("successful login");
+		           	email.val("");
+			      	password.val("");
 		           	console.log(result);
 		           	location.href = "index.html";
 		           }
@@ -45,6 +47,8 @@ $(document).ready(() => {
 			      	
 			      	if(xhr.status == 403){
 			      	console.log("bad login");
+			      	email.val("");
+			      	password.val("");
 			    }
 
 		      }	
