@@ -35,6 +35,7 @@ $(document).ready(() => {
 		           	//location.href = "main.html";
 		           	console.log("successful login");
 		           	console.log(result);
+		           	location.href = "index.html";
 		           }
 		           
 			      },
