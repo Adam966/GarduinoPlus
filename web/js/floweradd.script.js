@@ -18,8 +18,6 @@ $(document).ready(() => {
 		middleWrapper.toggleClass('-darkmode');
 	});
 
-
-	//TODO popup na click a pridanie kvetiny až po zadani mena a potvrdení
 	/*addPlant.click(() => {
 		console.log("test addPlant");
 		middleWrapper.append("<div id='addedPlant'></div>");

@@ -34,7 +34,7 @@ $(document).ready(() => {
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
 		      url: "http://localhost:1205/login",
-		      data: "{\"Email\":\""+email+"\",\"Password\":\""+password+"\"}",
+		      data: "{\"Email\":\""+email.val()+"\",\"Password\":\""+password.val()+"\"}",
 		      success: function (result,textStatus,xhr) {
 		           console.log("it works");
 		           console.log(textStatus);
