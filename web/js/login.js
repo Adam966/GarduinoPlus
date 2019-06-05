@@ -14,17 +14,17 @@ $(document).ready(() => {
 		if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
 			//console.log("Error email has whitespaces");
 			errorBox.html("Error email is empty");
-			email.css('border-style','solid')
-			email.css('border-color','#F44336')
-			email.css('border-width','2px')
+			email.css('border-style','solid');
+			email.css('border-color','#F44336');
+			email.css('border-width','2px');
 		}
 		else if(password.val().trim()==null || password.val().trim()==""|| password ===" " ){
 			//console.log("Error password has whitespaces");
 			email.css('border','');
 			errorBox.html("Error password is empty");
-			password.css('border-style','solid')
-			password.css('border-color','#F44336')
-			password.css('border-width','2px')
+			password.css('border-style','solid');
+			password.css('border-color','#F44336');
+			password.css('border-width','2px');
 		}
 		else{
 			errorBox.html("");

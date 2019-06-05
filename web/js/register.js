@@ -6,27 +6,59 @@ $(document).ready(() => {
 
 	registerBtn.click(() => {
 		console.log("test registerBtn");
-		let username = $("#username").val();
-		let email = $("#email").val();
-		let password = $("#password").val();
-		let rePassword = $("#rePassword").val();
+		let username = $("#username");
+		let email = $("#email");
+		let password = $("#password");
+		let rePassword = $("#rePassword");
 
 		console.log(username+" "+email+" "+password+" "+rePassword);
 
-		if(password != rePassword){
-			//console.log("Password and re-entered password must be same!");
+		if(password.val() != rePassword.val()){
+
 			errorBox.html("Password and re-entered password must be same!");
-		}else if(username.trim()==null || username.trim()==""|| username ===" "){
-			//console.log("Error username has whitespaces");
+			password.css('border-style','solid');
+			password.css('border-color','#F44336');
+			password.css('border-width','2px');
+
+			rePassword.css('border-style','solid');
+			rePassword.css('border-color','#F44336');
+			rePassword.css('border-width','2px');
+
+		}else if(username.val().trim()==null || username.val().trim()==""|| username ===" "){
+
+			password.css('border','');
+			rePassword.css('border','');
+
 			errorBox.html("Error username is empty");
-		}else if(email.trim()==null || email.trim()==""|| email ===" "){
-			//console.log("Error email has whitespaces");
+			username.css('border-style','solid');
+			username.css('border-color','#F44336');
+			username.css('border-width','2px');
+
+		}else if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
+
+			username.css('border','');
+
 			errorBox.html("Error email is empty");
-		}else if(password.trim()==null || password.trim()==""|| password ===" "){
-			//console.log("Error password has whitespaces");
+			email.css('border-style','solid');
+			email.css('border-color','#F44336');
+			email.css('border-width','2px');
+
+		}else if(password.val().trim()==null || password.val().trim()==""|| password ===" "){
+			email.css('border','');
+
 			errorBox.html("Error password is empty");
+			password.css('border-style','solid');
+			password.css('border-color','#F44336');
+			password.css('border-width','2px');
 		}
 		else{
+
+			errorBox.html("");
+			username.css('border','');
+			email.css('border','');
+			rePassword.css('border','');
+			password.css('border','');
+
 			$.ajax({
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
