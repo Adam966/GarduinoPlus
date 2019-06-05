@@ -77,6 +77,7 @@ $(document).ready(() => {
 		           	password.val("");
 		           	rePassword.val("");
 		           	console.log(result);
+		           	location.href = "login.html";
 		           }
 		           
 			      },
