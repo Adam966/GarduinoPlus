@@ -6,21 +6,30 @@ $(document).ready(() => {
 
 	loginBtn.click(() => {
 		console.log("test loginBtn");
-		let email = $("#email").val();
-		let password = $("#password").val();
+		let email = $("#email");
+		let password = $("#password");
 
 		console.log(email+"	"+password);
 
-		if(email.trim()==null || email.trim()==""|| email ===" "){
+		if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
 			//console.log("Error email has whitespaces");
 			errorBox.html("Error email is empty");
+			email.css('border-style','solid')
+			email.css('border-color','#F44336')
+			email.css('border-width','2px')
 		}
-		else if(password.trim()==null || password.trim()==""|| password ===" " ){
+		else if(password.val().trim()==null || password.val().trim()==""|| password ===" " ){
 			//console.log("Error password has whitespaces");
+			email.css('border','');
 			errorBox.html("Error password is empty");
+			password.css('border-style','solid')
+			password.css('border-color','#F44336')
+			password.css('border-width','2px')
 		}
 		else{
-
+			errorBox.html("");
+			email.css('border','');
+			password.css('border','');
 		$.ajax({
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
