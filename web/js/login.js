@@ -42,10 +42,11 @@ $(document).ready(() => {
 
 		           if(xhr.status == 200){
 		           	//location.href = "main.html";
+		            console.log(result);
+		            localStorage.setItem('loggedUser',result);
 		           	console.log("successful login");
 		           	email.val("");
 			      	password.val("");
-		           	console.log(result);
 		           	location.href = "flowerAdd.html";
 		           }
 		           
