@@ -67,6 +67,16 @@ margin-bottom:4%;
 
 }
 
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+
+}
+
 #middleWrapper.-darkmode {
 	
 height:auto;

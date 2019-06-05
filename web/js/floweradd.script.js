@@ -18,19 +18,6 @@ $(document).ready(() => {
 		middleWrapper.toggleClass('-darkmode');
 	});
 
-	let modal = document.getElementById('formModal');
-	let addPlant = document.getElementById("fixedBox");
-
-	addPlant.onclick = function() {
-    $(modal).fadeIn("fast");
-	}
-
-	window.onclick = function(event) {
-	    if (event.target == modal) {
-	        $(modal).fadeOut("fast");
-	    }
-	}
-
 
 	//TODO popup na click a pridanie kvetiny až po zadani mena a potvrdení
 	/*addPlant.click(() => {

@@ -46,7 +46,7 @@ $(document).ready(() => {
 		           	email.val("");
 			      	password.val("");
 		           	console.log(result);
-		           	location.href = "index.html";
+		           	location.href = "flowerAdd.html";
 		           }
 		           
 			      },
