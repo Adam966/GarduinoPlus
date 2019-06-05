@@ -9,7 +9,7 @@
 #include <math.h>
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
-#include <ArduinoLowPower.h>
+//#include <ArduinoLowPower.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #define sendInterval 30000
@@ -99,9 +99,12 @@ void setup() {
     timeClient.setTimeOffset(3600);
 
     //establish socketIO connection
-    webSocket.begin("192.168.1.18", 1205, "/socket.io/?transport=websocket");
+    webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
     webSocket.on("disconnect", disconection);
     webSocket.on("connect", conection);
+    
+    webSocket.emit("setIdentifierA",  "{\"ArduinoSerial\":\"4568\"}");
+    webSocket.emit("getSoilHumidity", "{\"ArduinoSerial\":\"4568\"}");
 
     //socket event on 
     webSocket.on("water", pourFlower);
@@ -168,7 +171,7 @@ void wifiConection() {
       timeClient.setTimeOffset(3600);
     
       //establish socketIO connection
-      webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
+      webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
       webSocket.on("disconnect", disconection);
       webSocket.on("connect", conection);
   
@@ -241,28 +244,29 @@ float getHumidity(){
 
 //////////////////////////////////////// JSON Creation /////////////////////////////////////////////////
 void createJson(float temperature, float humidityAir, float humiditySoil, float waterSurface) {
-    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(4);
-    DynamicJsonBuffer jsonBuffer(capacity);
-    
-    JsonObject& root = jsonBuffer.createObject();
-    
-    JsonObject& identification = root.createNestedObject("identification");
-    byte mac[6];
-    WiFi.macAddress(mac);
-    identification["id"] = (String(mac[0], HEX) + ":" + String(mac[1], HEX) + ":" + String(mac[2], HEX) + ":" + String(mac[3], HEX) + ":" + String(mac[4], HEX) + ":" + String(mac[5], HEX));
-    
-    JsonObject& info = root.createNestedObject("info");
-    info["temperature"] = temperature;
-    info["humidityAir"] = humidityAir;
-    info["humiditySoil"] = humiditySoil;
-    info["watersurface"] = waterSurface;
-    
-    JsonObject& date = root.createNestedObject("date");
-    date["date"] = getDate();
-    
-    char output[capacity];
-    root.printTo(output);
-    sendData(output);
+  Serial.println(temperature);
+  Serial.println(humidityAir);
+  Serial.println(humiditySoil);
+  Serial.println(waterSurface);
+  
+  const size_t capacity = 2*JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(4);
+  DynamicJsonDocument doc(capacity);
+  
+  JsonObject identification = doc.createNestedObject("identification");
+  identification["ArduinoSerial"] = 4568;
+  
+  JsonObject info = doc.createNestedObject("info");
+  info["Temp"] =  temperature;
+  info["AirHum"] = humidityAir;
+  info["SoilHum"] = humiditySoil;
+  info["WatSurf"] = waterSurface;
+  JsonObject date = doc.createNestedObject("date");
+  date["Date"] = getDate();
+
+  char output[capacity];
+  serializeJson(doc, output);
+
+  sendData(output);
 }
 
 //////////////////////////////////////////// SOCKETIO EVENTS //////////////////////////////////
@@ -305,7 +309,7 @@ void conection(const char * payload, size_t length) {
 //DISONNECTION
 void disconection(const char * payload, size_t length) {
    Serial.println("Client disconnected from server.");
-   webSocket.begin("147.232.158.152", 1205, "/socket.io/?transport=websocket");
+   webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
    webSocket.emit("join", "\"arduinoclient\"");
    webSocket.emit("getSoilHumidity");
 }
@@ -370,14 +374,14 @@ void setRGBLed(float waterLevel) {
     }
 }
 /////////////////////////////////////////////// SLEEP ARDUINO ///////////////////////////////////////
-void sleep() {
-  Serial.println("Sleep"); 
-  LowPower.sleep(sleepTime);
-}
+//void sleepArduino() {
+//  Serial.println("Sleep"); 
+//  LowPower.sleep(sleepTime);
+//}
 
 /////////////////////////////////////////////// MAIN LOOP ///////////////////////////////////////////
 void loop() {
-    sleep();
+    //sleepArduino();
     
     wifiConection();
     webSocket.loop();
