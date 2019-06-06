@@ -33,7 +33,7 @@ io.on('connection', socket =>{
 
         let clientInfo = new Object();
         clientInfo.socketID = socket.id;
-        clientInfo.ardunioSerial = data.ArduinoSerial;
+        clientInfo.arduinoSerial = data.ArduinoSerial;
         arduinoClient.push(clientInfo);
     });
 
@@ -57,7 +57,7 @@ io.on('connection', socket =>{
             if(result > -1)
             {
                 console.log("Latest data sent to client");
-                io.to(webClient[result].socketID).emit('weatherData', data);
+                io.to(webClient[result].socketID).emit('plantData', data);
             }
         });
         
@@ -79,7 +79,7 @@ io.on('connection', socket =>{
             {
                 console.log("SENDINGHUMIDITY");
                 worker.getSoilHumidity(data.ArduinoSerial, humData =>{
-                    io.to(arduinoClient[result].socketID).emit(humData);
+                    io.to(arduinoClient[result].socketID).emit("humidity", humData);
                 });
             }
         });
