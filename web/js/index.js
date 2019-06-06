@@ -14,6 +14,7 @@ $(document).ready(() => {
 
 	//div for settings button
 	const settings = $('.settingsBtn');
+	const logout = $('.logoutBtn');
 
 	//divs for dark mode
 	const heading = $('.heading');
@@ -864,6 +865,19 @@ $(document).ready(() => {
 		}
 
 		socket.emit('water');
+
+	});
+
+
+	logout.click(() => {
+		console.log("test logout button");
+		localStorage.removeItem('loggedUser');
+
+		if (localStorage.length == 0) location.href = "login.html";
+
+		/*if (localStorage.getItem("loggedUser") === null) {
+
+		}*/
 
 	});
 
