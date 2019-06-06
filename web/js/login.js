@@ -3,33 +3,31 @@ $(document).ready(() => {
 
     const loginBtn = $(".loginBtn");
     const errorBox = $(".errorBox");
+    
+    let email = $("#email");
+	let password = $("#password");
 
 	loginBtn.click(() => {
 		console.log("test loginBtn");
-		let email = $("#email");
-		let password = $("#password");
+		validate(email,password);
+	});
 
-		console.log(email+"	"+password);
-
+	const validate = (email,password) => {
 		if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
 			//console.log("Error email has whitespaces");
 			errorBox.html("Error email is empty");
-			email.css('border-style','solid');
-			email.css('border-color','#F44336');
-			email.css('border-width','2px');
+			errorBorder(email);
 		}
 		else if(password.val().trim()==null || password.val().trim()==""|| password ===" " ){
 			//console.log("Error password has whitespaces");
-			email.css('border','');
+			removeBorder(email);
 			errorBox.html("Error password is empty");
-			password.css('border-style','solid');
-			password.css('border-color','#F44336');
-			password.css('border-width','2px');
+			errorBorder(password);
 		}
 		else{
 			errorBox.html("");
-			email.css('border','');
-			password.css('border','');
+			removeBorder(password);
+			removeBorder(email);
 		$.ajax({
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
@@ -65,7 +63,16 @@ $(document).ready(() => {
 		 });
 		
 		}
-		
-	});
+	}
+
+	const errorBorder = (label) => {
+		label.css('border-style','solid');
+		label.css('border-color','#F44336');
+		label.css('border-width','2px');
+	}
+
+	const removeBorder = (label) => {
+		label.css('border','');
+	}
 
 });

@@ -4,60 +4,49 @@ $(document).ready(() => {
 	const registerBtn = $(".registerBtn");
 	const errorBox = $(".errorBox");
 
+	let username = $("#username");
+	let email = $("#email");
+	let password = $("#password");
+	let rePassword = $("#rePassword");
+
 	registerBtn.click(() => {
 		console.log("test registerBtn");
-		let username = $("#username");
-		let email = $("#email");
-		let password = $("#password");
-		let rePassword = $("#rePassword");
-
 		console.log(username+" "+email+" "+password+" "+rePassword);
 
 		if(password.val() != rePassword.val()){
 
-			errorBox.html("Password and re-entered password must be same!");
-			password.css('border-style','solid');
-			password.css('border-color','#F44336');
-			password.css('border-width','2px');
-
-			rePassword.css('border-style','solid');
-			rePassword.css('border-color','#F44336');
-			rePassword.css('border-width','2px');
+			errorBorder(password);
+			errorBorder(rePassword);
 
 		}else if(username.val().trim()==null || username.val().trim()==""|| username ===" "){
 
-			password.css('border','');
-			rePassword.css('border','');
+			removeBorder(password);
+			removeBorder(rePassword);
 
 			errorBox.html("Error username is empty");
-			username.css('border-style','solid');
-			username.css('border-color','#F44336');
-			username.css('border-width','2px');
+			errorBorder(username);
 
 		}else if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
 
-			username.css('border','');
+			removeBorder(username);
 
 			errorBox.html("Error email is empty");
-			email.css('border-style','solid');
-			email.css('border-color','#F44336');
-			email.css('border-width','2px');
+			errorBorder(email);
 
 		}else if(password.val().trim()==null || password.val().trim()==""|| password ===" "){
-			email.css('border','');
+			
+			removeBorder(email);
 
 			errorBox.html("Error password is empty");
-			password.css('border-style','solid');
-			password.css('border-color','#F44336');
-			password.css('border-width','2px');
+			errorBorder(password);
 		}
 		else{
 
 			errorBox.html("");
-			username.css('border','');
-			email.css('border','');
-			rePassword.css('border','');
-			password.css('border','');
+			removeBorder(username);
+			removeBorder(email);
+			removeBorder(rePassword);
+			removeBorder(password);
 
 			$.ajax({
 			  type: "POST",
@@ -93,5 +82,15 @@ $(document).ready(() => {
 		 });
 		}
 	});	
+
+	const errorBorder = (label) => {
+		label.css('border-style','solid');
+		label.css('border-color','#F44336');
+		label.css('border-width','2px');
+	}
+
+	const removeBorder = (label) => {
+		label.css('border','');
+	}
 
 });
