@@ -3,7 +3,7 @@ let database = require('./sequelize');
 
 module.exports = {
 
-    disconnectMatch(array, socketid, found)
+    disconnectMatchA(array, socketid, found)
     {
         for(let i=0; i < array.length; i++)
         {
@@ -12,6 +12,22 @@ module.exports = {
                 found(i);
                 break;
             }
+        }
+        found(-1);
+    },
+
+    disconnectMatchW(array, socketid, found)
+    {
+      for(let i=0; i < array.length; i++)
+        {
+          for(let j = 0; j<array[i].arduinoSerial.length; j++)
+          {
+            if(array[i].socketID[j] == socketid)
+            {
+                found(i);
+                break;
+            }
+          }
         }
         found(-1);
     },
@@ -238,7 +254,7 @@ module.exports = {
     getSoilHumidity(arduinoSerial, data)
     {
         plantCare.findAll({
-            attributes:["SoilHumMin", "SoilHumMax"],
+            attributes:["SoilHumMin"],
             where: {
                 ArduinoSerial: arduinoSerial
             },
