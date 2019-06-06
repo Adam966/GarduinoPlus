@@ -41,7 +41,8 @@ $(document).ready(() => {
 		           if(xhr.status == 200){
 		           	//location.href = "main.html";
 		            console.log(result);
-		            localStorage.setItem('loggedUser',result);
+		            let rslt = result;
+		            localStorage.setItem('loggedUser',rslt);
 		           	console.log("successful login");
 		           	email.val("");
 			      	password.val("");
