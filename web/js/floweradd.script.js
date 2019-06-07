@@ -11,6 +11,8 @@ $(document).ready(() => {
 	const nameWrapper = $('#nameWrapper');
 	const middleWrapper = $('#middleWrapper');
 
+    const logout = $('.logoutBtn');
+
 	let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
 	let userID = loggedUser.ID;
 	let token = loggedUser.Token;
@@ -59,8 +61,13 @@ $(document).ready(() => {
 
 	const generatePlants = (arr) => {
 		for(let i=0;i<arr.length;i++){
-			middleWrapper.append("<div id='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div></div>");
+			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div></div>");
 		}
+	}
+
+	const getNameOfPlant = (plant) => {
+		let rslt = plant.text();
+		console.log(rslt);
 	}
 
 	onoff.click(() => {
@@ -68,6 +75,14 @@ $(document).ready(() => {
 		heading.toggleClass('-darkmode');
 		nameWrapper.toggleClass('-darkmode');
 		middleWrapper.toggleClass('-darkmode');
+	});
+
+	logout.click(() => {
+		console.log("test logout button");
+		localStorage.removeItem('loggedUser');
+
+		if (localStorage.length == 0) location.href = "login.html";
+
 	});
 
 	/*addPlant.click(() => {
