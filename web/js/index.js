@@ -103,6 +103,9 @@ $(document).ready(() => {
 
 	let rsltMinus;
 
+	let arduinoID = JSON.parse(localStorage.getItem('arduinoID'));
+	console.log(arduinoID);
+
 	const calculateUses = (capacity,watersurface) => {
 	  //return Math.round(capacity/70);
 	  let waterHalf = (capacity/100) * watersurface;

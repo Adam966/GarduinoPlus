@@ -42,7 +42,9 @@ $(document).ready(() => {
 		           	console.log("it's working");
 		           	console.log(result);
 		           	rslt = JSON.parse(result);
+		           	localStorage.setItem('arduinoID',JSON.stringify(rslt[0].ArduinoSerial));
 					generatePlants(rslt);
+					location.href="index.html";
 		           }
 		           
 			      },
