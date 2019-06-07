@@ -15,20 +15,21 @@ $(document).ready(() => {
 	let userID = loggedUser.ID;
 	let token = loggedUser.Token;
 	console.log(token);
-	console.log(loggedUser)
+	console.log(loggedUser);
 	console.log("ID usera = "+userID);
-
+	
 	$.ajax({
-			  contentType: "application/json; charset=utf-8",
 			  type: "POST",
 			  crossDomain: true,
-		      url: "http://localhost:1205/plants",
-		      data: "{\"IDUser\":\""+userID+"\"}",
+		      url: "http://localhost:1205/plants",  
+		      data: JSON.stringify({ IDUser: userID }),
 		      headers: {
+		      'Accept':'application/json',
 		      'Access-Control-Allow-Origin': '*',
-		      'Access-Control-Allow-Methods:':'POST',
+		      'Access-Control-Allow-Credentials': 'true',
 		      "Content-Type": "application/json",
-		      "Authorization": "Bearer "+token
+		      'Cache-Control':'no-cache',
+		      "Authorization": `Bearer ${token}`
 		  	  },
 		      success: function (result,textStatus,xhr) {
 		           console.log("it works");
@@ -38,12 +39,15 @@ $(document).ready(() => {
 		           if(xhr.status == 200){
 		           	console.log("it's working");
 		           	console.log(result);
-					//generatePlants(result);
+		           	rslt = JSON.parse(result);
+					generatePlants(rslt);
 		           }
 		           
 			      },
 			   error: function (xhr, textStatus, errorThrown) { 
-			      	console.log(xhr.status);
+			   	   	console.log(errorThrown);
+			   		console.log(textStatus);
+			      	console.log("xhr status= "+xhr.status);
 			      	console.log("Status = "+textStatus);
 			      	
 			      	if(xhr.status == 403){
