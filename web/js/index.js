@@ -875,6 +875,7 @@ $(document).ready(() => {
 	logout.click(() => {
 		console.log("test logout button");
 		localStorage.removeItem('loggedUser');
+		localStorage.removeItem('arduinoID');
 
 		if (localStorage.length == 0) location.href = "login.html";
 
