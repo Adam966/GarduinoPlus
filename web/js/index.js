@@ -95,7 +95,7 @@ $(document).ready(() => {
 
 	let health = $('.health');
 
-	let plantName = $('.plantName');
+	let plantNameDiv = $('.plantName');
 
 	let conditionWrapper = $('#conditionWrapper');
 
@@ -103,8 +103,16 @@ $(document).ready(() => {
 
 	let rsltMinus;
 
+	//ArduinoSerial,PlantName
 	let plantArduino = JSON.parse(localStorage.getItem('plantArduino'));
 	console.log(plantArduino);
+
+	let arduinoID = plantArduino.ArduinoSerial;
+	let plantName = plantArduino.PlantName;
+
+	plantNameDiv.html(plantName);
+
+	console.log(arduinoID+plantName);
 
 	const calculateUses = (capacity,watersurface) => {
 	  //return Math.round(capacity/70);
@@ -274,7 +282,7 @@ $(document).ready(() => {
       	watersurfaceUses = Math.round(obj[1].watersurface);
       	console.log("test "+watersurfaceUses);
 
-      	plantName.html(obj[0].plantname);
+      	//plantName.html(obj[0].plantname);
 		
 		stat1.text(Math.round(obj[1].temperature)+"°C");
 		stat2.text(Math.round(obj[1].humidityAir)+"%");
