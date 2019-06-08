@@ -190,8 +190,8 @@ $(document).ready(() => {
 	}
  
 	//request for load min max values to range inputs and for get data to compare
-	let req = 'http://itsovy.sk:1205/minmax';
-	//let req = 'http://localhost:5485/minmax';
+	//let req = 'http://itsovy.sk:1205/minmax';
+	/*let req = 'http://localhost:5485/minmax';
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -256,11 +256,92 @@ $(document).ready(() => {
 	};
 
 	xhttp.open("GET", req , true);
-	xhttp.send();
+	xhttp.send();*/
+
+	$.ajax({
+			type: "POST",
+		    contentType: "application/json; charset=utf-8",
+		    url: "http://localhost:1205/plantData",
+		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",}",
+			    success: function (result,textStatus,xhr) {
+			           console.log("it works");
+			           console.log(textStatus);
+			           console.log(xhr.status);
+
+			           if(xhr.status == 200){
+			           	   let obj = JSON.parse(result);
+					       console.log("data from http");
+					       console.log(obj);
+					       //console.log(obj[0].TemperatureMax);
+					       //console.log(slider1);
+
+						       if(obj == 0){
+						       		console.log("cannot get data http request");
+						       }
+						       else
+						       {
+						       //Temp Max range input
+						       slider1.value = obj[0].TempMax;
+						       output1.innerHTML = obj[0].TempMax;
+						       //Temp Min range input
+						       slider2.value = obj[0].TempMin;
+						       output2.innerHTML = obj[0].TempMin;
+						       //Air Humidity Max range input
+						       slider3.value = obj[0].AirHumMax;
+						       output3.innerHTML = obj[0].AirHumMax;
+						       //Air Humidity Min range input
+						       slider4.value = obj[0].AirHumMin;
+						       output4.innerHTML = obj[0].AirHumMin;
+						       //Soil Humidity Max range input
+						       slider5.value = obj[0].SoilHumMax;
+						       output5.innerHTML = obj[0].SoilHumMax;
+						       //Soil Humidity Min range input
+						       slider6.value = obj[0].SoilHumMin;
+						       output6.innerHTML = obj[0].SoilHumMin;
+						       //Water level range input
+						       slider7.value = obj[0].WaterLevelMin;
+						       output7.innerHTML = obj[0].WaterLevelMin;
+
+						       //Water container capacity
+						       capacity.value = obj[0].ContainerSize;
+						       	//Temp Max to compare
+						       tempMax = obj[0].TempMax;
+						       //Temp Max to compare
+						       tempMin = obj[0].TempsMin;
+						       //Air Max to compare
+						       airhMax = obj[0].AirHumMax;
+						       //Air Min to compare
+						       airhMin = obj[0].AirHumMin;
+						       //Soil Max to compare
+						       soilhMax = obj[0].SoilHumMax;
+						       //Soil Min to compare
+						       soilhMin = obj[0].SoilHumMin;
+						       //Water Min to compare
+						      /* waterMin = obj[0].WaterLevelMin;
+						       waterCapacity = obj[0].ContainerSize;
+
+						       //calculation for water uses
+						       let capacityResult = calculateUses(capacity.value);
+						       usesValue.html(capacityResult);
+						       console.log(capacityResult);*/
+						    }
+			           }
+			           
+				},
+				error: function (xhr, textStatus, errorThrown) { 
+				      	console.log(xhr.status);
+				      	console.log(textStatus);
+
+					    if(xhr.status == 403){
+				      		console.log(errorThrown);
+				      		console.log("Bad data");
+						}
+		    }	
+	});
 
 	//socket connection
-	//const socket = io.connect('http://localhost:5485');
-    const socket = io.connect('http://itsovy.sk:1205');
+	const socket = io.connect('http://localhost:1205');
+    //const socket = io.connect('http://itsovy.sk:1205');
 
     //socket connection and data emit
 	socket.on('connect', (data) => {
@@ -515,7 +596,7 @@ $(document).ready(() => {
 			           console.log(xhr.status);
 
 			           if(xhr.status == 200){
-			                let obj = JSON.parse(this.responseText);
+			                let obj = JSON.parse(result);
 					       	//console.log(obj);
 
 							let tempToChart = obj.map(({ Temperature }) => Temperature);
@@ -574,7 +655,7 @@ $(document).ready(() => {
 			           console.log(xhr.status);
 
 			           if(xhr.status == 200){
-			                let obj = JSON.parse(this.responseText);
+			                let obj = JSON.parse(result);
 					       	//console.log(obj);
 
 							let tempToChart = obj.map(({ Temperature }) => Temperature);
@@ -631,7 +712,7 @@ $(document).ready(() => {
 			           console.log(xhr.status);
 
 			           if(xhr.status == 200){
-			                let obj = JSON.parse(this.responseText);
+			                let obj = JSON.parse(result);
 					       	//console.log(obj);
 
 							let tempToChart = obj.map(({ Temperature }) => Temperature);
@@ -797,21 +878,21 @@ $(document).ready(() => {
 
 	    	"identification":{
 
-	    	"id": "sdf256s5df63", 
-	    	"plantname": "MyPlant1"
+	    	"ArduinoSerial": ArduinoID, 
+	    	"PlantName": plantName
 
 	    	},
 	    	
 	    	"optimalValues":{
-	    		
-	    	"TemperatureMax":slider1.value,
-	    	"TemperatureMin":slider2.value,
-	    	"AirHumidityMax":slider3.value,
-	    	"AirHumidityMin":slider4.value,
-	    	"SoilHumidityMax":slider5.value,
-	    	"SoilHumidityMin":slider6.value, 
-	    	"WaterLevelMin":slider7.value, 
-	    	"ContainerSize":capacity.value
+	    	
+	    	"TempMin":slider2.value,
+	    	"TempMax":slider1.value,
+	    	"AirHumMin":slider4.value,
+	    	"AirHumMax":slider3.value,
+	    	"SoilHumMin":slider6.value, 
+	    	"SoilHumMax":slider5.value
+	    	/*"WaterLevelMin":slider7.value, 
+	    	"ContainerSize":capacity.value*/
 
 	    }}),
 
