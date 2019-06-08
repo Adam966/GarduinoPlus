@@ -19,6 +19,8 @@ $(document).ready(() => {
 	console.log(token);
 	console.log(loggedUser);
 	console.log("ID usera = "+userID);
+
+	let plants =[];
 	
 	$.ajax({
 			  type: "POST",
@@ -63,6 +65,7 @@ $(document).ready(() => {
 
 	const generatePlants = (arr) => {
 		for(let i=0;i<arr.length;i++){
+			plants.push(arr[i]);
 			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div><span class='arduinoHeading'>ArduinoID:<span class='arduinoID'>"+arr[i].ArduinoSerial+"</span></span></div>");
 		}
 	}
@@ -75,9 +78,22 @@ $(document).ready(() => {
 	});
 
 	$('#middleWrapper').delegate('div.addedPlant', 'click', function() {
-    var text = $(this).text();
-    // do something with the text
+	if("plantArduino" in localStorage){
+		localStorage.removeItem("plantArduino");
+	}
+
+    let text = $(this).text();
     console.log(text);
+    console.log(plants);
+
+    let id = getArduinoID(text);
+    let plantArduinoObj = (compareID(plants,id));
+    //console.log(plantArduinoObj);
+
+    localStorage.setItem('plantArduino',plantArduinoObj);
+    console.log(localStorage.getItem('plantArduino'));
+    if("plantArduino" in localStorage) location.href = "index.html";
+
 	});
 
 	logout.click(() => {
@@ -89,9 +105,33 @@ $(document).ready(() => {
 
 	});
 
-	/*addPlant.click(() => {
-		console.log("test addPlant");
-		middleWrapper.append("<div id='addedPlant'></div>");
-	});*/
+	const getArduinoID = (text) => {
+		let index = text.indexOf(':');
+	    let rslt = text.substr(index);
+	    rslt = rslt.replace(':','');
+	    return rslt;
+	}
+
+
+	const makeObj = (plantName,arduinoID) => {
+		console.log(plantName+arduinoID);
+		let obj = {
+		  PlantName: plantName,
+		  ArduinoSerial: arduinoID
+		};
+		obj = JSON.stringify(obj);
+		return obj;
+	}
+
+	const compareID = (arr,arduinoID) => {
+		for(let i=0;i<arr.length;i++){
+    		if(arr[i].ArduinoSerial === arduinoID ){
+    			console.log("found");
+    			return makeObj(arr[i].PlantName,arr[i].ArduinoSerial);
+    			break;
+    		}
+    	}
+	}
+
 
 });

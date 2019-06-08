@@ -103,8 +103,8 @@ $(document).ready(() => {
 
 	let rsltMinus;
 
-	let arduinoID = JSON.parse(localStorage.getItem('arduinoID'));
-	console.log(arduinoID);
+	let plantArduino = JSON.parse(localStorage.getItem('plantArduino'));
+	console.log(plantArduino);
 
 	const calculateUses = (capacity,watersurface) => {
 	  //return Math.round(capacity/70);
