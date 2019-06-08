@@ -504,124 +504,175 @@ $(document).ready(() => {
 		
 		console.log("testToday");
 
-    	let req = 'http://itsovy.sk:1205/weatherData1';
-    	//let req = 'http://localhost:5485/weatherData1';
-		let xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-       	let obj = JSON.parse(this.responseText);
-       	//console.log(obj);
+		$.ajax({
+			type: "POST",
+		    contentType: "application/json; charset=utf-8",
+		    url: "http://localhost:1205/plantData",
+		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"DAY"+"\"}",
+			    success: function (result,textStatus,xhr) {
+			           console.log("it works");
+			           console.log(textStatus);
+			           console.log(xhr.status);
 
-		let tempToChart = obj.map(({ Temperature }) => Temperature);
-		let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
-		let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
-		let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
-		let date = obj.map(({ Date }) => moment(Date).format("hh:mm A"));
+			           if(xhr.status == 200){
+			                let obj = JSON.parse(this.responseText);
+					       	//console.log(obj);
 
-    	Chart1.data.datasets[0].data = tempToChart;
-    	Chart1.data.labels = date;
-    	Chart1.update();
+							let tempToChart = obj.map(({ Temperature }) => Temperature);
+							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
+							let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
+							let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
+							let date = obj.map(({ Date }) => moment(Date).format("hh:mm A"));
 
-    	Chart2.data.datasets[0].data = airhToChart;
-    	Chart2.data.labels = date;
-    	Chart2.update();
+					    	Chart1.data.datasets[0].data = tempToChart;
+					    	Chart1.data.labels = date;
+					    	Chart1.update();
 
-    	Chart3.data.datasets[0].data = soilhToChart;
-    	Chart3.data.labels = date;
-    	Chart3.update();
+					    	Chart2.data.datasets[0].data = airhToChart;
+					    	Chart2.data.labels = date;
+					    	Chart2.update();
 
-    	Chart4.data.datasets[0].data = waterToChart;
-    	Chart4.data.labels = date;
-    	Chart4.update();
+					    	Chart3.data.datasets[0].data = soilhToChart;
+					    	Chart3.data.labels = date;
+					    	Chart3.update();
 
-		}
-	};
+					    	Chart4.data.datasets[0].data = waterToChart;
+					    	Chart4.data.labels = date;
+					    	Chart4.update();
+			           }
+			           
+				},
+				error: function (xhr, textStatus, errorThrown) { 
+				      	console.log(xhr.status);
+				      	console.log(textStatus);
+				      	
+				      	if(xhr.status == 401){
+				      		console.log(errorThrown);
+				      		console.log("Token expired/bad");
+						}
 
-	xhttp.open("GET", req , true);
-	xhttp.send();
+					    if(xhr.status == 403){
+				      		console.log(errorThrown);
+				      		console.log("Bad data");
+						}
+		    }	
+		 });
 
 	});
 
 	//last week data for charts
 	lastWeek.click(() => {
 
-	let req = 'http://itsovy.sk:1205/weatherData7';
-	//let req = 'http://localhost:5485/weatherData7';
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-       let obj = JSON.parse(this.responseText);
-       //console.log(obj);
+			$.ajax({
+			type: "POST",
+		    contentType: "application/json; charset=utf-8",
+		    url: "http://localhost:1205/plantData",
+		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"WEEK"+"\"}",
+			    success: function (result,textStatus,xhr) {
+			           console.log("it works");
+			           console.log(textStatus);
+			           console.log(xhr.status);
 
-	   let tempToChart = obj.map(({ Temperature }) => Temperature);
-	   let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
-	   let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
-	   let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
-	   //let date = obj.map(({ Date }) => Date.slice(0,10));
-	   let date = obj.map(({ Date }) => moment(Date).format('DD-MMM-YYYY'));
+			           if(xhr.status == 200){
+			                let obj = JSON.parse(this.responseText);
+					       	//console.log(obj);
 
-    	Chart1.data.datasets[0].data = tempToChart;
-    	Chart1.data.labels = date;
-    	Chart1.update();
+							let tempToChart = obj.map(({ Temperature }) => Temperature);
+							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
+							let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
+							let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
+	   						let date = obj.map(({ Date }) => moment(Date).format('DD-MMM-YYYY'));
 
-    	Chart2.data.datasets[0].data = airhToChart;
-    	Chart2.data.labels = date;
-    	Chart2.update();
+					    	Chart1.data.datasets[0].data = tempToChart;
+					    	Chart1.data.labels = date;
+					    	Chart1.update();
 
-    	Chart3.data.datasets[0].data = soilhToChart;
-    	Chart3.data.labels = date;
-    	Chart3.update();
+					    	Chart2.data.datasets[0].data = airhToChart;
+					    	Chart2.data.labels = date;
+					    	Chart2.update();
 
-    	Chart4.data.datasets[0].data = waterToChart;
-    	Chart4.data.labels = date;
-    	Chart4.update();
+					    	Chart3.data.datasets[0].data = soilhToChart;
+					    	Chart3.data.labels = date;
+					    	Chart3.update();
 
-		}
-	};
+					    	Chart4.data.datasets[0].data = waterToChart;
+					    	Chart4.data.labels = date;
+					    	Chart4.update();
+			           }
+			           
+				},
+				error: function (xhr, textStatus, errorThrown) { 
+				      	console.log(xhr.status);
+				      	console.log(textStatus);
+				      	
+				      	if(xhr.status == 401){
+				      		console.log(errorThrown);
+				      		console.log("Token expired/bad");
+						}
 
-	xhttp.open("GET", req , true);
-	xhttp.send();
-
+					    if(xhr.status == 403){
+				      		console.log(errorThrown);
+				      		console.log("Bad data");
+						}
+		    }	
+		 });
 	});
 
 	lastMonth.click(() => {
 
-	let req = 'http://itsovy.sk:1205/weatherData30';
-	//let req = 'http://localhost:5485/weatherData30';
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-       let obj = JSON.parse(this.responseText);
-       console.log(obj);
+			$.ajax({
+			type: "POST",
+		    contentType: "application/json; charset=utf-8",
+		    url: "http://localhost:1205/plantData",
+		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"MONTH"+"\"}",
+			    success: function (result,textStatus,xhr) {
+			           console.log("it works");
+			           console.log(textStatus);
+			           console.log(xhr.status);
 
-	   let tempToChart = obj.map(({ Temperature }) => Temperature);
-	   let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
-	   let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
-	   let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
-	   //let date = obj.map(({ Date }) => Date.slice(0,10));
-	   let date = obj.map(({ Date }) => moment(Date).format('DD-MMM-YYYY'));
+			           if(xhr.status == 200){
+			                let obj = JSON.parse(this.responseText);
+					       	//console.log(obj);
 
-       Chart1.data.datasets[0].data = tempToChart;
-       Chart1.data.labels = date;
-       Chart1.update();
+							let tempToChart = obj.map(({ Temperature }) => Temperature);
+							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
+							let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
+							let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
+	   						let date = obj.map(({ Date }) => moment(Date).format('DD-MMM-YYYY'));
 
-       Chart2.data.datasets[0].data = airhToChart;
-       Chart2.data.labels = date;
-       Chart2.update();
+					    	Chart1.data.datasets[0].data = tempToChart;
+					    	Chart1.data.labels = date;
+					    	Chart1.update();
 
-       Chart3.data.datasets[0].data = soilhToChart;
-       Chart3.data.labels = date;
-       Chart3.update();
+					    	Chart2.data.datasets[0].data = airhToChart;
+					    	Chart2.data.labels = date;
+					    	Chart2.update();
 
-       Chart4.data.datasets[0].data = waterToChart;
-       Chart4.data.labels = date;
-       Chart4.update();
+					    	Chart3.data.datasets[0].data = soilhToChart;
+					    	Chart3.data.labels = date;
+					    	Chart3.update();
 
-	   }
-	};
+					    	Chart4.data.datasets[0].data = waterToChart;
+					    	Chart4.data.labels = date;
+					    	Chart4.update();
+			           }
+			           
+				},
+				error: function (xhr, textStatus, errorThrown) { 
+				      	console.log(xhr.status);
+				      	console.log(textStatus);
+				      	
+				      	if(xhr.status == 401){
+				      		console.log(errorThrown);
+				      		console.log("Token expired/bad");
+						}
 
-	xhttp.open("GET", req , true);
-	xhttp.send();
+					    if(xhr.status == 403){
+				      		console.log(errorThrown);
+				      		console.log("Bad data");
+						}
+		    }	
+		 });
 
 	});
 
