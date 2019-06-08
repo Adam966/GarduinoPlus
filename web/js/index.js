@@ -107,6 +107,12 @@ $(document).ready(() => {
 	let plantArduino = JSON.parse(localStorage.getItem('plantArduino'));
 	console.log(plantArduino);
 
+	let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+	console.log(loggedUser);
+
+	let userID = loggedUser.ID;
+	console.log("User ID = "+userID);
+
 	let arduinoID = plantArduino.ArduinoSerial;
 	let plantName = plantArduino.PlantName;
 
@@ -188,75 +194,6 @@ $(document).ready(() => {
 			$('.error').html("You must enter number");
 		}
 	}
- 
-	//request for load min max values to range inputs and for get data to compare
-	//let req = 'http://itsovy.sk:1205/minmax';
-	/*let req = 'http://localhost:5485/minmax';
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-       let obj = JSON.parse(this.responseText);
-       console.log("data from http");
-       console.log(obj);
-       //console.log(obj[0].TemperatureMax);
-       //console.log(slider1);
-
-	       if(obj == 0){
-	       		console.log("cannot get data http request");
-	       }
-	       else
-	       {
-	       //Temp Max range input
-	       slider1.value = obj[0].TemperatureMax;
-	       output1.innerHTML = obj[0].TemperatureMax;
-	       //Temp Min range input
-	       slider2.value = obj[0].TemperatureMin;
-	       output2.innerHTML = obj[0].TemperatureMin;
-	       //Air Humidity Max range input
-	       slider3.value = obj[0].AirHumidityMax;
-	       output3.innerHTML = obj[0].AirHumidityMax;
-	       //Air Humidity Min range input
-	       slider4.value = obj[0].AirHumidityMin;
-	       output4.innerHTML = obj[0].AirHumidityMin;
-	       //Soil Humidity Max range input
-	       slider5.value = obj[0].SoilHumidityMax;
-	       output5.innerHTML = obj[0].SoilHumidityMax;
-	       //Soil Humidity Min range input
-	       slider6.value = obj[0].SoilHumidityMin;
-	       output6.innerHTML = obj[0].SoilHumidityMin;
-	       //Water level range input
-	       slider7.value = obj[0].WaterLevelMin;
-	       output7.innerHTML = obj[0].WaterLevelMin;
-
-	       //Water container capacity
-	       capacity.value = obj[0].ContainerSize;
-	       	//Temp Max to compare
-	       tempMax = obj[0].TemperatureMax;
-	       //Temp Max to compare
-	       tempMin = obj[0].TemperatureMin;
-	       //Air Max to compare
-	       airhMax = obj[0].AirHumidityMax;
-	       //Air Min to compare
-	       airhMin = obj[0].AirHumidityMin;
-	       //Soil Max to compare
-	       soilhMax = obj[0].SoilHumidityMax;
-	       //Soil Min to compare
-	       soilhMin = obj[0].SoilHumidityMin;
-	       //Water Min to compare
-	       waterMin = obj[0].WaterLevelMin;
-	       waterCapacity = obj[0].ContainerSize;
-
-	       //calculation for water uses
-	       let capacityResult = calculateUses(capacity.value);
-	       usesValue.html(capacityResult);
-	       console.log(capacityResult);
-
-	       }
-	   }
-	};
-
-	xhttp.open("GET", req , true);
-	xhttp.send();*/
 
 	$.ajax({
 			type: "POST",
@@ -347,12 +284,13 @@ $(document).ready(() => {
 	socket.on('connect', (data) => {
 	    console.log('check',socket.connected);
 	    //socket.emit('weatherData');
-	    socket.emit('join',"webclient");
+	    //TODO dorobit socket.emit
+	    socket.emit('setIdentifierW',"webclient");
 	    console.log(data);
     });
 	
 	//when socket is on
-	socket.on('weatherData', (data) => {
+	socket.on('plantData', (data) => {
       console.log(data);
 
       let obj = data;
@@ -1007,7 +945,7 @@ $(document).ready(() => {
 	   		usesLeft.html("Refill the water");
 		}
 
-		socket.emit('water');
+		socket.emit('water', {"ArduinoSerial":arduinoID});
 
 	});
 
