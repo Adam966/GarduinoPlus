@@ -56,9 +56,9 @@ flex-direction: column;
 justify-content:space-between;*/
 margin-top:3%;
 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-/*display:flex;
+display:flex;
 flex-direction: column;
-justify-content:space-between;*/
+justify-content:space-between;
 margin-top:3%;
 -webkit-transition: all .2s linear 0s;
 transition: all .2s linear 0s;
@@ -66,6 +66,20 @@ margin-left:7vw;
 margin-bottom:4%;
 cursor:pointer;
 
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
 }
 
 .heading {
@@ -121,92 +135,6 @@ background-size: 60px 60px;
 cursor:pointer;
 -webkit-transition: all .2s linear 0s;
 transition: all .2s linear 0s;
-
-}
-
-.addplant {
-
-    height: 12vw;
-    width: 27vw;
-    /*background:red;*/
-    background: #F0FEFF;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    margin-top: 1%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:space-evenly;
-    padding-top:1%;
-    /*text-align:center;*/
-    margin:auto;
-
-}
-
-.formHeading {
-    color: #BBC7C8;
-    font-size: 30px;
-}
-
-
-.label {
-    background-color:#F5FEFF;
-    border:2px solid #D5E0E0;
-    border-radius:0.5em;
-    width:25em;
-    height:2.5em;
-    font-size:15px;
-    text-indent:10px;
-    -webkit-transition: border .35s ease-in-out;
-    transition: border .35s ease-in-out;
-}
-
-.label:focus {
-
-border:2px solid #27ae60;
-
-}
-
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    text-indent:10px;
-    font-size:13px;
-    color:#BBC7C8;
-  }
-  ::-moz-placeholder { /* Firefox 19+ */
-    text-indent:10px;
-    font-size:13px;
-    color:#BBC7C8;
-  }
-  :-ms-input-placeholder { /* IE 10+ */
-    text-indent:10px;
-    font-size:13px;
-    color:#BBC7C8;
-  }
-  :-moz-placeholder { /* Firefox 18- */
-    text-indent:10px;
-    font-size:13px;
-    color:#BBC7C8;
-  }
-
-.label:focus::-webkit-input-placeholder { color:transparent; }
-.label:focus:-moz-placeholder { color:transparent; }
-
-.label:focus{
-  outline: none;
-}
-
-#formModal {
-	display:none;
-	position: fixed;
-	z-index: 1; 
-	padding-top: 300px;
-	left: 0;
-	top: 0;
-	width: 100%; 
-	height: 100%; 
-	overflow: auto; 
-	background-color: rgb(0,0,0); 
-	background-color: rgba(0,0,0,0.4);
 
 }
 

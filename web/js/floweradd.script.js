@@ -42,9 +42,9 @@ $(document).ready(() => {
 		           	console.log("it's working");
 		           	console.log(result);
 		           	rslt = JSON.parse(result);
-		           	localStorage.setItem('arduinoID',JSON.stringify(rslt[0].ArduinoSerial));
+		           	//localStorage.setItem('arduinoID',JSON.stringify(rslt[0].ArduinoSerial));
 					generatePlants(rslt);
-					location.href="index.html";
+					//location.href="index.html";
 		           }
 		           
 			      },
@@ -63,13 +63,8 @@ $(document).ready(() => {
 
 	const generatePlants = (arr) => {
 		for(let i=0;i<arr.length;i++){
-			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div></div>");
+			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div><span class='arduinoHeading'>ArduinoID:<span class='arduinoID'>"+arr[i].ArduinoSerial+"</span></span></div>");
 		}
-	}
-
-	const getNameOfPlant = (plant) => {
-		let rslt = plant.text();
-		console.log(rslt);
 	}
 
 	onoff.click(() => {
@@ -77,6 +72,12 @@ $(document).ready(() => {
 		heading.toggleClass('-darkmode');
 		nameWrapper.toggleClass('-darkmode');
 		middleWrapper.toggleClass('-darkmode');
+	});
+
+	$('#middleWrapper').delegate('div.addedPlant', 'click', function() {
+    var text = $(this).text();
+    // do something with the text
+    console.log(text);
 	});
 
 	logout.click(() => {
