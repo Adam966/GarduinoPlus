@@ -23,42 +23,41 @@ $(document).ready(() => {
 			removeBorder(password);
 			removeBorder(rePassword);
 
-			errorBox.html("Error username is empty");
+			errorMessage("Error username is empty");
 			errorBorder(username);
 
 		}else if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
 
 			removeBorder(username);
 
-			errorBox.html("Error email is empty");
+			errorMessage("Error email is empty");
 			errorBorder(email);
 
 		}else if(password.val().trim()==null || password.val().trim()==""|| password ===" "){
 			
 			removeBorder(email);
 
-			errorBox.html("Error password is empty");
+		    errorMessage("Error password is empty");
 			errorBorder(password);
 		}
 		else{
-
-			errorBox.html("");
-			removeBorder(username);
-			removeBorder(email);
-			removeBorder(rePassword);
-			removeBorder(password);
 
 			$.ajax({
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
 		      url: "http://localhost:1205/register",
-		      data: "{\"Name\":\""+username+"\",\"Email\":\""+email+"\",\"Password\":\""+password+"\"}",
+		      data: "{\"Name\":\""+username.val()+"\",\"Email\":\""+email.val()+"\",\"Password\":\""+password.val()+"\"}",
 		      success: function (result,textStatus,xhr) {
 		           console.log("it works");
 		           console.log(textStatus);
 		           console.log(xhr.status);
 
 		           if(xhr.status == 200){
+		           	errorBox.css('display','none');
+					removeBorder(username);
+					removeBorder(email);
+					removeBorder(rePassword);
+					removeBorder(password);
 		           	//location.href = "main.html";
 		           	console.log("successful registration");
 		           	username.val("");
@@ -76,6 +75,9 @@ $(document).ready(() => {
 			      	
 			      	if(xhr.status == 403){
 			      	console.log("bad login");
+			      	
+			      	errorMessage("Email is already in usage");
+			      	errorBorder(email);
 			      	}
 
 		      }	
@@ -91,6 +93,12 @@ $(document).ready(() => {
 
 	const removeBorder = (label) => {
 		label.css('border','');
+	}
+
+		const errorMessage = (message) => {
+		console.log(message);
+		errorBox.css('display','block');
+		errorBox.html(message);
 	}
 
 });

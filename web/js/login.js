@@ -15,19 +15,17 @@ $(document).ready(() => {
 	const validate = (email,password) => {
 		if(email.val().trim()==null || email.val().trim()==""|| email ===" "){
 			//console.log("Error email has whitespaces");
-			errorBox.html("Error email is empty");
+			//errorBox.html();
 			errorBorder(email);
+			errorMessage("Error email is empty");
 		}
 		else if(password.val().trim()==null || password.val().trim()==""|| password ===" " ){
 			//console.log("Error password has whitespaces");
 			removeBorder(email);
-			errorBox.html("Error password is empty");
+		    errorMessage("Password email is empty");
 			errorBorder(password);
 		}
 		else{
-			errorBox.html("");
-			removeBorder(password);
-			removeBorder(email);
 		$.ajax({
 			  type: "POST",
 		      contentType: "application/json; charset=utf-8",
@@ -39,7 +37,11 @@ $(document).ready(() => {
 		           console.log(xhr.status);
 
 		           if(xhr.status == 200){
-		           	//location.href = "main.html";
+
+		           	errorBox.css('display','none');
+					removeBorder(password);
+					removeBorder(email);
+
 		            console.log(result);
 		            let rslt = result;
 		            localStorage.setItem('loggedUser',rslt);
@@ -58,6 +60,10 @@ $(document).ready(() => {
 			      	console.log("bad login");
 			      	email.val("");
 			      	password.val("");
+
+			      	errorMessage("User not found");
+			      	errorBorder(email);
+			      	errorBorder(password);
 			    }
 
 		      }	
@@ -74,6 +80,12 @@ $(document).ready(() => {
 
 	const removeBorder = (label) => {
 		label.css('border','');
+	}
+
+	const errorMessage = (message) => {
+		console.log(message);
+		errorBox.css('display','block');
+		errorBox.html(message);
 	}
 
 });
