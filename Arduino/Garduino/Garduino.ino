@@ -19,7 +19,7 @@
 unsigned long previousMillisSend = 0;
 unsigned long previousMillisPour = 0;
 unsigned long btnSec = 0;
-int sleepTime = 30 * 1000;
+int sleepTime = 30000;
 
 const int freq = 5000;
 const int redChannel = 0;
@@ -99,26 +99,22 @@ void setup() {
     timeClient.setTimeOffset(3600);
 
     //establish socketIO connection
-    webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
+    webSocket.begin("192.168.1.14", 1205, "/socket.io/?transport=websocket");
     webSocket.on("disconnect", disconection);
     webSocket.on("connect", conection);
-    
-    webSocket.emit("setIdentifierA",  "{\"ArduinoSerial\":\"4568\"}");
-    webSocket.emit("getSoilHumidity", "{\"ArduinoSerial\":\"4568\"}");
 
     //socket event on 
     webSocket.on("water", pourFlower);
-    webSocket.on("soilHumidity", getMin);
+    webSocket.on("humidity", getMin);
+
+    lcd.init();
+    lcd.backlight();
     
     //PIN INITALIZATION
     pinMode(pump, OUTPUT);
     pinMode(vccHum, OUTPUT);
     //pinMode(vccWat, OUTPUT);
-    pinMode(lcdBtn, INPUT);
-    
-    //LCD INITALIZATION
-    lcd.init();  
-    lcd.noDisplay();                    
+    pinMode(lcdBtn, INPUT);             
 
     //RGB LED
     ledcSetup(redChannel, freq, resolution);
@@ -188,8 +184,10 @@ void measureData() {
   float humidityAir = getHumidity();
   float humiditySoil = getSoilHumidity();
   float waterSurface = getWaterSurface();
+  String date = getDate();
+  Serial.println(date);
 
-  createJson(temperature, humidityAir, humiditySoil, waterSurface);
+  createJson(temperature, humidityAir, humiditySoil, waterSurface, date);
 }
 
 
@@ -205,7 +203,7 @@ String getDate() {
   String dayStamp = formattedDate.substring(0, splitT);
   String timeStamp = formattedDate.substring(splitT+1, formattedDate.length()-1);
   String date = dayStamp +" "+ timeStamp;
-
+  Serial.println(date);
   return date;
 }
 
@@ -243,12 +241,7 @@ float getHumidity(){
 }
 
 //////////////////////////////////////// JSON Creation /////////////////////////////////////////////////
-void createJson(float temperature, float humidityAir, float humiditySoil, float waterSurface) {
-  Serial.println(temperature);
-  Serial.println(humidityAir);
-  Serial.println(humiditySoil);
-  Serial.println(waterSurface);
-  
+void createJson(float temperature, float humidityAir, float humiditySoil, float waterSurface, String dateS) {
   const size_t capacity = 2*JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(4);
   DynamicJsonDocument doc(capacity);
   
@@ -261,7 +254,7 @@ void createJson(float temperature, float humidityAir, float humiditySoil, float 
   info["SoilHum"] = humiditySoil;
   info["WatSurf"] = waterSurface;
   JsonObject date = doc.createNestedObject("date");
-  date["Date"] = getDate();
+  date["Date"] = dateS;
 
   char output[capacity];
   serializeJson(doc, output);
@@ -302,15 +295,14 @@ void pourFlower(const char * payload, size_t length) {
 //CONNECTION
 void conection(const char * payload, size_t length) {
   Serial.println("Client connected to server.");
-  webSocket.emit("join", "\"arduinoclient\"");
-  webSocket.emit("getSoilHumidity");
+  webSocket.emit("setIdentifierA", "{\"ArduinoSerial\":\"4568\"}");
+  webSocket.emit("getSoilHumidity", "{\"ArduinoSerial\":\"4568\"}");
 }
 
 //DISONNECTION
 void disconection(const char * payload, size_t length) {
    Serial.println("Client disconnected from server.");
    webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
-   webSocket.emit("join", "\"arduinoclient\"");
    webSocket.emit("getSoilHumidity");
 }
 
@@ -322,55 +314,76 @@ void startPump() {
   measureData();   
 } 
 
-void getMin(const char * payload, size_t length) {
-  minHumidity = 0;
+void getMin(const char* payload, size_t length) {
+  const size_t capacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + 20;
+  DynamicJsonDocument doc(capacity);
+
+  Serial.println(payload);
+
+  deserializeJson(doc, payload);  
+  int SoilHumMin = doc[0]["SoilHumMin"];
+  Serial.println("Min Hum: " + SoilHumMin);
+
+  minHumidity = SoilHumMin;
 }
 
 ///////////////////////////////////// LCD AND LED ///////////////////////////////////////////////////
  
 //SET LCD DISPLAY 
 void setLcd() {
+  lcd.init();
   lcd.backlight();
   lcd.setCursor(0,0);
-  lcd.print("Humidity: " + String(getSoilHumidity()));
-
+  lcd.print("Air Humidity: ");
+  lcd.setCursor(0,1);
+  lcd.print(String(getHumidity()) + "%");
+  delay(5000); 
+  
   for(int i = 0; i<3; i++) {
-    delay(5000);
        switch(i) {
         case 0:
           lcd.clear();
           lcd.setCursor(0,0);
-          lcd.print("Temperature: " + String(getTemperature()) + "%");
+          lcd.print("Temperature: ");
+          lcd.setCursor(0,1);
+          lcd.print(String(getTemperature()) + "°C");
           break;
         case 1:
           lcd.clear();
           lcd.setCursor(0,0);
-          lcd.print("SoilHumidity:" + String(getSoilHumidity()) + "%");
+          lcd.print("Soil Humidity:");
+          lcd.setCursor(0,1);
+          lcd.print(String(getSoilHumidity()) + "%");
           break;
         case 2:
           lcd.clear();
           lcd.setCursor(0,0);
-          lcd.print("WaterLevel: " + String(getWaterSurface()) + "%");
+          lcd.print("WaterLevel: ");
+          lcd.setCursor(0,1);
+          lcd.print(String(getWaterSurface()) + "%");
           break;
-      } 
+      }
+      delay(5000); 
     }
 }
 
 //RGB LED
 void setRGBLed(float waterLevel) {
     if(waterLevel < 25) {
-      ledcWrite(blueChannel, 255);
-    }
-    else if(waterLevel > 50) {
       ledcWrite(redChannel, 255);
-      ledcWrite(greenChannel, 128);
-      ledcWrite(blueChannel, 128);
-    } else if(waterLevel > 75) {
-       ledcWrite(redChannel, 197);
-       ledcWrite(greenChannel, 25);
-       ledcWrite(blueChannel, 157);
-    } else if(waterLevel >= 100) {
+    }
+    else if(waterLevel >= 100) {
       ledcWrite(greenChannel, 255);
+    } else if(waterLevel > 75) {
+      ledcWrite(redChannel, 129);
+      ledcWrite(greenChannel, 196);
+      ledcWrite(blueChannel, 117);
+    } else if(waterLevel > 50) {
+      ledcWrite(redChannel, 249);
+      ledcWrite(greenChannel, 19);
+      ledcWrite(blueChannel, 19);
+    } else {
+      ledcWrite(redChannel, 255);
     }
 }
 /////////////////////////////////////////////// SLEEP ARDUINO ///////////////////////////////////////
@@ -386,10 +399,12 @@ void loop() {
     wifiConection();
     webSocket.loop();
 
-    Serial.println("Awake");
+    setRGBLed(30);
     
-    if (digitalRead(lcdBtn))
+    if (digitalRead(lcdBtn)){
       setLcd();
+      Serial.println("click");
+    }
     else {
       lcd.noDisplay();
       lcd.noBacklight();
@@ -398,9 +413,8 @@ void loop() {
     if (millis() - previousMillisSend >= sendInterval) {
       previousMillisSend = millis();    
       measureData();
-
       if (minHumidity < getSoilHumidity()) {
-        startPump();
+        //startPump();
       }
     }
 }
