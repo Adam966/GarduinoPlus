@@ -285,7 +285,7 @@ $(document).ready(() => {
 	    console.log('check',socket.connected);
 	    //socket.emit('weatherData');
 	    //TODO dorobit socket.emit
-	    socket.emit('setIdentifierW',"webclient");
+	    socket.emit('setIdentifierW',"{\"IDUser\":\""+userID+"\",\"ArduinoSerial\":\""+arduinoID+"\"}");
 	    console.log(data);
     });
 	
