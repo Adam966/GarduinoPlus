@@ -31,6 +31,10 @@ static char ssid[33] = {0};
 static char password[65] = {0};
 
 int minHumidity = 0;
+const char* server = "192.168.2.133";
+const char* SOCKET_IO_LINK = "/socket.io/?transport=websocket";
+const int SOCKET_IO_PORT = 1205;
+//#define ArduinoID 4568 
 
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
@@ -58,6 +62,21 @@ NTPClient timeClient(ntpUDP);
 DHT dht(humidityTemperatureAir, DHT11);
 LinkedList<char*> offlineData;
 LiquidCrystal_I2C lcd(0x27,16,2);
+
+///////////////////////////////////////////////// FUNCTION DECLARATION ///////////////////////////////
+String getDate();
+float getSoilHumidity();
+float getWaterSurface();
+float getTemperature();
+float getHumidity();
+void saveWifiData(String PASSWORD, String SSIDd);
+void getWiFiSettings(String * PASSWORD, String * SSID1);
+void startPump();
+void getMin(const char* payload, size_t length);
+void pourFlower(const char * payload, size_t length);
+void conection(const char * payload, size_t length);
+void disconection(const char * payload, size_t length);
+
 
 ////////////////////////////////////////////////// SETUP /////////////////////////////////////////////
 void setup() {
@@ -93,19 +112,8 @@ void setup() {
     Serial.println(WiFi.localIP());
 
     saveWifiData(WiFi.psk(), WiFi.SSID());
-    
-    //establish time client
-    timeClient.begin();
-    timeClient.setTimeOffset(3600);
 
-    //establish socketIO connection
-    webSocket.begin("192.168.1.14", 1205, "/socket.io/?transport=websocket");
-    webSocket.on("disconnect", disconection);
-    webSocket.on("connect", conection);
-
-    //socket event on 
-    webSocket.on("water", pourFlower);
-    webSocket.on("humidity", getMin);
+    socketConnection();
 
     lcd.init();
     lcd.backlight();
@@ -145,6 +153,17 @@ void getWiFiSettings(String * PASSWORD, String * SSID1)
   Serial.println(*PASSWORD);
 }
 
+void socketConnection() {
+  timeClient.begin();
+  timeClient.setTimeOffset(3600);
+  
+  webSocket.begin(server, SOCKET_IO_PORT, SOCKET_IO_LINK);
+  webSocket.on("disconnect", disconection);
+  webSocket.on("connect", conection);
+  webSocket.on("humidity", getMin);
+  webSocket.on("water", pourFlower);
+}
+
 /////////////////////////////////////////// WIFI reconection /////////////////////////////////////
 void wifiConection() {
  if (WiFi.status() != WL_CONNECTED) { 
@@ -163,17 +182,7 @@ void wifiConection() {
       Serial.println("IP address: ");
       Serial.println(WiFi.localIP());
 
-      timeClient.begin();
-      timeClient.setTimeOffset(3600);
-    
-      //establish socketIO connection
-      webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
-      webSocket.on("disconnect", disconection);
-      webSocket.on("connect", conection);
-  
-      //socket event on 
-      webSocket.on("water", pourFlower);
-      webSocket.on("soilHumidity", getMin);
+      socketConnection();
     }
   }
 }
@@ -302,8 +311,8 @@ void conection(const char * payload, size_t length) {
 //DISONNECTION
 void disconection(const char * payload, size_t length) {
    Serial.println("Client disconnected from server.");
-   webSocket.begin("192.168.0.100", 1205, "/socket.io/?transport=websocket");
-   webSocket.emit("getSoilHumidity");
+   webSocket.begin(server, SOCKET_IO_PORT, SOCKET_IO_LINK);
+   webSocket.emit("getSoilHumidity", "{\"ArduinoSerial\":\"4568\"}");
 }
 
 //PUMP
