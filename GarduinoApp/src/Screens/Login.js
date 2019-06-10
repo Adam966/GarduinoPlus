@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Body, Text, Button, Form,Item, Label, Input } from 'native-base';
+
+import { Container, Body, Text, Button, Form,Item, Label, Input,Thumbnail } from 'native-base';
 import { StyleSheet, AsyncStorage, TouchableOpacity, Linking } from 'react-native';
+
 
 export default class Login extends Component {
   constructor(props) {
@@ -12,6 +14,7 @@ export default class Login extends Component {
       token: ""
     };
   }
+
 
   login = () => {
     if(this.state.password || this.state.login != "") {
@@ -60,19 +63,19 @@ export default class Login extends Component {
     return (
       <Container style={styles.box}>
         <Body>
+        {/*<Thumbnail square source={{uri: uri}} />*/}
           <Form style={{marginTop: 200, margin: 100, marginBottom: 10}}>
-            <Item stackedLabel>
-              <Label>Login</Label>
+            <Item stackedLabel style={styles.itemStyle}>
+              <Label style={styles.labelStyle}>Login</Label>
               <Input keyboardType="email-address" multiline={false} onChangeText={(text) => this.setState({login: text})}/>
             </Item>
-            <Item stackedLabel>
-              <Label>Password</Label>
+            <Item stackedLabel style={styles.itemStyle}>
+              <Label style={styles.labelStyle}>Password</Label>
               <Input keyboardType="default" autoCapitalize="none" multiline={false} secureTextEntry={true} onChangeText={(text) => this.setState({password: text})}/>
             </Item>
           </Form>  
-          <Button onPress={this.login.bind(this)}  
-            style={styles.button}>
-            <Text>Login</Text>
+          <Button noShadow onPress={this.login.bind(this)} style={styles.button}>
+            <Text>Submit</Text>
           </Button>
           <Text>{this.state.noLogin}</Text>
           <TouchableOpacity onPress={() => Linking.openURL('http://google.com')}>
@@ -93,13 +96,34 @@ const styles = StyleSheet.create({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#d2e3e5',
+      flexDirection: 'column',
+      backgroundColor: '#D2E3E5',
+  
   },
+
+  labelStyle: {
+    color:'#606769',
+    fontWeight: 'bold',
+  },
+
+  itemStyle: {
+      borderColor: '#A4B1B3',
+      color: '#A4B1B3',
+      opacity: 0.5,
+      borderBottomWidth: 1.5,
+  },
+
   button: {
     backgroundColor: '#1f313a', 
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 200,
-    width: 150
-  }
+    alignSelf: 'center',
+    borderRadius: 5,
+    marginTop: 5,
+    width: 320,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: .3,
+    shadowRadius: 3,
+    elevation: 3
+  },
 });

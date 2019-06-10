@@ -58,6 +58,9 @@ export default class PlantList extends Component {
               <Icon name='md-menu' />
             </Button>
           </Left>
+          <Body>    
+            {/*<Thumbnail small source={require('../../assets/person.jpg')} /> */}
+          </Body>
           <Text style={styles.name}>{this.state.user.name}</Text>
         </Header>
         <Body style={{backgroundColor: '#d2e3e5'}}>
@@ -81,7 +84,7 @@ export default class PlantList extends Component {
             <Button
               onPress={() => this.props.navigation.navigate('AddPlantRoute')}
             >
-              <Text style={{color: 'white'}}>Add Plant</Text>
+              <Text style={{color: 'white',fontWeight:'bold'}}>Add Plant</Text>
             </Button>
           </FooterTab>
         </Footer>

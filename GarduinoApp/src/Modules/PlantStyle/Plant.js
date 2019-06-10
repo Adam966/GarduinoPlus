@@ -12,8 +12,8 @@ export default class Plant extends Component {
 
   render() {
     return (
-          <Card style={styles.container}>
-            <CardItem style={{backgroundColor: '#F0FEFF'}}>
+          <Card noShadow style={styles.container}>
+            <CardItem style={{backgroundColor: '#F0FEFF',height: 120, width:'100%',borderRadius: 5}}>
               <Left>
                 <Thumbnail source={require('../../../assets/plant.png')} />
                 <Text style={styles.name}>{this.props.name}</Text>  
@@ -26,15 +26,21 @@ export default class Plant extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    height: 120,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    borderRadius: 5,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: .3,
+    shadowRadius: 3,
+    elevation: 3,
   },
   name: {
-    marginLeft: 65,
+    marginLeft: 25,
     fontSize: 25, 
     fontWeight: 'bold',
   }

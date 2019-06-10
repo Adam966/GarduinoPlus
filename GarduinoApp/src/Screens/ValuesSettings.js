@@ -32,13 +32,16 @@ export default class ValuesSettings extends Component {
         </Header>
         <Body>
           <Content> 
-            <SettingsCard />
+            <SettingsCard heading="Temperature"/>
+            <SettingsCard heading="Air Humidity"/>
+            <SettingsCard heading="Soil Humidity"/>
+            <SettingsCard heading="Water Level"/>
           </Content>
         </Body>
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
             <Button>
-              <Text style={{color: 'white'}}>Save</Text>
+              <Text style={{color: 'white',fontWeight:'bold'}}>Save</Text>
             </Button>
           </FooterTab>
         </Footer>

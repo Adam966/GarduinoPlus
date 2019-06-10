@@ -12,14 +12,14 @@ export default class SettingsCard extends Component {
   render() {
     return (
         <Container style={styles.box}>
-            <Content header style={{zIndex: 2}}><Text style={styles.header}>Temperature</Text></Content>
-                <Text>Min. value</Text>
+            <Content header style={{zIndex: 2}}><Text style={styles.header}>{this.props.heading}</Text></Content>
+                <Text style={{color:'#8A9394'}}>Min. value</Text>
                 <Item style={{width: 40, marginBottom: 10}}>
-                  <Input keyboardType = 'numeric' />
+                  <Input style={{borderBottomWidth: 1.5, borderBottomColor: '#8A9394'}} keyboardType = 'numeric'/>
                 </Item>
-                <Text>Max. value</Text>
+                <Text style={{color:'#8A9394'}}>Max. value</Text>
                 <Item style={{width: 40, marginBottom: 30}}>
-                  <Input keyboardType = 'numeric' />
+                  <Input style={{borderBottomWidth: 1.5, borderBottomColor: '#8A9394'}} keyboardType = 'numeric'/>
                 </Item>
         </Container>
     );
@@ -34,15 +34,15 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 0.3,
         borderRadius: 5,
         backgroundColor: '#F0FEFF',
         marginVertical: 15,
     },
     header: {
-        marginRight: 215,
+        marginRight: 210,
         marginTop: 10,
-        fontWeight: 'bold',
+        color: '#BBC7C8',
+        fontSize: 17,
     },
     value: {
         marginBottom: 70

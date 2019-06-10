@@ -52,7 +52,7 @@ export default class TakePhoto extends Component {
         <TouchableOpacity
           onPress={this.snap}
         >
-          <Image source={require('../../assets/takePhoto.png')} style={{width: 70, height: 70, justifyContent: 'center', marginLeft: 150, marginTop: Dimensions.get('window').height - 170}} />
+          {/*<Image source={require('../../assets/takePhoto.png')} style={{width: 70, height: 70, justifyContent: 'center', marginLeft: 150, marginTop: Dimensions.get('window').height - 170}} />*/}
         </TouchableOpacity>
       </Camera>
     </Container>

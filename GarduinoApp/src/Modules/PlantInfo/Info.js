@@ -18,7 +18,9 @@ export default class Info extends Component {
       <Container style={styles.box}>
         <Content header style={{zIndex: 2}}><Text style={styles.header}>{this.props.name}</Text></Content>
         <Content style={{zIndex: 2}}><Text style={styles.value}>{this.props.value}</Text></Content>
-        <Content style={{ zindex: 1, backgroundColor: 'green', position: 'absolute', bottom: 0, height: this.props.heigt, width: '100%'}}></Content>
+        <Content style={{ zindex: 1, backgroundColor: '#3ce578', position: 'absolute', bottom: 0, height: this.props.height, width: '100%',borderBottomLeftRadius: 5, 
+        borderBottomRightRadius:5}}>
+        </Content>
       </Container>
     );
   }
@@ -32,18 +34,22 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 0.3,
     borderRadius: 5,
     backgroundColor: '#F0FEFF',
     marginVertical: 10,
+    borderRadius: 5
   },
   header: {
-    marginRight: 215,
+    marginRight: 155,
     marginTop: 10,
-    fontWeight: 'bold',
+    color: '#BBC7C8',
+    fontSize: 25,
   },
   value: {
     position: 'relative',
+    fontSize: 35,
+    color: '#009E7F',
+    fontWeight: 'bold',
   },
   overlay: {
     zindex: 1,

@@ -36,13 +36,13 @@ export default class StatDetail extends Component {
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
               <Button>
-                <Text style={{color: 'white'}}>7 days</Text>
+                <Text style={{color: 'white',fontWeight:'bold'}}>Today</Text>
               </Button>
               <Button>
-                <Text style={{color: 'white'}}>Month</Text>
+                <Text style={{color: 'white',fontWeight:'bold'}}>7 days</Text>
               </Button>
               <Button>
-                <Text style={{color: 'white'}}>Year</Text>
+                <Text style={{color: 'white',fontWeight:'bold'}}>Month</Text>
               </Button>
           </FooterTab>
         </Footer>

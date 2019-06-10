@@ -3,6 +3,13 @@ import { LineChart } from 'react-native-chart-kit'
 import { Content } from 'native-base';
 import { Dimensions } from 'react-native';
 
+const data = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [{
+      data: [ 20, 45, 28, 80, 99, 43 ]
+    }]
+}
+
 export default class componentName extends Component {
   constructor(props) {
     super(props);
@@ -14,26 +21,12 @@ export default class componentName extends Component {
     return (
         <Content>
             <LineChart
-                data={{
-                    labels: ['18.5.2019','18.5.2019','18.5.2019','18.5.2019','18.5.2019','18.5.2019'],
-                    datasets: [{
-                        data: [
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100
-                        ]
-                    }]
-                }} 
+                data={data}
                     width={Dimensions.get('window').width - 30} 
                     height={220}
-                    yAxisLabel={'°C'}
+                    //yAxisLabel={data.datasets.data}
                     chartConfig={{
                     backgroundColor: '#d2e3e5',
-                    backgroundGradientFrom: '#F0FEFF',
-                    backgroundGradientTo: '#F0FEFF',
                     color: (opacity = 1) => `rgba(31, 49, 58, ${opacity})`,
                     decimalPlaces: 2, 
                     strokeWidth: 2,
@@ -54,4 +47,5 @@ export default class componentName extends Component {
         </Content>
     );
   }
+
 }
