@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Header, Left, Button, Body, Footer, FooterTab, Text, Item, Input, Icon, Title, Content, Thumbnail } from 'native-base';
-import { Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 
 export default class AddPlant extends Component {
     static navigationOptions = {
@@ -10,8 +10,51 @@ export default class AddPlant extends Component {
     super(props); 
     this.state = {
         hasCameraPermission: null,
+        arduinoSerial: "",
+        plantName: "",
+        wifiName: "",
+        wifiPassword: "",
+        user: null
     };
   }
+
+  savePlant = async () => {
+    await this.getUser();
+    console.log(this.state.user);
+    
+    fetch('http://192.168.1.14:1205/minmax', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.state.user.token,
+        },
+        body: JSON.stringify({
+            identification: {
+                ArduinoSerial: this.state.arduinoSerial, 
+                IDUser: this.state.user.id, 
+                PlantName: this.state.plantName
+            }, optimalValues: {
+                TempMax: null, 
+                TempMin: null, 
+                AirHumMax: null, 
+                AirHumMin: null, 
+                SoilHumMax: null, 
+                SoilHumMin: null
+            }
+        })
+      })
+      .then((response) => {
+        //add approve message 
+      })
+      .catch((error) => {
+          console.log(error)
+      });
+  }
+
+  getUser = async () => {
+    let User = await AsyncStorage.getItem('User');
+    return this.setState({user: JSON.parse(User)});
+  };
 
   render() {
     return (
@@ -36,25 +79,29 @@ export default class AddPlant extends Component {
                         <Thumbnail large source={require('../../assets/plant.png')} style={{marginLeft: 120}}></Thumbnail>
                     </TouchableOpacity>
                     <Item style={{marginVertical: 10 }}>
-                        <Input placeholder="Your plant name"/>
+                        <Input placeholder="Your plant name" onChangeText={(text) => this.setState({plantName: text})}/>
                     </Item>
                     <Item style={{marginVertical: 10 }}>
-                        <Input keyboardType = 'numeric' placeholder="Arduino serial number"/>
+                        <Input keyboardType = 'numeric' placeholder="Arduino serial number" onChangeText={(text) => this.setState({arduinoSerial: text})}/>
                     </Item>
                     <Item style={{marginVertical: 10 }}>
-                        <Input placeholder="Type WiFi name"/>
+                        <Input placeholder="Type WiFi name" onChangeText={(text) => this.setState({wifiName: text})}/>
                     </Item>
                     <Item style={{marginVertical: 10 }}>
-                        <Input placeholder="Type WiFi password"/>
+                        <Input placeholder="Type WiFi password" onChangeText={(text) => this.setState({wifiPassword: text})}/>
                     </Item>
-                    <Button block style={{backgroundColor: '#1f313a'}}>
+                    <Button block style={{backgroundColor: '#1f313a'}}
+                        onPress={() => this.connectWifi()}
+                    >
                         <Text>Connect Device to WiFi</Text>    
                     </Button>
                 </Content>
             </Body>
             <Footer>
                 <FooterTab style={{backgroundColor: '#1f313a'}}>
-                    <Button>
+                    <Button
+                        onPress={() => this.savePlant()}
+                    >
                         <Text style={{color: 'white'}}>Save</Text>
                     </Button>
                 </FooterTab>

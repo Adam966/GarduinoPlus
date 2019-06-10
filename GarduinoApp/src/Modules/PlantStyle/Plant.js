@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardItem, Text, Left, Right, Thumbnail } from 'native-base';
+import { Card, CardItem, Text, Left, Thumbnail } from 'native-base';
 import { StyleSheet } from 'react-native';
 
 export default class Plant extends Component {

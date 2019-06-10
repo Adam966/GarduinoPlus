@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage } from 'react-native';
 import { Container, ListItem, Left, Button, Icon, Body, Text, Header, Thumbnail } from 'native-base';
 
 export default class Notification extends Component {
@@ -9,17 +9,28 @@ export default class Notification extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: "",
     };
   }
+
+  componentWillMount() {
+    this.getUser();
+  }; 
+
+  async getUser() {
+    try {
+      let User = await AsyncStorage.getItem('User');
+      this.setState({user: JSON.parse(User)});
+     } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   render() {
     return (
       <Container style={{backgroundColor: '#d2e3e5'}}>
         <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
-          <Body>    
-              <Thumbnail small source={require('../../assets/person.jpg')} /> 
-            </Body>
-          <Text style={styles.name}>User Name</Text>
+          <Text style={styles.name}>{this.state.user.name}</Text>
         </Header>
             <ListItem icon>
               <Left>

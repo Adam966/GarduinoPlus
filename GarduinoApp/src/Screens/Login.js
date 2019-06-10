@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { Container, Body, Text, Button, Form,Item, Label, Input } from 'native-base';
-import { StyleSheet, AsyncStorage } from 'react-native';
+import { StyleSheet, AsyncStorage, TouchableOpacity, Linking } from 'react-native';
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      noLogin: "",
+      password: "",
+      login: "",
+      token: ""
     };
   }
 
-  login() {
-    fetch('http://192.168.0.100:1205/login', {
+  login = () => {
+    if(this.state.password || this.state.login != "") {
+      fetch('http://192.168.1.14:1205/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,24 +28,29 @@ export default class Login extends Component {
     .then((response) => response.json())
       .then((responseJson) => {
         let login = {
-          Id: responseJson.ID,
+          id: responseJson.ID,
           email: responseJson.Email,
           name: responseJson.Name,
+          token: responseJson.Token
         }
           this.setState({user: login}, 
-            function() {
+            () => {
               this.saveUserId();
               this.props.navigation.navigate('PlantListRoute');
             });
       })
     .catch((error) => {
-        console.error(error);
+        this.setState({noLogin: 'No valid login or password'})
     });
+    } 
+    else {
+      this.setState({noLogin: "You must type name and password"})
+    }
   }
 
-  async saveUserId() {
+  saveUserId = async () => {
     try {
-      await AsyncStorage.setItem('User', this.state.user);
+      await AsyncStorage.setItem('User', JSON.stringify(this.state.user));
     } catch (error) {
       console.log(error.message);
     }
@@ -64,6 +74,12 @@ export default class Login extends Component {
             style={styles.button}>
             <Text>Login</Text>
           </Button>
+          <Text>{this.state.noLogin}</Text>
+          <TouchableOpacity onPress={() => Linking.openURL('http://google.com')}>
+            <Text style={{color: 'blue', textDecorationLine: 'underline', color: '#1f313a'}}>
+              Register
+            </Text>
+          </TouchableOpacity>
         </Body>
       </Container>
     );
