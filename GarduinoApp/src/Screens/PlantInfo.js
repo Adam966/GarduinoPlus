@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, FlatList, AsyncStorage } from 'react-nati
 import io from 'socket.io-client';
  
 
-import Info  from '../Modules/PlantInfo/Info'
+import Info  from '../Modules/PlantInfo/Info';
  
 export default class PlantInfo extends Component {
   static navigationOptions = {
@@ -23,7 +23,7 @@ export default class PlantInfo extends Component {
       minMax: ""
     };
 
-    this.socket = io('http://192.168.1.14:1205');
+    this.socket = io('http://192.168.43.89:1205');
     this.socket.emit('setIdentifierW', {"IDUser":1, "ArduinoSerial": this.state.arduiserial});
     this.socket.on('plantData', plantData => {
       let data = [
@@ -62,7 +62,7 @@ export default class PlantInfo extends Component {
   
   getData = async () => {
     console.log('data');
-    await fetch('http://192.168.1.14:1205/minmax', {
+    await fetch('http://192.168.43.89:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -100,8 +100,8 @@ export default class PlantInfo extends Component {
               <Icon name='arrow-back' />
             </Button>
           </Left>
-          <Body>
-            <Thumbnail small source={require('../../assets/plant.png')} />     
+          <Body> 
+          <Thumbnail small source={require('../../assets/plant.png')}/>    
           </Body>
           <Text style={styles.name}>{this.props.name}</Text>  
         </Header>

@@ -10,8 +10,44 @@ export default class StatDetail extends Component {
   }
   constructor(props) {
     super(props);
+    const { navigation } = this.props;
+    const arduinoSerial = navigation.getParam('serial', 'no serial');
     this.state = {
+      arduiserial: arduinoSerial,
+      user:"",
+      Interval:""
     };
+  }
+
+  componentDidMount = async () => {
+    await this.getUser();
+    this.getData();
+  }
+
+  getUser = async () => {
+    let User = await AsyncStorage.getItem('User');
+    return this.setState({user: JSON.parse(User)});
+  };
+
+  getData = async () => {
+    await fetch('http://192.168.0.103:1205/plantData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.state.user.token,
+      },
+      body: JSON.stringify({
+        ArduinoSerial: this.state.arduinoSerial,
+        Interval:this.state.Interval,
+      })
+    })
+    .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({dataSource: responseJson}); 
+      })
+    .catch((error) => {
+      console.log(error)
+    });
   }
 
   render() {
@@ -35,13 +71,13 @@ export default class StatDetail extends Component {
         </Body>
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
-              <Button>
-                <Text style={{color: 'white',fontWeight:'bold'}}>Today</Text>
+              <Button onPress={() => this.setState({Interval: "DAY"})}>
+                <Text style={{color: 'white',fontWeight:'bold'}}>Today</Text> 
               </Button>
-              <Button>
+              <Button onPress={() => this.setState({Interval: "WEEK"})}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>7 days</Text>
               </Button>
-              <Button>
+              <Button onPress={() => this.setState({Interval: "MONTH"})}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>Month</Text>
               </Button>
           </FooterTab>

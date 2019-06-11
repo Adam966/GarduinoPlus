@@ -22,7 +22,7 @@ export default class AddPlant extends Component {
     await this.getUser();
     console.log(this.state.user);
     
-    fetch('http://192.168.1.14:1205/minmax', {
+    fetch('http://192.168.43.89:1205/minmax', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

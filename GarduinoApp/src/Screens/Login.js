@@ -18,7 +18,7 @@ export default class Login extends Component {
 
   login = () => {
     if(this.state.password || this.state.login != "") {
-      fetch('http://192.168.1.14:1205/login', {
+      fetch('http://192.168.43.89:1205/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,8 +63,8 @@ export default class Login extends Component {
     return (
       <Container style={styles.box}>
         <Body>
-        {/*<Thumbnail square source={{uri: uri}} />*/}
           <Form style={{marginTop: 200, margin: 100, marginBottom: 10}}>
+          <Thumbnail square source={require('../../assets/icon2.png')} style={{alignSelf: 'center',height:120,width:120,marginTop:-70,marginBottom:50}}/>
             <Item stackedLabel style={styles.itemStyle}>
               <Label style={styles.labelStyle}>Login</Label>
               <Input keyboardType="email-address" multiline={false} onChangeText={(text) => this.setState({login: text})}/>
