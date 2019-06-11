@@ -1,16 +1,19 @@
 let database = require('./sequelize');
 let worker = require('./worker');
+let config = require('./config');
+let middleware = require('./middleware');
+let handler = require('./handler');
 
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require("body-parser");
 let jwt = require('jsonwebtoken');
-let config = require('./config');
-let middleware = require('./middleware');
-let handler = require('./handler');
+let cors = require('cors');
+
 
 app.use(bodyParser.json());
+app.use(cors());
 console.log("Everything is up");
 
 io.set('origins', '*:*');
@@ -39,15 +42,17 @@ io.on('connection', socket =>{
 
     socket.on('setIdentifierW', data => {
 
+        data = JSON.parse(data);
         let clientInfo = new Object();
         clientInfo.socketID = socket.id;
         clientInfo.userID = data.IDUser;
         clientInfo.arduinoSerial = [];
         for(let i = 0; i<data.ArduinoSerial.length; i++)
         {
-            clientInfo.arduinoSerial[i] = data.ArduinoSerial[i];
+            clientInfo.arduinoSerial.push(data.ArduinoSerial[i]);
         }
         webClient.push(clientInfo);
+        console.log(clientInfo);
     });
 
 	socket.on('arduinoData', data =>{   

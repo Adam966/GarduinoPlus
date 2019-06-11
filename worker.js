@@ -258,7 +258,7 @@ module.exports = {
             where: {
                 ArduinoSerial: arduinoSerial
             },
-        }).then(shumidity=>{data(JSON.stringify(shumidity));}).catch(err =>{console.log(err); data("Error");});
+        }).then(shumidity=>{data(shumidity);}).catch(err =>{console.log(err); data("Error");});
     },
 
     registerUser(obj, isSuccess)
