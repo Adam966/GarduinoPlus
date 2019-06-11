@@ -62,7 +62,7 @@ export default class PlantInfo extends Component {
   
   getData = async () => {
     console.log('data');
-    await fetch('http://192.168.43.89:1205/minmax', {
+    await fetch('http://192.168.43.31:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ export default class PlantInfo extends Component {
               data={this.state.socketData}
               renderItem={({item}) => 
                 <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial})}
+                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.props.name})}
                     style = {{margin: 10, marginBottom: 0}}
                 >
                   <Info value={item.value} name={item.index}/>
@@ -124,7 +124,7 @@ export default class PlantInfo extends Component {
           <Footer>
             <FooterTab style={{backgroundColor: '#1f313a'}}>
               <Button
-                onPress={() => this.props.navigation.navigate('ValuesSettingRoute')}
+                onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial})}
               >
                 <Text style={{color: 'white'}}>Plant Settings</Text>
               </Button>

@@ -30,7 +30,7 @@ export default class StatDetail extends Component {
   };
 
   getData = async () => {
-    await fetch('http://192.168.0.103:1205/plantData', {
+    await fetch('http://192.168.43.31:1205/plantData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

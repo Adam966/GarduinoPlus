@@ -10,9 +10,80 @@ export default class ValuesSettings extends Component {
   }
   constructor(props) {
     super(props);
+    const { navigation } = this.props;
+    const arduinoSerial = navigation.getParam('serial', 'no serial');
     this.state = {
+      arduiserial: arduinoSerial,
+      TempMax: null, 
+      TempMin: null, 
+      AirHumMax: null, 
+      AirHumMin: null, 
+      SoilHumMax: null, 
+      SoilHumMin: null,
+      user: ""
     };
   }
+
+  getUser = async () => {
+    console.log('user');
+    let User = await AsyncStorage.getItem('User');
+    return this.setState({user: JSON.parse(User)});
+  };
+
+  sendData = async () => {
+    await this.getUser();
+    console.log(this.state.user);
+    await fetch('http://192.168.43.31:1205/minmax', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.state.user.token,
+      },
+      body: JSON.stringify({
+        identification: {
+          ArduinoSerial: this.state.arduinoSerial, 
+          IDUser: this.state.user.id, 
+          PlantName: this.props.name
+      }, optimalValues: {
+          TempMax: this.state.TempMax, 
+          TempMin: this.state.TempMin, 
+          AirHumMax: this.state.AirHumMax, 
+          AirHumMin: this.state.AirHumMin, 
+          SoilHumMax: this.state.SoilHumMax, 
+          SoilHumMin: this.state.SoilHumMin
+          }
+      }, console.log(identification)
+      ) 
+    })
+    .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        
+        this.setState({minMax: responseJson}); 
+      })
+    .catch((error) => {
+      console.log(error)
+    }); 
+  }
+
+  getMinMaxTemp = (data) => {
+    this.setState({TempMax: data.max});
+    this.setState({TempMin: data.min});
+    console.log(data);
+  }
+  
+  getMinMaxAirHum = (data) => {
+    this.setState({AirHumMax: data.max});
+    this.setState({AirHumMin: data.min});
+    console.log(data);
+  }
+  
+  getMinMaxSoilHum = (data) => {
+    this.setState({SoilHumMax: data.max});
+    this.setState({SoilHumMin: data.min});
+    console.log(data);
+  }
+
 
   render() {
     return (
@@ -28,19 +99,21 @@ export default class ValuesSettings extends Component {
         <Body>
           <Thumbnail small source={require('../../assets/plant.png')} />     
         </Body>
-          <Text style={styles.name}>Plant name</Text>  
+          <Text style={styles.name}>{this.props.name}</Text>  
         </Header>
         <Body>
           <Content> 
-            <SettingsCard heading="Temperature"/>
-            <SettingsCard heading="Air Humidity"/>
-            <SettingsCard heading="Soil Humidity"/>
-            <SettingsCard heading="Water Level"/>
+            <SettingsCard heading="Temperature" getData={this.getMinMaxTemp}/>
+            <SettingsCard heading="Air Humidity" getData={this.getMinMaxAirHum}/>
+            <SettingsCard heading="Soil Humidity" getData={this.getMinMaxSoilHum}/>
+            <SettingsCard heading="Water Level" />
           </Content>
         </Body>
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
-            <Button>
+            <Button
+              onPress={() => this.sendData()}
+            >
               <Text style={{color: 'white',fontWeight:'bold'}}>Save</Text>
             </Button>
           </FooterTab>
