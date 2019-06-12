@@ -204,9 +204,19 @@ $(document).ready(() => {
 
 	$.ajax({
 			type: "POST",
+			crossDomain: true,
 		    contentType: "application/json; charset=utf-8",
 		    url: "http://localhost:1205/minmax",
-		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",}",
+		    //data: "{\"ArduinoSerial\":\""+arduinoID+"\",}",
+		    data: JSON.stringify({ ArduinoSerial: arduinoID }),
+		   	headers: {
+		      'Accept':'application/json',
+		      'Access-Control-Allow-Origin': '*',
+		      'Access-Control-Allow-Credentials': 'true',
+		      "Content-Type": "application/json",
+		      'Cache-Control':'no-cache',
+		      "Authorization": `Bearer ${token}`
+		  	  },
 			    success: function (result,textStatus,xhr) {
 			           console.log("it works");
 			           console.log(textStatus);
@@ -536,17 +546,28 @@ $(document).ready(() => {
 
 		$.ajax({
 			type: "POST",
+			crossDomain: true,
 		    contentType: "application/json; charset=utf-8",
 		    url: "http://localhost:1205/plantData",
-		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"DAY"+"\"}",
+		    //data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"DAY"+"\"}",
+		    data: JSON.stringify({ ArduinoSerial: arduinoID , Interval: "DAY" }),
+		   	headers: {
+		      'Accept':'application/json',
+		      'Access-Control-Allow-Origin': '*',
+		      'Access-Control-Allow-Credentials': 'true',
+		      "Content-Type": "application/json",
+		      'Cache-Control':'no-cache',
+		      "Authorization": `Bearer ${token}`
+		  	  },
 			    success: function (result,textStatus,xhr) {
 			           console.log("it works");
 			           console.log(textStatus);
 			           console.log(xhr.status);
 
 			           if(xhr.status == 200){
+			           		console.log(result);
 			                let obj = JSON.parse(result);
-					       	//console.log(obj);
+					       	console.log(obj);
 
 							let tempToChart = obj.map(({ Temperature }) => Temperature);
 							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
@@ -595,9 +616,18 @@ $(document).ready(() => {
 			console.log("test last week");
 			$.ajax({
 			type: "POST",
+			crossDomain: true,
 		    contentType: "application/json; charset=utf-8",
 		    url: "http://localhost:1205/plantData",
 		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"WEEK"+"\"}",
+		    headers: {
+		      'Accept':'application/json',
+		      'Access-Control-Allow-Origin': '*',
+		      'Access-Control-Allow-Credentials': 'true',
+		      "Content-Type": "application/json",
+		      'Cache-Control':'no-cache',
+		      "Authorization": `Bearer ${token}`
+		  	  },
 			    success: function (result,textStatus,xhr) {
 			           console.log("it works");
 			           console.log(textStatus);
@@ -652,9 +682,18 @@ $(document).ready(() => {
 			console.log("test last month");
 			$.ajax({
 			type: "POST",
+			crossDomain: true,
 		    contentType: "application/json; charset=utf-8",
 		    url: "http://localhost:1205/plantData",
 		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",\"Interval\":\""+"MONTH"+"\"}",
+		    headers: {
+		      'Accept':'application/json',
+		      'Access-Control-Allow-Origin': '*',
+		      'Access-Control-Allow-Credentials': 'true',
+		      "Content-Type": "application/json",
+		      'Cache-Control':'no-cache',
+		      "Authorization": `Bearer ${token}`
+		  	  },
 			    success: function (result,textStatus,xhr) {
 			           console.log("it works");
 			           console.log(textStatus);
@@ -818,17 +857,25 @@ $(document).ready(() => {
 	    console.log(capacityResult);
 
 		$.ajax({
-	    url: 'http://itsovy.sk:1205/minmax',
-	    //url: 'http://localhost:5485/minmax',
-	    dataType: 'json',
-	    type: 'put',
-		headers:{"Content-Type":"application/json"},
+	    //url: 'http://itsovy.sk:1205/minmax',
+	    url: 'http://localhost:1205/minmax',
+	   	contentType: "application/json; charset=utf-8",
+	    type: 'PUT',
+	    crossDomain: true,
+		headers: {
+		      'Accept':'application/json',
+		      'Access-Control-Allow-Origin': '*',
+		      'Access-Control-Allow-Credentials': 'true',
+		      "Content-Type": "application/json",
+		      'Cache-Control':'no-cache',
+		      "Authorization": `Bearer ${token}`
+		},
 	    data: JSON.stringify({
 
 	    	"identification":{
 
-	    	"ArduinoSerial": ArduinoID, 
-	    	"PlantName": plantName
+	    	"ArduinoSerial": arduinoID, 
+	    	"PlantName": plantName,
 
 	    	},
 	    	
@@ -845,14 +892,12 @@ $(document).ready(() => {
 
 	    }}),
 
-	    success: function( data, textStatus, jQxhr ){
+	    success: function( result, textStatus, jQxhr ){
 			console.log("sent successfully");
-			console.log(data);
-
-		   //let obj = JSON.parse(data);
-		   let obj = data;
-	       console.log("data from http");
-	       console.log(obj.optimalValues.TemperatureMax);
+			console.log(result);
+	       
+		   let obj = result;
+		   console.log(obj.optimalValues.TempMin);
 	       //console.log(obj[0].TemperatureMax);
 	       //console.log(slider1);
 
@@ -863,23 +908,23 @@ $(document).ready(() => {
 	       {
 
 	       //Temp Max range input
-	       slider1.value = obj.optimalValues.TemperatureMax;
-	       output1.innerHTML = obj.optimalValues.TemperatureMax;
+	       slider1.value = obj.optimalValues.TempMax;
+	       output1.innerHTML = obj.optimalValues.TempMax;
 	       //Temp Min range input
-	       slider2.value = obj.optimalValues.TemperatureMin;
-	       output2.innerHTML = obj.optimalValues.TemperatureMin;
+	       slider2.value = obj.optimalValues.TempMin;
+	       output2.innerHTML = obj.optimalValues.TempMin;
 	       //Air Humidity Max range input
-	       slider3.value = obj.optimalValues.AirHumidityMax;
-	       output3.innerHTML = obj.optimalValues.AirHumidityMax;
+	       slider3.value = obj.optimalValues.AirHumMax;
+	       output3.innerHTML = obj.optimalValues.AirHumMax;
 	       //Air Humidity Min range input
-	       slider4.value = obj.optimalValues.AirHumidityMin;
-	       output4.innerHTML = obj.optimalValues.AirHumidityMin;
+	       slider4.value = obj.optimalValues.AirHumyMin;
+	       output4.innerHTML = obj.optimalValues.AirHumMin;
 	       //Soil Humidity Max range input
-	       slider5.value = obj.optimalValues.SoilHumidityMax;
-	       output5.innerHTML = obj.optimalValues.SoilHumidityMax;
+	       slider5.value = obj.optimalValues.SoilHumMax;
+	       output5.innerHTML = obj.optimalValues.SoilHumMax;
 	       //Soil Humidity Min range input
-	       slider6.value = obj.optimalValues.SoilHumidityMin;
-	       output6.innerHTML = obj.optimalValues.SoilHumidityMin;
+	       slider6.value = obj.optimalValues.SoilHumMin;
+	       output6.innerHTML = obj.optimalValues.SoilHumMin;
 	       //Water level range input
 	       slider7.value = obj.optimalValues.WaterLevelMin;
 	       output7.innerHTML = obj.optimalValues.WaterLevelMin;
@@ -887,17 +932,17 @@ $(document).ready(() => {
 	       //Water container capacity
 	       capacity.value = obj.optimalValues.ContainerSize;
 	       	//Temp Max to compare
-	       tempMax = obj.optimalValues.TemperatureMax;
+	       tempMax = obj.optimalValues.TempMax;
 	       //Temp Max to compare
-	       tempMin = obj.optimalValues.TemperatureMin;
+	       tempMin = obj.optimalValues.TempMin;
 	       //Air Max to compare
-	       airhMax = obj.optimalValues.AirHumidityMax;
+	       airhMax = obj.optimalValues.AirHumMax;
 	       //Air Min to compare
-	       airhMin = obj.optimalValues.AirHumidityMin;
+	       airhMin = obj.optimalValues.AirHumMin;
 	       //Soil Max to compare
-	       soilhMax = obj.optimalValues.SoilHumidityMax;
+	       soilhMax = obj.optimalValues.SoilHumMax;
 	       //Soil Min to compare
-	       soilhMin = obj.optimalValues.SoilHumidityMin;
+	       soilhMin = obj.optimalValues.SoilHumMin;
 	       //Water Min to compare
 	       waterMin = obj.optimalValues.WaterLevelMin;
 	       waterCapacity = obj.optimalValues.ContainerSize;
@@ -933,8 +978,9 @@ $(document).ready(() => {
 
 	       }
 	    },
-	    error: function( jqXhr, textStatus, errorThrown ){
+	    error: function( jqXhr, textStatus, errorThrown , xhr){
 	        console.log( errorThrown );
+	        console.log(xhr.status);
 	    }
 	    });
 
