@@ -33,7 +33,7 @@ export default class ValuesSettings extends Component {
     }
     if(this.state.status != false) {
       await this.getUser();
-      fetch('http://192.168.1.14:1205/minmax', {
+      fetch('http://192.168.0.103:1205/minmax', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

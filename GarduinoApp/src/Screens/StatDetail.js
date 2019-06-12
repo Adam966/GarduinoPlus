@@ -15,22 +15,24 @@ export default class StatDetail extends Component {
     this.state = {
       arduiserial: arduinoSerial,
       user:"",
-      Interval:""
+      Interval:"",
     };
   }
 
   componentDidMount = async () => {
     await this.getUser();
-    this.getData();
   }
 
-  getUser = async () => {
-    let User = await AsyncStorage.getItem('User');
-    return this.setState({user: JSON.parse(User)});
-  };
+  changeReq = async (interval) => {
+    console.log("test");
+    this.setState({Interval: interval});
+    await this.getData();
+   /*console.log("token"+this.state.user.token);
+    console.log("id"+this.state.user.id);*/
+  }
 
   getData = async () => {
-    await fetch('http://192.168.1.14:1205/plantData', {
+    await fetch('http://192.168.0.103:1205/plantData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,16 +41,24 @@ export default class StatDetail extends Component {
       body: JSON.stringify({
         ArduinoSerial: this.state.arduinoSerial,
         Interval:this.state.Interval,
+
       })
     })
     .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({dataSource: responseJson}); 
+        //this.setState({dataSource: responseJson}); 
+        console.log(responseJson);
       })
     .catch((error) => {
       console.log(error)
     });
   }
+
+  getUser = async () => {
+    console.log("getting user");
+    let User = await AsyncStorage.getItem('User');
+    return this.setState({user: JSON.parse(User)});
+  };
 
   render() {
     return (
@@ -71,13 +81,13 @@ export default class StatDetail extends Component {
         </Body>
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
-              <Button onPress={() => this.setState({Interval: "DAY"})}>
+          <Button onPress={() => this.changeReq("DAY")}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>Today</Text> 
               </Button>
-              <Button onPress={() => this.setState({Interval: "WEEK"})}>
+              <Button onPress={() => this.changeReq("WEEK")}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>7 days</Text>
               </Button>
-              <Button onPress={() => this.setState({Interval: "MONTH"})}>
+              <Button onPress={() => this.changeReq("MONTH")}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>Month</Text>
               </Button>
           </FooterTab>

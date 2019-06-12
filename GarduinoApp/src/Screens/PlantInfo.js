@@ -56,8 +56,8 @@ export default class PlantInfo extends Component {
       name: name
     };
 
-    this.socket = io('http://192.168.1.14:1205');
-    this.socket.emit('setIdentifierW', {"IDUser":this.state.user.id, "ArduinoSerial": this.state.arduiserial});
+    this.socket = io('http://192.168.0.103:1205');
+    this.socket.emit('setIdentifierApp', {"IDUser":this.state.user.id, "ArduinoSerial": this.state.arduiserial});
     this.socket.on('plantData', plantData => {
       console.log("socket");
   
@@ -104,7 +104,7 @@ export default class PlantInfo extends Component {
   
   getData = async () => {
     console.log('data');
-    await fetch('http://192.168.1.14:1205/minmax', {
+    await fetch('http://192.168.0.103:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -26,7 +26,9 @@ export default class componentName extends Component {
                     height={220}
                     //yAxisLabel={data.datasets.data}
                     chartConfig={{
-                    backgroundColor: '#d2e3e5',
+                      backgroundColor: '#F0FEFF',
+                      backgroundGradientFrom: '#F0FEFF',
+                      backgroundGradientTo: '#F0FEFF',
                     color: (opacity = 1) => `rgba(31, 49, 58, ${opacity})`,
                     decimalPlaces: 2, 
                     strokeWidth: 2,
