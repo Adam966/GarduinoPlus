@@ -10,6 +10,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
 //#include <ArduinoLowPower.h>
+#include "esp_sleep.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 #define sendInterval 30000
@@ -31,10 +32,13 @@ static char ssid[33] = {0};
 static char password[65] = {0};
 
 int minHumidity = 0;
-const char* server = "192.168.2.133";
+const char* server = "192.168.1.14";
 const char* SOCKET_IO_LINK = "/socket.io/?transport=websocket";
 const int SOCKET_IO_PORT = 1205;
 //#define ArduinoID 4568 
+
+#define uS_TO_S_FACTOR 1000000  //Conversion factor for micro seconds to seconds
+#define TIME_TO_SLEEP  5        //Time ESP32 will go to sleep (in seconds)
 
 //////////////////////////////////////////////// SENSOR PIN SETUP /////////////////////////////////////
 #define soilHum 35
@@ -76,7 +80,7 @@ void getMin(const char* payload, size_t length);
 void pourFlower(const char * payload, size_t length);
 void conection(const char * payload, size_t length);
 void disconection(const char * payload, size_t length);
-
+void esp_wake_deep_sleep(void);
 
 ////////////////////////////////////////////////// SETUP /////////////////////////////////////////////
 void setup() {
@@ -263,7 +267,7 @@ void createJson(float temperature, float humidityAir, float humiditySoil, float 
   info["SoilHum"] = humiditySoil;
   info["WatSurf"] = waterSurface;
   JsonObject date = doc.createNestedObject("date");
-  date["Date"] = dateS;
+  date["Date"] = dateS.c_str();
 
   char output[capacity];
   serializeJson(doc, output);
@@ -326,12 +330,11 @@ void startPump() {
 void getMin(const char* payload, size_t length) {
   const size_t capacity = JSON_ARRAY_SIZE(1) + JSON_OBJECT_SIZE(1) + 20;
   DynamicJsonDocument doc(capacity);
-
-  Serial.println(payload);
-
   deserializeJson(doc, payload);  
   int SoilHumMin = doc[0]["SoilHumMin"];
-  Serial.println("Min Hum: " + SoilHumMin);
+
+  Serial.println("MinHum");
+  Serial.println(SoilHumMin);
 
   minHumidity = SoilHumMin;
 }
@@ -395,20 +398,18 @@ void setRGBLed(float waterLevel) {
       ledcWrite(redChannel, 255);
     }
 }
-/////////////////////////////////////////////// SLEEP ARDUINO ///////////////////////////////////////
-//void sleepArduino() {
-//  Serial.println("Sleep"); 
-//  LowPower.sleep(sleepTime);
-//}
 
 /////////////////////////////////////////////// MAIN LOOP ///////////////////////////////////////////
 void loop() {
-    //sleepArduino();
+//    Serial.println("Sleep");
+//    esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+//    esp_deep_sleep_start();
+//    Serial.println("Awake");
     
     wifiConection();
     webSocket.loop();
 
-    setRGBLed(30);
+    //setRGBLed(getWaterSurface());
     
     if (digitalRead(lcdBtn)){
       setLcd();
@@ -424,6 +425,8 @@ void loop() {
       measureData();
       if (minHumidity < getSoilHumidity()) {
         //startPump();
+        Serial.println("loop");
+        Serial.println(minHumidity);
       }
     }
 }
