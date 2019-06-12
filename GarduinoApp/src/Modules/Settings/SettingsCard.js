@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Item, Label, Input, Text, Content, Container } from 'native-base';
+import { Form, Item, Label, Input, Text, Content, Container, View } from 'native-base';
 import { StyleSheet, Dimensions } from 'react-native';
 
 export default class SettingsCard extends Component {
@@ -8,7 +8,9 @@ export default class SettingsCard extends Component {
     this.state = {
       min: 0,
       max: 0,
-      validation: ""
+      validation: "",
+      minPlace: this.props.min,
+      maxPlace: this.props.max,
     };
   }
 
@@ -24,18 +26,18 @@ export default class SettingsCard extends Component {
   render() {
     return (
         <Container style={styles.box}>
-            <Content header style={{zIndex: 2}} bounces={false}><Text style={styles.header}>{this.props.heading}</Text></Content>
+            <View header style={{zIndex: 2}} bounces={false}><Text style={styles.header}>{this.props.heading}</Text></View>
                 <Text style={{color:'#8A9394'}}>Min. value</Text>
                 <Item style={{width: 40, marginBottom: 10}}>
-                  <Input style={{borderBottomWidth: 1.5, borderBottomColor: '#8A9394'}} keyboardType = 'numeric' onChangeText={(text) => this.setState({min: text})}/>
+                  <Input style={{borderBottomWidth: 1.5, borderBottomColor: '#8A9394'}} placeholder= {String(this.state.minPlace)} keyboardType = 'numeric' onChangeText={(text) => this.setState({min: text})}/>
                 </Item>
                 <Text style={{color:'#8A9394'}}>Max. value</Text>
                 <Item style={{width: 40, marginBottom: 30}}>
-                  <Input style={{borderBottomWidth: 1.5, borderBottomColor: '#8A9394'}} keyboardType = 'numeric' onChangeText={(text) => this.setState({max: text})} onEndEditing={() => this.getInput()}/>
+                  <Input style={{borderBottomWidth: 1.5, borderBottomColor: '#8A9394'}} placeholder= {String(this.state.maxPlace)} keyboardType = 'numeric' onChangeText={(text) => this.setState({max: text})} onEndEditing={() => this.getInput()}/>
                 </Item>
-                <Content footer style={{zIndex: 2}} bounces={false}>
+                <View footer style={{zIndex: 2}} bounces={false}>
                   <Text style={{color: '#e54b4b', fontSize: 12, marginBottom: 5}}>{this.state.validation}</Text>
-                </Content>
+                </View>
         </Container>
     );
   }

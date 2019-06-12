@@ -21,7 +21,7 @@ export default class Login extends Component {
 
   login = () => {
     if(this.state.password || this.state.login != "") {
-      fetch('http://192.168.0.103:1205/login', {
+      fetch('http://192.168.1.14:1205/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

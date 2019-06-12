@@ -13,14 +13,17 @@ export default class ValuesSettings extends Component {
     const { navigation } = this.props;
     const arduinoSerial = navigation.getParam('serial', 'no serial');
     const name = navigation.getParam('name', 'no serial');
+    const data = navigation.getParam('data', 'no serial');
+    console.log(data);
+    
     this.state = {
       arduinoserial: arduinoSerial,
-      TempMax: null, 
-      TempMin: null, 
-      AirHumMax: null, 
-      AirHumMin: null, 
-      SoilHumMax: null, 
-      SoilHumMin: null,
+      TempMax: data[0].TempMax, 
+      TempMin: data[0].TempMin, 
+      AirHumMax: data[0].AirHumMax, 
+      AirHumMin: data[0].AirHumMin, 
+      SoilHumMax: data[0].SoilHumMax, 
+      SoilHumMin: data[0].SoilHumMin,
       user: null,
       name: name,
       status: false
@@ -33,7 +36,7 @@ export default class ValuesSettings extends Component {
     }
     if(this.state.status != false) {
       await this.getUser();
-      fetch('http://192.168.0.103:1205/minmax', {
+      fetch('http://192.168.1.14:1205/minmax', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -63,12 +66,6 @@ export default class ValuesSettings extends Component {
         console.log(error)
       }); 
       } else {
-/*         Toast.show({
-          text: "Wrong password!",
-          buttonText: "Okay",
-          position: "bottom",
-          type: "warning"
-        }) */
         Alert.alert(
           'Warning',
           'Wrong Input',
@@ -122,9 +119,9 @@ export default class ValuesSettings extends Component {
         </Header>
         <Body>
           <Content> 
-            <SettingsCard heading="Temperature" getData={this.getMinMaxTemp}/>
-            <SettingsCard heading="Air Humidity" getData={this.getMinMaxAirHum}/>
-            <SettingsCard heading="Soil Humidity" getData={this.getMinMaxSoilHum}/>
+            <SettingsCard heading="Temperature" getData={this.getMinMaxTemp} min={this.state.TempMax} max={this.state.TempMin}/>
+            <SettingsCard heading="Air Humidity" getData={this.getMinMaxAirHum} min={this.state.AirHumMin} max={this.state.AirHumMax}/>
+            <SettingsCard heading="Soil Humidity" getData={this.getMinMaxSoilHum}  min={this.state.SoilHumMin} max={this.state.SoilHumMax}/>
             <SettingsCard heading="Water Level" />
           </Content>
         </Body>

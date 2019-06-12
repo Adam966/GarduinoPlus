@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Container, Body, Content, Button, Text, Header, Thumbnail, Footer, FooterTab, Left, Icon } from 'native-base';
-import { StyleSheet, TouchableOpacity, FlatList, AsyncStorage } from 'react-native';
+import { StyleSheet, TouchableOpacity, FlatList, AsyncStorage, ActivityIndicator, Dimensions, Image } from 'react-native';
 import io from 'socket.io-client';
  
 
@@ -53,7 +53,8 @@ export default class PlantInfo extends Component {
       socketData: data,
       user: "",
       minMax: "",
-      name: name
+      name: name,
+      isLoading: true
     };
 
     this.socket = io('http://192.168.0.103:1205');
@@ -98,13 +99,12 @@ export default class PlantInfo extends Component {
   componentDidMount = async () => {
     await this.getUser();
     await this.getData();
-    console.log('mount');
-    
+    this.setState({isLoadig: false}); 
   }
   
   getData = async () => {
     console.log('data');
-    await fetch('http://192.168.0.103:1205/minmax', {
+    await fetch('http://192.168.1.14:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export default class PlantInfo extends Component {
       .then((responseJson) => {
         console.log(responseJson);
         
-        this.setState({minMax: responseJson}); 
+        this.setState({minMax: responseJson});
       })
     .catch((error) => {
       console.log(error)
@@ -132,7 +132,10 @@ export default class PlantInfo extends Component {
   };
   
   render() {
-    return (
+    if(this.state.isLoadig) {
+      return (<ActivityIndicator style={{marginTop: Dimensions.get('window').height / 2}} size="large" color="'#1f313a"/>)
+    } else {
+      return (
       <Container style={{backgroundColor: '#d2e3e5'}}>
         <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
           <Left>
@@ -143,9 +146,12 @@ export default class PlantInfo extends Component {
             </Button>
           </Left>
           <Body> 
-          <Thumbnail small source={require('../../assets/plant.png')}/>    
+            <Thumbnail small source={require('../../assets/plant.png')}/>    
           </Body>
-          <Text style={styles.name}>{this.state.name}</Text>  
+          <Text style={styles.name}>{this.state.name}</Text>
+          <TouchableOpacity onPress={() => {console.log('CLICK')}}>
+            <Image source={{uri: '../../assets/icon4.svg'}} style={{width: 10, height: 10}}/> 
+          </TouchableOpacity>
         </Header>
         <Body>
           <Content style={{backgroundColor: '#d2e3e5'}}>
@@ -166,14 +172,14 @@ export default class PlantInfo extends Component {
           <Footer>
             <FooterTab style={{backgroundColor: '#1f313a'}}>
               <Button
-                onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial, name: this.state.name})}
+                onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial, name: this.state.name, data: this.state.minMax})}
               >
                 <Text style={{color: 'white'}}>Plant Settings</Text>
               </Button>
             </FooterTab>
           </Footer>
       </Container>
-      );
+      );}
     }
 }
 

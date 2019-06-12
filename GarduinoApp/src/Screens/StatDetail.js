@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Text, Body, Header, Icon, Thumbnail, Left, Button, FooterTab, Footer } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 
 import Graph from '../Modules/Graph';
 
@@ -13,41 +13,41 @@ export default class StatDetail extends Component {
     const { navigation } = this.props;
     const arduinoSerial = navigation.getParam('serial', 'no serial');
     this.state = {
-      arduiserial: arduinoSerial,
+      arduinoserial: arduinoSerial,
       user:"",
       Interval:"",
+      isLoadig: true
     };
   }
 
   componentDidMount = async () => {
     await this.getUser();
+    this.setState({isLoadig: false});
+
   }
 
   changeReq = async (interval) => {
-    console.log("test");
-    this.setState({Interval: interval});
+    await this.setState({Interval: interval});
     await this.getData();
-   /*console.log("token"+this.state.user.token);
-    console.log("id"+this.state.user.id);*/
   }
 
   getData = async () => {
-    await fetch('http://192.168.0.103:1205/plantData', {
+    await fetch('http://192.168.1.14:1205/plantData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.state.user.token,
       },
       body: JSON.stringify({
-        ArduinoSerial: this.state.arduinoSerial,
-        Interval:this.state.Interval,
-
+        ArduinoSerial: this.state.arduinoserial,
+        Interval :this.state.Interval,
       })
     })
     .then((response) => response.json())
       .then((responseJson) => {
-        //this.setState({dataSource: responseJson}); 
+        this.setState({dataSource: responseJson}); 
         console.log(responseJson);
+        
       })
     .catch((error) => {
       console.log(error)
@@ -61,6 +61,9 @@ export default class StatDetail extends Component {
   };
 
   render() {
+    if(this.state.isLoadig) {
+      return (<ActivityIndicator style={{marginTop: Dimensions.get('window').height / 2}} size="large" color="'#1f313a"/>)
+    } else {
     return (
       <Container style={{backgroundColor: '#d2e3e5'}}>
         <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
@@ -74,7 +77,7 @@ export default class StatDetail extends Component {
           <Body>
             <Thumbnail small source={require('../../assets/plant.png')} />     
           </Body>
-          <Text style={styles.name}>Plant name</Text>  
+          <Text style={styles.name}>{this.props.name}</Text>  
         </Header>
         <Body >
           <Graph />
@@ -94,6 +97,7 @@ export default class StatDetail extends Component {
         </Footer>
       </Container>
     );
+    }
   }
 }
 
