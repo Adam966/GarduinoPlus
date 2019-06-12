@@ -896,7 +896,7 @@ $(document).ready(() => {
 			console.log("sent successfully");
 			console.log(result);
 	       
-		   let obj = result;
+		   let obj = JSON.parse(result);
 		   console.log(obj.optimalValues.TempMin);
 	       //console.log(obj[0].TemperatureMax);
 	       //console.log(slider1);
