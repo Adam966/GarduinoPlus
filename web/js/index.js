@@ -107,6 +107,9 @@ $(document).ready(() => {
 	let plantArduino = JSON.parse(localStorage.getItem('plantArduino'));
 	console.log(plantArduino);
 
+	let arduinoArr = localStorage.getItem('ArduinoIDarr');
+	console.log(arduinoArr);
+
 	let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
 	console.log(loggedUser);
 
@@ -114,6 +117,7 @@ $(document).ready(() => {
 	console.log("User ID = "+userID);
 
 	let arduinoID = plantArduino.ArduinoSerial;
+
 	let plantName = plantArduino.PlantName;
 
 	plantNameDiv.html(plantName);
@@ -284,8 +288,13 @@ $(document).ready(() => {
 	socket.on('connect', (data) => {
 	    console.log('check',socket.connected);
 	    //socket.emit('weatherData');
-	    //TODO dorobit socket.emit
-	    socket.emit('setIdentifierW',"{\"IDUser\":\""+userID+"\",\"ArduinoSerial\":\""+arduinoID+"\"}");
+	    let kokot = "["+arduinoArr+"]";
+	    console.log(kokot);
+	    //let json = JSON.stringify({"IDUser":userID,"ArduinoSerial":kokot});
+	    let json = "{\"IDUser\":"+userID+",\"ArduinoSerial\":"+kokot+"}";
+
+	    console.log("json = "+json);
+		socket.emit('setIdentifierW',json);
 	    console.log(data);
     });
 	
@@ -581,7 +590,7 @@ $(document).ready(() => {
 
 	//last week data for charts
 	lastWeek.click(() => {
-
+			console.log("test last week");
 			$.ajax({
 			type: "POST",
 		    contentType: "application/json; charset=utf-8",
@@ -638,7 +647,7 @@ $(document).ready(() => {
 	});
 
 	lastMonth.click(() => {
-
+			console.log("test last month");
 			$.ajax({
 			type: "POST",
 		    contentType: "application/json; charset=utf-8",

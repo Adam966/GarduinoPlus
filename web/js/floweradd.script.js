@@ -21,6 +21,7 @@ $(document).ready(() => {
 	console.log("ID usera = "+userID);
 
 	let plants =[];
+	let arduinoSerial = [];
 	
 	$.ajax({
 			  type: "POST",
@@ -46,6 +47,7 @@ $(document).ready(() => {
 		           	rslt = JSON.parse(result);
 		           	//localStorage.setItem('arduinoID',JSON.stringify(rslt[0].ArduinoSerial));
 					generatePlants(rslt);
+					localStorage.setItem('ArduinoIDarr',generateArrSerial(rslt));
 					//location.href="index.html";
 		           }
 		           
@@ -68,6 +70,13 @@ $(document).ready(() => {
 			plants.push(arr[i]);
 			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div><span class='arduinoHeading'>ArduinoID:<span class='arduinoID'>"+arr[i].ArduinoSerial+"</span></span></div>");
 		}
+	}
+
+	const generateArrSerial = (arr) => {
+		for(let i=0;i<arr.length;i++){
+			arduinoSerial.push("\""+arr[i].ArduinoSerial.toString()+"\"");
+		}
+		return arduinoSerial;
 	}
 
 	onoff.click(() => {
