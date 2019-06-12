@@ -106,20 +106,23 @@ $(document).ready(() => {
 	//ArduinoSerial,PlantName
 	let plantArduino = JSON.parse(localStorage.getItem('plantArduino'));
 	console.log(plantArduino);
-
+	//arduino pole
 	let arduinoArr = localStorage.getItem('ArduinoIDarr');
 	console.log(arduinoArr);
-
+	//IDUser token
 	let loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
 	console.log(loggedUser);
-
+	//IDUser
 	let userID = loggedUser.ID;
 	console.log("User ID = "+userID);
-
+	//User's token
+	let token = loggedUser.Token;
+	console.log(token);
+	//ArduinoSerial only 1
 	let arduinoID = plantArduino.ArduinoSerial;
-
+	//Plant Name
 	let plantName = plantArduino.PlantName;
-
+	//Plant Name to div
 	plantNameDiv.html(plantName);
 
 	console.log(arduinoID+plantName);
@@ -202,7 +205,7 @@ $(document).ready(() => {
 	$.ajax({
 			type: "POST",
 		    contentType: "application/json; charset=utf-8",
-		    url: "http://localhost:1205/plantData",
+		    url: "http://localhost:1205/minmax",
 		    data: "{\"ArduinoSerial\":\""+arduinoID+"\",}",
 			    success: function (result,textStatus,xhr) {
 			           console.log("it works");
@@ -288,10 +291,9 @@ $(document).ready(() => {
 	socket.on('connect', (data) => {
 	    console.log('check',socket.connected);
 	    //socket.emit('weatherData');
-	    let kokot = "["+arduinoArr+"]";
-	    console.log(kokot);
+	    let arr = "["+arduinoArr+"]";
 	    //let json = JSON.stringify({"IDUser":userID,"ArduinoSerial":kokot});
-	    let json = "{\"IDUser\":"+userID+",\"ArduinoSerial\":"+kokot+"}";
+	    let json = "{\"IDUser\":"+userID+",\"ArduinoSerial\":"+arr+"}";
 
 	    console.log("json = "+json);
 		socket.emit('setIdentifierW',json);
