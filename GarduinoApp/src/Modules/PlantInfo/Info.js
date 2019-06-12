@@ -6,10 +6,9 @@ import { Dimensions  } from 'react-native';
 export default class Info extends Component {
   constructor(props) {
     super(props);
-
-    const arduinoSerial = navigation.getParam('serial', 'no serial');
+    // const { navigation } = this.props;
+    // const arduinoSerial = navigation.getParam('serial', 'no serial');
     this.state = {
-      arduiserial: arduinoSerial
     };
   }
 
@@ -17,8 +16,8 @@ export default class Info extends Component {
     return (
       <Container style={styles.box}>
         <Content header style={{zIndex: 2}}><Text style={styles.header}>{this.props.name}</Text></Content>
-        <Content style={{zIndex: 2}}><Text style={styles.value}>{this.props.value}</Text></Content>
-        <Content style={{ zindex: 1, backgroundColor: '#3ce578', position: 'absolute', bottom: 0, height: this.props.height, width: '100%',borderBottomLeftRadius: 5, 
+        <Content style={{zIndex: 2}}><Text style={styles.value}>{this.props.value + this.props.sign}</Text></Content>
+        <Content style={{ zindex: 1, backgroundColor: this.props.color, position: 'absolute', bottom: 0, height: this.props.height + '%' , width: '100%',borderBottomLeftRadius: 5, 
         borderBottomRightRadius:5}}>
         </Content>
       </Container>

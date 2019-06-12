@@ -15,10 +15,13 @@ export default class Login extends Component {
     };
   }
 
+/*   componentDidMount = async () => {
+    await this.getUser();
+  } */
 
   login = () => {
     if(this.state.password || this.state.login != "") {
-      fetch('http://192.168.43.31:1205/login', {
+      fetch('http://192.168.1.14:1205/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,6 +54,18 @@ export default class Login extends Component {
     }
   }
 
+  /* getUser = async () => {
+    try {
+      let User = await AsyncStorage.getItem('User');
+      console.log('user'+User);
+      this.props.navigation.navigate('PlantListRoute');
+      
+    } catch (error) {
+      console.log('login');
+      
+    }
+  };
+ */
   saveUserId = async () => {
     try {
       await AsyncStorage.setItem('User', JSON.stringify(this.state.user));

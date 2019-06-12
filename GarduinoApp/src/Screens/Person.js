@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, AsyncStorage } from 'react-native';
+import { StyleSheet, Dimensions, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Header, Container, Body, Content, Text, Left, Button, Icon } from 'native-base';
 
 export default class Person extends Component {
@@ -39,15 +39,15 @@ export default class Person extends Component {
           </Header>
           <Body style={{backgroundColor: '#d2e3e5', width: Dimensions.get('window').width}}>
             <Content>
-              <Text>Name: </Text>
-              <Text>{this.state.user.name}</Text>
-              <Text>Email: </Text>
-              <Text>{this.state.user.email}</Text>
+              <Text style={styles.title}>Name: </Text>
+              <Text style={styles.value}>{this.state.user.name}</Text>
+              <Text style={styles.title}>Email: </Text>
+              <Text style={styles.value}>{this.state.user.email}</Text>
               <TouchableOpacity onPress={() => Linking.openURL('http://google.com')}>
-                <Text style={{color: 'blue', textDecorationLine: 'underline', color: '#1f313a'}}>
+                <Text style={{color: 'blue', textDecorationLine: 'underline', color: '#1f313a', marginTop: 15}}>
                   Change password
                 </Text>
-          </TouchableOpacity>
+              </TouchableOpacity>
             </Content>
           </Body>
         </Container>
@@ -57,10 +57,19 @@ export default class Person extends Component {
 
 const styles = StyleSheet.create({
   name: {
-    marginRight: 85,
+    marginLeft: -150,
     fontSize: 20, 
     fontWeight: '300',
     color: 'white',
     paddingTop: 10
+  }, 
+  title: {
+    fontSize: 30,
+    marginVertical: 10,
+    fontWeight: '900'
+  },
+  value: {
+    fontSize: 25,
+    marginBottom: 10,
   }
 });

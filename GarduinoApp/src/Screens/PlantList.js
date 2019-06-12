@@ -19,11 +19,11 @@ export default class PlantList extends Component {
 
   componentDidMount = async () => {
       await this.getUser();
-      this.getData();
+      await this.getData();
   }
 
   getData = async () => {
-    await fetch('http://192.168.43.31:1205/plants', {
+    await fetch('http://192.168.1.14:1205/plants', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +38,8 @@ export default class PlantList extends Component {
         this.setState({dataSource: responseJson}); 
       })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
+      //AsyncStorage.removeItem('User', () => {this.props.navigation.navigate('LoginRoute');})
     }); 
   }
 

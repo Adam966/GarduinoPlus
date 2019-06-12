@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Text, Header, Left, Button, Icon, Thumbnail, Body, Content, Footer, FooterTab } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { Container, Text, Header, Left, Button, Icon, Thumbnail, Body, Content, Footer, FooterTab, Toast } from 'native-base';
+import { StyleSheet, AsyncStorage, Alert } from 'react-native';
 
 import SettingsCard from '../Modules/Settings/SettingsCard';
 
@@ -12,59 +12,78 @@ export default class ValuesSettings extends Component {
     super(props);
     const { navigation } = this.props;
     const arduinoSerial = navigation.getParam('serial', 'no serial');
+    const name = navigation.getParam('name', 'no serial');
     this.state = {
-      arduiserial: arduinoSerial,
+      arduinoserial: arduinoSerial,
       TempMax: null, 
       TempMin: null, 
       AirHumMax: null, 
       AirHumMin: null, 
       SoilHumMax: null, 
       SoilHumMin: null,
-      user: ""
+      user: null,
+      name: name,
+      status: false
     };
   }
 
+  sendData = async () => {
+    if(!((this.state.TempMax || this.state.TempMin || this.state.AirHumMax || this.state.AirHumMin || this.state.SoilHumMax || this.state.SoilHumMin) == null)) {
+      this.setState({status: true})
+    }
+    if(this.state.status != false) {
+      await this.getUser();
+      fetch('http://192.168.1.14:1205/minmax', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.state.user.token,
+        },
+        body: JSON.stringify({
+          identification: {
+            ArduinoSerial: this.state.arduinoserial, 
+            IDUser: this.state.user.id, 
+            PlantName: this.state.name
+        }, optimalValues: {
+            TempMax: this.state.TempMax, 
+            TempMin: this.state.TempMin, 
+            AirHumMax: this.state.AirHumMax, 
+            AirHumMin: this.state.AirHumMin, 
+            SoilHumMax: this.state.SoilHumMax, 
+            SoilHumMin: this.state.SoilHumMin
+            }
+        }) 
+      })
+      .then((response) => {
+        //add approve message
+        console.log(response.status);
+        
+      })
+      .catch((error) => {
+        console.log(error)
+      }); 
+      } else {
+/*         Toast.show({
+          text: "Wrong password!",
+          buttonText: "Okay",
+          position: "bottom",
+          type: "warning"
+        }) */
+        Alert.alert(
+          'Warning',
+          'Wrong Input',
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+        );
+      }
+    }
+  
   getUser = async () => {
-    console.log('user');
     let User = await AsyncStorage.getItem('User');
     return this.setState({user: JSON.parse(User)});
   };
-
-  sendData = async () => {
-    await this.getUser();
-    console.log(this.state.user);
-    await fetch('http://192.168.43.31:1205/minmax', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': this.state.user.token,
-      },
-      body: JSON.stringify({
-        identification: {
-          ArduinoSerial: this.state.arduinoSerial, 
-          IDUser: this.state.user.id, 
-          PlantName: this.props.name
-      }, optimalValues: {
-          TempMax: this.state.TempMax, 
-          TempMin: this.state.TempMin, 
-          AirHumMax: this.state.AirHumMax, 
-          AirHumMin: this.state.AirHumMin, 
-          SoilHumMax: this.state.SoilHumMax, 
-          SoilHumMin: this.state.SoilHumMin
-          }
-      }, console.log(identification)
-      ) 
-    })
-    .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        
-        this.setState({minMax: responseJson}); 
-      })
-    .catch((error) => {
-      console.log(error)
-    }); 
-  }
 
   getMinMaxTemp = (data) => {
     this.setState({TempMax: data.max});
@@ -99,7 +118,7 @@ export default class ValuesSettings extends Component {
         <Body>
           <Thumbnail small source={require('../../assets/plant.png')} />     
         </Body>
-          <Text style={styles.name}>{this.props.name}</Text>  
+          <Text style={styles.name}>{this.state.name}</Text>  
         </Header>
         <Body>
           <Content> 

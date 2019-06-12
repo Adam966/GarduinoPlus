@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, AsyncStorage } from 'react-native';
-import { Container, ListItem, Left, Button, Icon, Body, Text, Header, Thumbnail } from 'native-base';
+import { StyleSheet, AsyncStorage, TouchableOpacity } from 'react-native';
+import { Container, ListItem, Left, Icon, Body, Text, Header, Content, Right, Button } from 'native-base';
 
 export default class Notification extends Component {
   static navigationOptions = {
@@ -32,7 +32,7 @@ export default class Notification extends Component {
         <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
           <Text style={styles.name}>{this.state.user.name}</Text>
         </Header>
-            <ListItem icon>
+{/*             <ListItem icon>
               <Left>
                 <Button transparent>
                   <Icon  name='settings' style={{color: '#1f313a', fontSize: 33}}/>
@@ -41,29 +41,27 @@ export default class Notification extends Component {
               <Body>
                 <Text>Settings</Text>
               </Body>
-            </ListItem>
-            <ListItem icon>
-              <Left>
-                <Button transparent
-                  onPress={() => this.props.navigation.navigate('PersonRoute')}
-                >
-                  <Icon  name='person' style={{ color: '#1f313a', fontSize: 33}}/>
-                </Button> 
-              </Left>
-              <Body>
-                <Text>Profile</Text>
-              </Body>
-            </ListItem>
-            <ListItem icon>
-              <Left>
-                <Button transparent onPress={() => this.props.navigation.navigate('LoginRoute')}>
-                  <Icon  name='md-log-out' style={{ color: '#1f313a', fontSize: 33}}/>
-                </Button> 
-              </Left>
-              <Body>
-                <Text>Log out</Text>
-              </Body>
-            </ListItem>
+            </ListItem> */}
+                  <ListItem icon>
+                  <TouchableOpacity style={{ width: 100}} onPress={() => this.props.navigation.navigate('PersonRoute')}>
+                    <Left>
+                      <Icon name='person' style={{ color: '#1f313a', fontSize: 33}}/>
+                    </Left>
+                    <Body>
+                      <Text >Profile</Text>
+                    </Body>
+                    </TouchableOpacity> 
+                  </ListItem>
+                <ListItem icon>
+                  <TouchableOpacity style={{ width: 200}} onPress={() => AsyncStorage.removeItem('User', () => {this.props.navigation.navigate('LoginRoute');})}>
+                    <Left>
+                        <Icon name='md-log-out' style={{ color: '#1f313a', fontSize: 33}}/>
+                    </Left>
+                    <Body>
+                      <Text>Log out</Text>
+                    </Body>
+                  </TouchableOpacity> 
+                </ListItem>
       </Container>
     );
   }

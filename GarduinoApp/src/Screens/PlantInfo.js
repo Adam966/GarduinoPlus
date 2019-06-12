@@ -15,37 +15,79 @@ export default class PlantInfo extends Component {
     super(props);
     const { navigation } = this.props;
     const arduinoSerial = navigation.getParam('serial', 'no serial');
+    const name = navigation.getParam('name', 'no name');
+
+    const data = [
+      {
+        index: 'Temperature',
+        value: 0,
+        height: 0,
+        sign: ' °C',
+        color: ""
+      },
+      {
+        index: 'Air Humidity',
+        value: 0,
+        height: 0,
+        sign: ' %',
+        color: ""
+      },
+      {
+        index: 'Soil Humidity',
+        value: 0,
+        height: 0,
+        sign: ' %',
+        color: ""
+      },
+      {
+        index: 'Water Surface',
+        value: 0,
+        height: 0,
+        sign: ' %',
+        color: ""
+      }
+    ]
 
     this.state = {
       arduiserial: arduinoSerial,
-      socketData: "",
+      socketData: data,
       user: "",
-      minMax: ""
+      minMax: "",
+      name: name
     };
 
-    this.socket = io('http://192.168.43.89:1205');
-    this.socket.emit('setIdentifierW', {"IDUser":1, "ArduinoSerial": this.state.arduiserial});
+    this.socket = io('http://192.168.1.14:1205');
+    this.socket.emit('setIdentifierW', {"IDUser":this.state.user.id, "ArduinoSerial": this.state.arduiserial});
     this.socket.on('plantData', plantData => {
+      console.log("socket");
+  
       let data = [
         {
           index: 'Temperature',
           value: plantData.info.Temp,
-          height: 50
+          height: plantData.info.Temp,
+          sign: ' °C',
+          color: (plantData.info.Temp < this.state.minMax[0].TempMax && plantData.info.Temp > this.state.minMax[0].TempMin) ? "#3ce578" : "#e54242"        
         },
         {
           index: 'Air Humidity',
-          value: plantData.info.SoilHum,
-          height: 50
+          value: plantData.info.AirHum,
+          height: plantData.info.AirHum ,
+          sign: ' %',
+          color: (plantData.info.Temp < this.state.minMax[0].AirHumMax && plantData.info.Temp > this.state.minMax[0].AirHumMin) ? "#3ce578" : "#e54242"                  
         },
         {
           index: 'Soil Humidity',
-          value: plantData.info.AirHum,
-          height: 50
+          value: plantData.info.SoilHum,
+          height: plantData.info.SoilHum,
+          sign: ' %',
+          color: (plantData.info.Temp < this.state.minMax[0].SoilHumMax && plantData.info.Temp > this.state.minMax[0].SoilHumMin) ? "#3ce578" : "#e54242"                  
         },
         {
           index: 'Water Surface',
           value: plantData.info.WatSurf,
-          height: 50
+          height: 50,
+          sign: ' %'
         }
       ]
       
@@ -62,7 +104,7 @@ export default class PlantInfo extends Component {
   
   getData = async () => {
     console.log('data');
-    await fetch('http://192.168.43.31:1205/minmax', {
+    await fetch('http://192.168.1.14:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,7 +145,7 @@ export default class PlantInfo extends Component {
           <Body> 
           <Thumbnail small source={require('../../assets/plant.png')}/>    
           </Body>
-          <Text style={styles.name}>{this.props.name}</Text>  
+          <Text style={styles.name}>{this.state.name}</Text>  
         </Header>
         <Body>
           <Content style={{backgroundColor: '#d2e3e5'}}>
@@ -111,10 +153,10 @@ export default class PlantInfo extends Component {
               data={this.state.socketData}
               renderItem={({item}) => 
                 <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.props.name})}
+                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.state.name})}
                     style = {{margin: 10, marginBottom: 0}}
                 >
-                  <Info value={item.value} name={item.index}/>
+                  <Info value={item.value} name={item.index} height={item.height} sign={item.sign} color={item.color}/>
                 </TouchableOpacity> 
               }
               keyExtractor={({id}, index) => id}
@@ -124,7 +166,7 @@ export default class PlantInfo extends Component {
           <Footer>
             <FooterTab style={{backgroundColor: '#1f313a'}}>
               <Button
-                onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial})}
+                onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial, name: this.state.name})}
               >
                 <Text style={{color: 'white'}}>Plant Settings</Text>
               </Button>

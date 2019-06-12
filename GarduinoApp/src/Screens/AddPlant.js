@@ -7,7 +7,7 @@ export default class AddPlant extends Component {
         header: null,
       }
   constructor(props) {
-    super(props); 
+    super(props);
     this.state = {
         hasCameraPermission: null,
         arduinoSerial: "",
@@ -22,7 +22,7 @@ export default class AddPlant extends Component {
     await this.getUser();
     console.log(this.state.user);
     
-    fetch('http://192.168.43.31:1205/minmax', {
+    fetch('http://192.168.1.14:1205/minmax', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -45,6 +45,7 @@ export default class AddPlant extends Component {
       })
       .then((response) => {
         //add approve message 
+        console.log(response);
       })
       .catch((error) => {
           console.log(error)
