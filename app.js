@@ -11,9 +11,8 @@ const bodyParser = require("body-parser");
 let jwt = require('jsonwebtoken');
 let cors = require('cors');
 
-
-app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.json());
 console.log("Everything is up");
 
 io.set('origins', '*:*');
@@ -26,6 +25,7 @@ app.use(function(req, res, next) {
 
 let arduinoClient = [];
 let webClient = [];
+let appClient = [];
 
 
 console.log("Server started");
@@ -41,7 +41,6 @@ io.on('connection', socket =>{
     });
 
     socket.on('setIdentifierW', data => {
-
         data = JSON.parse(data);
         let clientInfo = new Object();
         clientInfo.socketID = socket.id;
@@ -52,7 +51,40 @@ io.on('connection', socket =>{
             clientInfo.arduinoSerial.push(data.ArduinoSerial[i]);
         }
         webClient.push(clientInfo);
-        console.log(clientInfo);
+    });
+
+    socket.on('setIdentifierApp', data => {
+
+        data = JSON.parse(data);
+        worker.serialMatchW(appClient, data.ArduinoSerial[0], result =>{
+            if(result > -1)
+            {
+                if(io.sockets.connected[appClient[result].socketID])
+                {
+                    console.log("Duplicate found, disconnecting");
+                    io.sockets.connected[appClient[result].socketID].disconnect();
+                }
+                else{pushClient();}
+            }
+            else
+            {
+                pushClient();
+            }
+            console.log(appClient);
+        });
+
+        function pushClient()
+        {
+            let clientInfo = new Object();
+            clientInfo.socketID = socket.id;
+            clientInfo.userID = data.IDUser;
+            clientInfo.arduinoSerial = [];
+            for(let i = 0; i<data.ArduinoSerial.length; i++)
+            {
+                clientInfo.arduinoSerial.push(data.ArduinoSerial[i]);
+            }
+            appClient.push(clientInfo);
+        }
     });
 
 	socket.on('arduinoData', data =>{   
@@ -91,16 +123,30 @@ io.on('connection', socket =>{
     });
     
     socket.on('disconnect', ()=>{
-        console.log('Client has disconnected');
-        worker.disconnectMatchW(webClient, socket.id, result =>{
+        worker.disconnectMatch(webClient, socket.id, result =>{
             if(result > -1)
             {
                 webClient.splice(result,1);
+                console.log('Web client disconnected');
             }
             else
             {
-                worker.disconnectMatchA(arduinoClient, socket.id, result =>{
-                    if(result > -1){arduinoClient.splice(result,1);}
+                worker.disconnectMatch(appClient, socket.id, result =>{
+                    if(result > -1)
+                    {
+                        appClient.splice(result,1);
+                        console.log('App Client disconnected');
+                    }
+                    else
+                    {
+                        worker.disconnectMatch(arduinoClient, socket.id, result =>{
+                            if(result > -1)
+                            {
+                                arduinoClient.splice(result,1);
+                                console.log('Arduino client disconnected');
+                            }
+                        });  
+                    }
                 });  
             }
         });
