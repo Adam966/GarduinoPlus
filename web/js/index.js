@@ -566,6 +566,9 @@ $(document).ready(() => {
 
 			           if(xhr.status == 200){
 			           		console.log(result);
+			           		if(!$.trim(result)){
+			           			console.log("blank data");
+			           		}else{
 			                let obj = JSON.parse(result);
 					       	console.log(obj);
 
@@ -590,6 +593,7 @@ $(document).ready(() => {
 					    	Chart4.data.datasets[0].data = waterToChart;
 					    	Chart4.data.labels = date;
 					    	Chart4.update();
+					    	}
 			           }
 			           
 				},
@@ -634,8 +638,12 @@ $(document).ready(() => {
 			           console.log(xhr.status);
 
 			           if(xhr.status == 200){
+			           		console.log(result);
+			           		if(!$.trim(result)){
+			           			console.log("blank data");
+			           		}else{
 			                let obj = JSON.parse(result);
-					       	//console.log(obj);
+					       	console.log(obj);
 
 							let tempToChart = obj.map(({ Temperature }) => Temperature);
 							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
@@ -658,6 +666,7 @@ $(document).ready(() => {
 					    	Chart4.data.datasets[0].data = waterToChart;
 					    	Chart4.data.labels = date;
 					    	Chart4.update();
+					    	}
 			           }
 			           
 				},
@@ -700,8 +709,12 @@ $(document).ready(() => {
 			           console.log(xhr.status);
 
 			           if(xhr.status == 200){
+			           		console.log(result);
+			           		if(!$.trim(result)){
+			           			console.log("blank data");
+			           		}else{
 			                let obj = JSON.parse(result);
-					       	//console.log(obj);
+					       	console.log(obj);
 
 							let tempToChart = obj.map(({ Temperature }) => Temperature);
 							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
@@ -724,6 +737,7 @@ $(document).ready(() => {
 					    	Chart4.data.datasets[0].data = waterToChart;
 					    	Chart4.data.labels = date;
 					    	Chart4.update();
+					    	}
 			           }
 			           
 				},
