@@ -1003,7 +1003,7 @@ $(document).ready(() => {
 	});
 
 	water.click(() => {
-
+		console.log("test water");
 		if(rsltMinus >0){
 			//console.log(usesValue.text());
 			//console.log(rsltMinus);
@@ -1015,7 +1015,8 @@ $(document).ready(() => {
 			usesValue.html("");
 	   		usesLeft.html("Refill the water");
 		}
-
+		let json = "{\"ArduinoSerial\":"+arduinoID+"}";
+		console.log(json);
 		socket.emit('water', {"ArduinoSerial":arduinoID});
 
 	});
