@@ -18,7 +18,7 @@ module.exports = {
     writeMinMax(req, res)
     {
       worker.writeMinMax(req.body, success =>{
-        if(success){res.status(200).send();}
+        if(success){res.status(200).send(JSON.stringify(req.body));}
         else{res.status(403).send();}
       });
     },
