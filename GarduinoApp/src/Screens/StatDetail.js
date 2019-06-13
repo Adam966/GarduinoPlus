@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Text, Body, Header, Icon, Thumbnail, Left, Button, FooterTab, Footer } from 'native-base';
-<<<<<<< Updated upstream
 import { StyleSheet, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 
-=======
-import { StyleSheet,AsyncStorage  } from 'react-native';
->>>>>>> Stashed changes
 
 import Graph from '../Modules/Graph';
 
@@ -22,10 +18,7 @@ export default class StatDetail extends Component {
       arduinoserial: arduinoSerial,
       user:"",
       Interval:"",
-<<<<<<< Updated upstream
       isLoadig: true,
-=======
->>>>>>> Stashed changes
       dataSource:"",
       statname: statName,
     };
@@ -38,14 +31,11 @@ export default class StatDetail extends Component {
   }
 
   changeReq = async (interval) => {
-<<<<<<< Updated upstream
 
     await this.setState({Interval: interval});
-=======
     console.log("test");
     console.log(this.state.statname);
     this.setState({Interval: interval});
->>>>>>> Stashed changes
     await this.getData();
   }
 
@@ -58,12 +48,8 @@ export default class StatDetail extends Component {
       },
       body: JSON.stringify({
         ArduinoSerial: this.state.arduinoserial,
-<<<<<<< Updated upstream
         Interval :this.state.Interval,
-=======
-        Interval:this.state.Interval,
 
->>>>>>> Stashed changes
       })
     })
     .then((response) => response.json())
