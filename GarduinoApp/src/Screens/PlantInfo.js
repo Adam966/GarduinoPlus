@@ -15,6 +15,18 @@ export default class PlantInfo extends Component {
     const { navigation } = this.props;
     const arduinoSerial = navigation.getParam('serial', 'no serial');
     const name = navigation.getParam('name', 'no name');
+    const allArduino = navigation.getParam('data', 'no name');
+
+    console.log(allArduino);
+    let dataArray = [];
+
+    allArduino.map((item) => {
+      dataArray.push(item.ArduinoSerial.toString());
+    }) 
+    
+    console.log('after' + dataArray);
+    
+    
 
     const data = [
       {
@@ -53,11 +65,11 @@ export default class PlantInfo extends Component {
       user: "",
       minMax: "",
       name: name,
-      isLoading: true
+      isLoading: true,
+      serialAll: dataArray
     };
 
-    this.socket = io('http://192.168.2.15:1205');
-    this.socket.emit('setIdentifierApp', {"IDUser":this.state.user.id, "ArduinoSerial": this.state.arduiserial});
+    this.socket = io('http://192.168.2.133:1205');
     this.socket.on('plantData', plantData => {
       console.log("socket");
   
@@ -102,8 +114,8 @@ export default class PlantInfo extends Component {
   }
   
   getData = async () => {
-    console.log('data');
-    await fetch('http://192.168.2.15:1205/minmax', {
+    this.socket.emit('setIdentifierApp', JSON.stringify({"IDUser": this.state.user.id, "ArduinoSerial":  this.state.serialAll }));
+    await fetch('http://192.168.2.133:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

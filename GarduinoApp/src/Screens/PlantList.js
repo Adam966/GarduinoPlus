@@ -24,7 +24,7 @@ export default class PlantList extends Component {
   }
 
   getData = async () => {
-    await fetch('http://192.168.2.15:1205/plants', {
+    await fetch('http://192.168.2.133:1205/plants', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default class PlantList extends Component {
                   data={this.state.dataSource}
                   renderItem={({item}) => 
                       <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('PlantInfoRoute', {serial: item.ArduinoSerial, name: item.PlantName})}
+                        onPress={() => this.props.navigation.navigate('PlantInfoRoute', {serial: item.ArduinoSerial, name: item.PlantName, data: this.state.dataSource})}
                         style = {{margin: 10, marginBottom: 0}}
                       >
                       <Plant name={item.PlantName}/>

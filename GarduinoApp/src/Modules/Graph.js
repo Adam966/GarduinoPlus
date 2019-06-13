@@ -5,30 +5,33 @@ import { Dimensions } from 'react-native';
 
 
 
-export default class Chart extends Component {
+export default class Graph extends Component {
   constructor(props) {
+    super(props);
     const data = {
       labels: [],
       datasets: [{
-        data:this.props.data
+        data: this.props.data
       }]
     }
-    super(props);
     this.state = {
-      //data:this.props.data,
-      data:data
-     // statname:this.props.statname
+      data: data
     };
+
+    console.log(this.props.data)
   }
 
   render() {
     return (
         <Content>
             <LineChart
-                data = {this.state.data}
+              data = {{
+                labels: [],
+                datasets: [{data: this.props.data}]
+              }}
                     width={Dimensions.get('window').width - 30} 
                     height={220}
-                    //yAxisLabel={data.datasets.data}
+                    yAxisLabel=""
                     chartConfig={{
                       backgroundColor: '#F0FEFF',
                       backgroundGradientFrom: '#F0FEFF',

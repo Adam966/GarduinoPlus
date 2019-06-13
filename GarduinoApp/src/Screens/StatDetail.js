@@ -21,7 +21,8 @@ export default class StatDetail extends Component {
       isLoadig: true,
       dataSource:"",
       statname: statName,
-      filteredData:null,
+      filteredData: [],
+      render: false
     };
   }
 
@@ -31,16 +32,8 @@ export default class StatDetail extends Component {
 
   }
 
-  changeReq = async (interval) => {
-    console.log("test");
-    console.log(this.state.statname);
-    this.setState({Interval: interval});
-    await this.getData();
-    await this.filterData(this.state.dataSource,this.state.statname);
-  }
-
   getData = async () => {
-    await fetch('http://192.168.2.15:1205/plantData', {
+    await fetch('http://192.168.2.133:1205/plantData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,8 +48,7 @@ export default class StatDetail extends Component {
     .then((response) => response.json())
       .then((responseJson) => {
         this.setState({dataSource: responseJson}); 
-        console.log(responseJson);
-        
+        this.filterData(this.state.dataSource, this.state.statname);
       })
     .catch((error) => {
       console.log(error)
@@ -69,25 +61,29 @@ export default class StatDetail extends Component {
     return this.setState({user: JSON.parse(User)});
   };
 
-  filterData = (data,statname) => {
-    console.log("Filter data");
-    //AirHum,Date,SoilHum,Temp,WatSurf
-    //let newStatName;
-    let newStateName;
-    if(statname === "Temperature"){
-      newStatName = "Temp";
-    }else if(statname === "Air Humidity"){
-      newStatName = "AirHum";
-    }else if(statname === "Soil Humidity"){
-      newStatName = "SoilHum";
-    }else if(statname === "WaterSurface"){
-      newStatName = "WaterSurf"
-    }
+  filterData = (data, statname) => {
+
     
-    let arr = data.map(({newStatName}) => newStatName);
-    this.state.setState({filteredData: arr});
-    
-    } 
+    let arr =[];
+    data.map((item) => {
+
+      if(statname === "Temperature"){
+        arr.push(item.Temp)
+      }else if(statname === "Air Humidity"){
+        arr.push(item.AirHum)
+      }else if(statname === "Soil Humidity"){
+        arr.push(item.SoilHum)
+      }else if(statname === "WaterSurface"){
+        arr.push(item.WaterSurf)
+      }
+      
+    });
+    arr.push(28);
+    arr.push(60);
+    this.setState({filteredData: arr});
+    console.log(this.state.filteredData);
+    this.setState({render: true});
+  } 
     
 
   render() {
@@ -109,18 +105,22 @@ export default class StatDetail extends Component {
           </Body>
           <Text style={styles.name}>{this.props.name}</Text>  
         </Header>
-        <Body >
-          <Graph data={this.state.filteredData}/>
+        <Body>
+          {this.state.render == true &&
+            <Graph data={this.state.filteredData}/> 
+          }
+
+          
         </Body>
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
-          <Button onPress={() => {this.changeReq("DAY");}}>
+          <Button onPress={() => {this.setState({Interval: "DAY"}, () => this.getData())}}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>Today</Text> 
               </Button>
-              <Button onPress={() => this.changeReq("WEEK")}>
+              <Button onPress={() => {this.setState({Interval: "WEEK"}, () => this.getData())}}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>7 days</Text>
               </Button>
-              <Button onPress={() => this.changeReq("MONTH")}>
+              <Button onPress={() => {this.setState({Interval: "MONTH"}, () => this.getData())}}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>Month</Text>
               </Button>
           </FooterTab>
