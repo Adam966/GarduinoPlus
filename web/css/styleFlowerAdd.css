@@ -68,6 +68,13 @@ cursor:pointer;
 
 }
 
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 160px 160px;
+}
+
 .arduinoHeading {
   margin-left:5%;
   font-size:1rem;
@@ -202,17 +209,65 @@ cursor: pointer;
 @media (max-width: 590px) {
 
 
-#middleSettings {
+#middleWrapper {
 
 /*background:red;*/
 flex-direction:column;
+align-items:center;
 
 }
 
-#middleSettings.-darkmode {
+.addedPlant {
 
-/*background:red;*/
-flex-direction:column;
+height:45vw;
+width:45vw;
+background:#F0FEFF;
+border-radius:8px;
+/*display:flex;
+flex-direction: column;
+justify-content:space-between;*/
+margin-top:3%;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+display:flex;
+flex-direction: column;
+justify-content:space-between;
+margin-top:3%;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+margin-left:7vw;
+margin-bottom:4%;
+cursor:pointer;
+
+}
+
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 120px 120px;
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
+}
+
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
 
 }
 
@@ -220,17 +275,63 @@ flex-direction:column;
 
 @media (min-width: 590px) {
 
-#middleSettings{
+#middleWrapper{
 
 /*background:grey;*/
-flex-direction:column;
 
 }
 
-#middleSettings.-darkmode {
+.addedPlant {
 
-/*background:grey;*/
-flex-direction:column;
+height:23vw;
+width:23vw;
+background:#F0FEFF;
+border-radius:8px;
+/*display:flex;
+flex-direction: column;
+justify-content:space-between;*/
+margin-top:3%;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+display:flex;
+flex-direction: column;
+justify-content:space-between;
+margin-top:3%;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+margin-left:7vw;
+margin-bottom:4%;
+cursor:pointer;
+
+}
+
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 75px 75px;
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
+}
+
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
 
 }
 
@@ -240,17 +341,63 @@ flex-direction:column;
 @media (min-width: 768px) {
 
 
-#middleSettings {
+#middleWrapper {
 
 /*background:green;*/
-flex-direction: column;
 
 }
 
-#middleSettings.-darkmode {
+.addedPlant {
 
-/*background:green;*/
+height:19vw;
+width:19vw;
+background:#F0FEFF;
+border-radius:8px;
+/*display:flex;
 flex-direction: column;
+justify-content:space-between;*/
+margin-top:3%;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+display:flex;
+flex-direction: column;
+justify-content:space-between;
+margin-top:3%;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+margin-left:7vw;
+margin-bottom:4%;
+cursor:pointer;
+
+}
+
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 85px 85px;
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
+}
+
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
 
 }
 
@@ -259,36 +406,128 @@ flex-direction: column;
 
 @media (min-width: 992px) {
 
-#middleSettings {
+#middleWrapper {
 
 /*background:yellow;*/
-flex-direction: row;
 
 }
 
-#middleSettings.-darkmode {
+.addedPlant {
 
-/*background:yellow;*/
-flex-direction: row;
+height:19vw;
+width:19vw;
+background:#F0FEFF;
+border-radius:8px;
+/*display:flex;
+flex-direction: column;
+justify-content:space-between;*/
+margin-top:3%;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+display:flex;
+flex-direction: column;
+justify-content:space-between;
+margin-top:3%;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+margin-left:7vw;
+margin-bottom:4%;
+cursor:pointer;
 
 }
+
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 90px 90px;
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
+}
+
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+
+}
+
 
 }
 
 @media (min-width: 1200px) {
 
-#middleSettings{
+#middleWrapper{
 
 /*background:blue;*/
-flex-direction: row;
 
 }
 
+.addedPlant {
 
-#middleSettings.-darkmode {
+height:15vw;
+width:15vw;
+background:#F0FEFF;
+border-radius:8px;
+/*display:flex;
+flex-direction: column;
+justify-content:space-between;*/
+margin-top:3%;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+display:flex;
+flex-direction: column;
+justify-content:space-between;
+margin-top:3%;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+margin-left:7vw;
+margin-bottom:4%;
+cursor:pointer;
 
-/*background:blue;*/
-flex-direction: row;
+}
+
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 120px 120px;
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
+}
+
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
 
 }
 
@@ -298,20 +537,65 @@ flex-direction: row;
 @media (min-width: 1400px) {
 
 
-#middleSettings{
+#middleWrapper{
 
 /*background:black;*/
-flex-direction: row;
 
 }
 
-#middleSettings.-darkmode{
+.addedPlant {
 
-/*background:black;*/
-flex-direction: row;
+height:15vw;
+width:15vw;
+background:#F0FEFF;
+border-radius:8px;
+/*display:flex;
+flex-direction: column;
+justify-content:space-between;*/
+margin-top:3%;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+display:flex;
+flex-direction: column;
+justify-content:space-between;
+margin-top:3%;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+margin-left:7vw;
+margin-bottom:4%;
+cursor:pointer;
 
 }
 
+.plantImg {
+width:100%;
+height:100%;
+background:url(../img/iconPlant.svg) center / contain no-repeat;
+background-size: 160px 160px;
+}
+
+.arduinoHeading {
+  margin-left:5%;
+  font-size:1rem;
+  color:#97AFAD;
+  -webkit-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+  margin-bottom:3%; 
+  opacity:0.6;
+}
+
+.arduinoID {
+  margin-left:2%;
+}
+
+.heading {
+
+margin-left:5%;
+font-size:2rem;
+color:#97AFAD;
+-webkit-transition: all .2s linear 0s;
+transition: all .2s linear 0s;
+
+}
 
 
 }

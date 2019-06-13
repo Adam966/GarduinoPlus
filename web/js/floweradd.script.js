@@ -68,7 +68,7 @@ $(document).ready(() => {
 	const generatePlants = (arr) => {
 		for(let i=0;i<arr.length;i++){
 			plants.push(arr[i]);
-			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div><span class='arduinoHeading'>ArduinoID:<span class='arduinoID'>"+arr[i].ArduinoSerial+"</span></span></div>");
+			middleWrapper.append("<div class='addedPlant'><div class='heading'>"+arr[i].PlantName+"</div><div class='plantImg'></div><span class='arduinoHeading'>ArduinoID:<span class='arduinoID'>"+arr[i].ArduinoSerial+"</span></span></div>");
 		}
 	}
 
