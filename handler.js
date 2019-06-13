@@ -4,9 +4,16 @@ module.exports = {
     plantData(req, res)
     {
       worker.getPlantData(req.body.ArduinoSerial, req.body.Interval, data =>{
-        worker.dataAvarageByDays(data, result =>{
-          res.status(200).send(JSON.stringify(result));
-        });
+        if(req.body.Interval != "DAY")
+        {
+          worker.dataAvarageByDays(data, result =>{
+            res.status(200).send(JSON.stringify(result));
+          });
+        }
+        else
+        {
+          res.status(200).send(data);
+        }
       });
     },
 

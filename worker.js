@@ -150,14 +150,10 @@ module.exports = {
 
     getPlantData(arduinoSerial, interval, data)
     {
-      console.log(interval);
-
       database.sequelizeconn.query("SELECT Temp, AirHum, SoilHum, WatSurf, Date FROM plantinfo WHERE ArduinoSerial = :as AND Date > (NOW() - INTERVAL 1 "+ interval + ")",
       { replacements: {as: arduinoSerial}, type: database.sequelizeconn.QueryTypes.SELECT }).then(result => {
-            console.log(result);
-            data(result);
+            data(JSON.stringify(result));
       }).catch(err =>{console.log(err); data("Error");});
-      
     },
 
     writeMinMax(data, isSuccess) //writes the minimal and maximal values to the database what the webclient sent
