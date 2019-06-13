@@ -201,5 +201,4 @@ app.put('/minmax', middleware.checkToken, handler.writeMinMax);
 app.post('/minmax', middleware.checkToken, handler.getMinMax);
 
 app.post('/plants', middleware.checkToken, handler.getUserPlants);
-
 server.listen(1205);
