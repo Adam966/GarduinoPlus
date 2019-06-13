@@ -63,10 +63,10 @@ module.exports = {
             if(current == cdate)
             {
                 counter++;
-                temperature += data[i].Temperature;
-                airhumidity += data[i].AirHumidity;
-                soilhumidity += data[i].SoilHumidity;
-                watersurface += data[i].WaterSurface;
+                temperature += data[i].Temp;
+                airhumidity += data[i].AirHum;
+                soilhumidity += data[i].SoilHum;
+                watersurface += data[i].WatSurf;
                 if(i == data.length-1){pushToArray();}
             }
             else
@@ -81,7 +81,7 @@ module.exports = {
             soilhumidity = Math.round(soilhumidity/counter);
             watersurface = Math.round(watersurface/counter);
 
-            rJSON.push({"Temperature":temperature, "AirHumidity": airhumidity, "SoilHumidity":soilhumidity, "WaterSurface":watersurface, "Date":current});
+            rJSON.push({"Temp":temperature, "AirHum": airhumidity, "SoilHum":soilhumidity, "WatSurf":watersurface, "Date":current});
 
             counter = 0;
             current = cdate;
@@ -152,7 +152,7 @@ module.exports = {
     {
       console.log(interval);
 
-      database.sequelizeconn.query("SELECT Temp, AirHum, SoilHum, WatSurf,  Date FROM plantinfo WHERE ArduinoSerial = :as AND Date > (NOW() - INTERVAL 1 "+ interval + ")",
+      database.sequelizeconn.query("SELECT Temp, AirHum, SoilHum, WatSurf, Date FROM plantinfo WHERE ArduinoSerial = :as AND Date > (NOW() - INTERVAL 1 "+ interval + ")",
       { replacements: {as: arduinoSerial}, type: database.sequelizeconn.QueryTypes.SELECT }).then(result => {
             console.log(result);
             data(result);
