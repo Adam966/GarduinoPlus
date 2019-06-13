@@ -90,14 +90,14 @@ io.on('connection', socket =>{
 	socket.on('arduinoData', data =>{   
         data = JSON.parse(data);
         worker.writeData(data);
-        worker.serialMatchW(webClient, data.ArduinoSerial, result =>{
+        worker.serialMatchW(webClient, data.identification.ArduinoSerial, result =>{
             if(result > -1)
             {
                 console.log("Latest data sent to client");
                 io.to(webClient[result].socketID).emit('plantData', data);
             }
         });
-        worker.serialMatchW(appClient, data.ArduinoSerial, result =>{
+        worker.serialMatchW(appClient, data.identification.ArduinoSerial, result =>{
             if(result > -1)
             {
                 console.log("Latest data sent to client");
@@ -201,4 +201,5 @@ app.put('/minmax', middleware.checkToken, handler.writeMinMax);
 app.post('/minmax', middleware.checkToken, handler.getMinMax);
 
 app.post('/plants', middleware.checkToken, handler.getUserPlants);
+
 server.listen(1205);
