@@ -322,17 +322,31 @@ $(document).ready(() => {
       	watersurfaceUses = Math.round(obj[1].watersurface);
       	console.log("test "+watersurfaceUses);
 
-      	//plantName.html(obj[0].plantname);
-		
-		stat1.text(Math.round(obj[1].temperature)+"°C");
-		stat2.text(Math.round(obj[1].humidityAir)+"%");
-		stat3.text(Math.round(obj[1].humiditySoil)+"%");
-		stat4.text(Math.round(obj[1].watersurface)+"%");
+      	//plantName.html(obj[0].plantname);ň
 
-		barTemp.height(obj[1].temperature+'%');
-		barAir.height(obj[1].humidityAir+'%');
-		barSoil.height(obj[1].humiditySoil+'%');
-		barWater.height(obj[1].watersurface+'%');
+      	/*
+
+		AirHum: 4
+
+		Date: "2019-06-13T00:00:00.000Z"
+
+		SoilHum: 5
+
+		Temp: 25
+
+		WatSurf: 2
+		
+		*/
+		
+		stat1.text(Math.round(obj[1].Temp)+"°C");
+		stat2.text(Math.round(obj[1].AirHum)+"%");
+		stat3.text(Math.round(obj[1].SoilHum)+"%");
+		stat4.text(Math.round(obj[1].WatSurf)+"%");
+
+		barTemp.height(obj[1].Temp+'%');
+		barAir.height(obj[1].AirHum+'%');
+		barSoil.height(obj[1].SoilHum+'%');
+		barWater.height(obj[1].WatSurf+'%');
 
 		let tempHeight = barTemp.height() / barTemp.parent().height()*100;
 		let airHeight = barAir.height() / barAir.parent().height()*100;
@@ -353,11 +367,11 @@ $(document).ready(() => {
 		if(soilHeight < soilhMax && soilHeight > soilhMin) barSoil.css('background-color', '#3ce578');
 		if(waterHeight > waterMin) barWater.css('background-color', '#3ce578');
 
-		let temp = obj[1].temperature;
-		let airH = obj[1].humidityAir;
-		let soilH = obj[1].humiditySoil;
-		let water = obj[1].watersurface;
-		let date = obj[2].date;
+		let temp = obj[1].Temp;
+		let airH = obj[1].AirHum;
+		let soilH = obj[1].SoilHum;
+		let water = obj[1].WatSurf;
+		let date = obj[2].Date;
 
 		date = moment(date).format("hh:mm A");
 		console.log(date)
