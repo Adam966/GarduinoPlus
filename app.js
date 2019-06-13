@@ -97,7 +97,13 @@ io.on('connection', socket =>{
                 io.to(webClient[result].socketID).emit('plantData', data);
             }
         });
-        
+        worker.serialMatchW(appClient, data.ArduinoSerial, result =>{
+            if(result > -1)
+            {
+                console.log("Latest data sent to client");
+                io.to(appClient[result].socketID).emit('plantData', data);
+            }
+        });
     });
 
     socket.on('water', (data) => {
