@@ -38,16 +38,11 @@ export default class Person extends Component {
           <Text style={styles.name}>Profile</Text>  
           </Header>
           <Body style={{backgroundColor: '#d2e3e5', width: Dimensions.get('window').width}}>
-            <Content>
+            <Content style={{marginRight:180}}>
               <Text style={styles.title}>Name: </Text>
               <Text style={styles.value}>{this.state.user.name}</Text>
               <Text style={styles.title}>Email: </Text>
               <Text style={styles.value}>{this.state.user.email}</Text>
-              <TouchableOpacity onPress={() => Linking.openURL('http://google.com')}>
-                <Text style={{color: 'blue', textDecorationLine: 'underline', color: '#1f313a', marginTop: 15}}>
-                  Change password
-                </Text>
-              </TouchableOpacity>
             </Content>
           </Body>
         </Container>

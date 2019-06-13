@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, ListItem, Left, Icon, Body, Text, Header, Content, Right, Button } from 'native-base';
+import { Container, ListItem, Left, Icon, Body, Text, Header, Content, Right, Button ,List } from 'native-base';
 
 export default class Notification extends Component {
   static navigationOptions = {
@@ -42,26 +42,24 @@ export default class Notification extends Component {
                 <Text>Settings</Text>
               </Body>
             </ListItem> */}
-                  <ListItem icon>
-                  <TouchableOpacity style={{ width: 100}} onPress={() => this.props.navigation.navigate('PersonRoute')}>
-                    <Left>
-                      <Icon name='person' style={{ color: '#1f313a', fontSize: 33}}/>
-                    </Left>
-                    <Body>
+              <List>
+                  <ListItem icon style={{marginRight:150}}>
+                  <TouchableOpacity style={{ width: 200}} onPress={() => this.props.navigation.navigate('PersonRoute')}>
+                    <Left style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                      <Icon name='person' style={{ color: '#1f313a', fontSize: 33, marginRight: 15}}/>
                       <Text >Profile</Text>
-                    </Body>
+                    </Left>
                     </TouchableOpacity> 
                   </ListItem>
-                <ListItem icon>
+                <ListItem icon style={{marginRight:150}}>
                   <TouchableOpacity style={{ width: 200}} onPress={() => AsyncStorage.removeItem('User', () => {this.props.navigation.navigate('LoginRoute');})}>
-                    <Left>
-                        <Icon name='md-log-out' style={{ color: '#1f313a', fontSize: 33}}/>
+                    <Left style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon name='md-log-out' style={{ color: '#1f313a', fontSize: 33,marginRight: 15}}/>
+                        <Text>Log out</Text>
                     </Left>
-                    <Body>
-                      <Text>Log out</Text>
-                    </Body>
                   </TouchableOpacity> 
                 </ListItem>
+              </List>
       </Container>
     );
   }
@@ -69,7 +67,7 @@ export default class Notification extends Component {
 
 const styles = StyleSheet.create({
   name: {
-    marginRight: 85,
+    marginRight: 120,
     fontSize: 25, 
     fontWeight: '300',
     color: 'white',

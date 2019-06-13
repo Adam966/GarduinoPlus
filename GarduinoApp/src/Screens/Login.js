@@ -79,7 +79,7 @@ export default class Login extends Component {
       <Container style={styles.box}>
         <Body>
           <Form style={{marginTop: 200, margin: 100, marginBottom: 10}}>
-          <Thumbnail square source={require('../../assets/icon2.png')} style={{alignSelf: 'center',height:120,width:120,marginTop:-70,marginBottom:50}}/>
+          <Thumbnail square source={require('../../assets/icon.png')} style={{alignSelf: 'center',height:120,width:120,marginTop:-70,marginBottom:50}}/>
             <Item stackedLabel style={styles.itemStyle}>
               <Label style={styles.labelStyle}>Login</Label>
               <Input keyboardType="email-address" multiline={false} onChangeText={(text) => this.setState({login: text})}/>
