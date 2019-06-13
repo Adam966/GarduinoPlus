@@ -171,7 +171,11 @@ export default class PlantInfo extends Component {
           <Footer>
             <FooterTab style={{backgroundColor: '#1f313a'}}>
               <Button
+<<<<<<< Updated upstream
                 onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial, name: this.state.name, data: this.state.minMax})}
+=======
+                onPress={() => this.props.navigation.navigate('ValuesSettingRoute',  {serial: this.state.arduiserial, name: this.state.name,})}
+>>>>>>> Stashed changes
               >
                 <Text style={{color: 'white'}}>Plant Settings</Text>
               </Button>

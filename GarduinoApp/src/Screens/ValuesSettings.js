@@ -15,7 +15,7 @@ export default class ValuesSettings extends Component {
     const name = navigation.getParam('name', 'no serial');
     const data = navigation.getParam('data', 'no serial');
     console.log(data);
-    
+  
     this.state = {
       arduinoserial: arduinoSerial,
       TempMax: data[0].TempMax, 
