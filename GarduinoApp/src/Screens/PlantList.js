@@ -24,7 +24,7 @@ export default class PlantList extends Component {
   }
 
   getData = async () => {
-    await fetch('http://192.168.2.133:1205/plants', {
+    await fetch('http://192.168.43.89:1205/plants', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,6 +36,8 @@ export default class PlantList extends Component {
     })
     .then((response) => response.json())
       .then((responseJson) => {
+
+        
         this.setState({dataSource: responseJson}); 
         this.setState({isLoadig: false})
       })

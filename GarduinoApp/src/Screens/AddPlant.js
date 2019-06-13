@@ -22,7 +22,7 @@ export default class AddPlant extends Component {
     await this.getUser();
     console.log(this.state.user);
     
-    fetch('http://192.168.1.14:1205/minmax', {
+    fetch('http://192.168.43.89:1205/minmax', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -46,6 +46,7 @@ export default class AddPlant extends Component {
       .then((response) => {
         //add approve message 
         console.log(response);
+        this.props.navigation.navigate('PlantListRoute');
       })
       .catch((error) => {
           console.log(error)
@@ -75,7 +76,7 @@ export default class AddPlant extends Component {
             <Body>
                 <Content style={styles.box}>
                     <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('CameraRoute')}
+                        //onPress={() => this.props.navigation.navigate('CameraRoute')}
                     >
                         <Thumbnail large source={require('../../assets/plant.png')} style={{marginLeft: 120}}></Thumbnail>
                     </TouchableOpacity>

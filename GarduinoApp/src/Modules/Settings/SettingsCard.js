@@ -16,8 +16,12 @@ export default class SettingsCard extends Component {
 
   getInput = () => {
     if ((this.state.min < this.state.max) && (this.state.min >= 0) && (this.state.max <=100)) {
-      this.setState({validation: ""})
-      this.props.getData(this.state);
+      this.setState({validation: ""});
+      let obj = {
+        max: this.state.max,
+        min: this.state.min
+      }
+      this.props.getData(obj);
     } else {
       this.setState({validation: "Wrong Input"})
     }

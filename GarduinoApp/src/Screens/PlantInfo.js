@@ -69,7 +69,7 @@ export default class PlantInfo extends Component {
       serialAll: dataArray
     };
 
-    this.socket = io('http://192.168.2.133:1205');
+    this.socket = io('http://192.168.43.89:1205');
     this.socket.on('plantData', plantData => {
       console.log("socket");
   
@@ -86,14 +86,14 @@ export default class PlantInfo extends Component {
           value: plantData.info.AirHum,
           height: plantData.info.AirHum ,
           sign: ' %',
-          color: (plantData.info.Temp < this.state.minMax[0].AirHumMax && plantData.info.Temp > this.state.minMax[0].AirHumMin) ? "#3ce578" : "#e54242"                  
+          color: (plantData.info.AirHum < this.state.minMax[0].AirHumMax && plantData.info.AirHum > this.state.minMax[0].AirHumMin) ? "#3ce578" : "#e54242"                  
         },
         {
           index: 'Soil Humidity',
           value: plantData.info.SoilHum,
           height: plantData.info.SoilHum,
           sign: ' %',
-          color: (plantData.info.Temp < this.state.minMax[0].SoilHumMax && plantData.info.Temp > this.state.minMax[0].SoilHumMin) ? "#3ce578" : "#e54242"                  
+          color: (plantData.info.SoilHum < this.state.minMax[0].SoilHumMax && plantData.info.SoilHum > this.state.minMax[0].SoilHumMin) ? "#3ce578" : "#e54242"                  
         },
         {
           index: 'Water Surface',
@@ -103,7 +103,7 @@ export default class PlantInfo extends Component {
         }
       ]
       
-      this.setState({socketData: data})
+      this.setState({socketData: data}) 
     });
   }
 
@@ -111,11 +111,11 @@ export default class PlantInfo extends Component {
     await this.getUser();
     await this.getData();
     this.setState({isLoadig: false}); 
+    this.socket.emit('setIdentifierApp', JSON.stringify({"IDUser": this.state.user.id, "ArduinoSerial":  this.state.serialAll }));
   }
   
   getData = async () => {
-    this.socket.emit('setIdentifierApp', JSON.stringify({"IDUser": this.state.user.id, "ArduinoSerial":  this.state.serialAll }));
-    await fetch('http://192.168.2.133:1205/minmax', {
+    await fetch('http://192.168.43.89:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -160,9 +160,9 @@ export default class PlantInfo extends Component {
             <Thumbnail small source={require('../../assets/plant.png')}/>    
           </Body>
           <Text style={styles.name}>{this.state.name}</Text>
-          <TouchableOpacity onPress={() => {console.log('CLICK')}}>
-            <Image source={{uri: '../../assets/icon4.svg'}} style={{width: 10, height: 10}}/> 
-          </TouchableOpacity>
+          <Button transparent onPress={() => {console.log('CLICK');  this.socket.emit('water', {"ArduinoSerial": this.state.arduiserial})}}>
+            <Thumbnail small source={require( '../../assets/icon4.png')} /> 
+          </Button>
         </Header>
         <Body>
           <Content style={{backgroundColor: '#d2e3e5'}}>

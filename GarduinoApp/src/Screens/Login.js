@@ -21,7 +21,7 @@ export default class Login extends Component {
 
   login = () => {
     if(this.state.password || this.state.login != "") {
-      fetch('http://192.168.2.133:1205/login', {
+      fetch('http://192.168.43.89:1205/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,11 +93,11 @@ export default class Login extends Component {
             <Text>Submit</Text>
           </Button>
           <Text>{this.state.noLogin}</Text>
-          <TouchableOpacity onPress={() => Linking.openURL('http://google.com')}>
+{/*           <TouchableOpacity onPress={() => Linking.openURL('C:\Users\MI\Documents\GitHub\GarduinoPlus\web\registration.html')}>
             <Text style={{color: 'blue', textDecorationLine: 'underline', color: '#1f313a'}}>
               Register
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </Body>
       </Container>
     );

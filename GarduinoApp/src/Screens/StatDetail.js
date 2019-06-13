@@ -33,7 +33,7 @@ export default class StatDetail extends Component {
   }
 
   getData = async () => {
-    await fetch('http://192.168.2.133:1205/plantData', {
+    await fetch('http://192.168.43.89:1205/plantData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,8 +78,6 @@ export default class StatDetail extends Component {
       }
       
     });
-    arr.push(28);
-    arr.push(60);
     this.setState({filteredData: arr});
     console.log(this.state.filteredData);
     this.setState({render: true});
@@ -103,7 +101,7 @@ export default class StatDetail extends Component {
           <Body>
             <Thumbnail small source={require('../../assets/plant.png')} />     
           </Body>
-          <Text style={styles.name}>{this.props.name}</Text>  
+          <Text style={styles.name}>{this.props.statName}</Text>  
         </Header>
         <Body>
           {this.state.render == true &&

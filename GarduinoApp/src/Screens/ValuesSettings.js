@@ -26,17 +26,17 @@ export default class ValuesSettings extends Component {
       SoilHumMin: data[0].SoilHumMin,
       user: null,
       name: name,
-      status: false
+      status: true
     };
   }
 
   sendData = async () => {
-    if(!((this.state.TempMax || this.state.TempMin || this.state.AirHumMax || this.state.AirHumMin || this.state.SoilHumMax || this.state.SoilHumMin) == null)) {
-      this.setState({status: true})
+    if(this.state.TempMax || this.state.TempMin || this.state.AirHumMax || this.state.AirHumMin || this.state.SoilHumMax || this.state.SoilHumMin == "") {
+      this.setState({status: false})
     }
-    if(this.state.status != false) {
+    if(this.state.status) {
       await this.getUser();
-      fetch('http://192.168.2.133:1205/minmax', {
+      fetch('http://192.168.43.89:1205/minmax', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export default class ValuesSettings extends Component {
       .then((response) => {
         //add approve message
         console.log(response.status);
-        
+        this.props.navigation.navigate('PlantInfoRoute');
       })
       .catch((error) => {
         console.log(error)
@@ -107,7 +107,7 @@ export default class ValuesSettings extends Component {
        <Header style={{height:70, paddingTop: 20, backgroundColor: '#1f313a'}}>
         <Left>
           <Button transparent
-            onPress={() => this.props.navigation.navigate('PlantListRoute')}
+            onPress={() => this.props.navigation.navigate('PlantInfoRoute')}
           >
             <Icon name='arrow-back' />
           </Button>
@@ -128,7 +128,7 @@ export default class ValuesSettings extends Component {
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
             <Button
-              onPress={() => this.sendData()}
+              onPress={() => {this.sendData();}}
             >
               <Text style={{color: 'white',fontWeight:'bold'}}>Save</Text>
             </Button>
