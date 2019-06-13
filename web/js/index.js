@@ -322,21 +322,7 @@ $(document).ready(() => {
       	watersurfaceUses = Math.round(obj[1].watersurface);
       	console.log("test "+watersurfaceUses);
 
-      	//plantName.html(obj[0].plantname);ň
-
-      	/*
-
-		AirHum: 4
-
-		Date: "2019-06-13T00:00:00.000Z"
-
-		SoilHum: 5
-
-		Temp: 25
-
-		WatSurf: 2
-		
-		*/
+      	//plantName.html(obj[0].plantname);
 		
 		stat1.text(Math.round(obj[1].Temp)+"°C");
 		stat2.text(Math.round(obj[1].AirHum)+"%");
@@ -583,7 +569,7 @@ $(document).ready(() => {
 			           		if(!$.trim(result)){
 			           			console.log("blank data");
 			           		}else{
-			                let obj =result;
+			                let obj = JSON.parse(result);
 					       	console.log("obj"+obj);
 
 							let tempToChart = obj.map(({ Temp }) => Temp);
@@ -656,7 +642,7 @@ $(document).ready(() => {
 			           		if(!$.trim(result)){
 			           			console.log("blank data");
 			           		}else{
-			                let obj = result;
+			                let obj = JSON.parse(result);
 					       	console.log(obj);
 
 							let tempToChart = obj.map(({ Temp }) => Temp);
@@ -727,7 +713,7 @@ $(document).ready(() => {
 			           		if(!$.trim(result)){
 			           			console.log("blank data");
 			           		}else{
-			                let obj = result;
+			                let obj = JSON.parse(result);
 					       	console.log(obj);
 
 							let tempToChart = obj.map(({ Temp }) => Temp);
