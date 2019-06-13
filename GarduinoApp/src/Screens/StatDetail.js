@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Text, Body, Header, Icon, Thumbnail, Left, Button, FooterTab, Footer } from 'native-base';
 import { StyleSheet, AsyncStorage, ActivityIndicator, Dimensions } from 'react-native';
 
+
 import Graph from '../Modules/Graph';
 
 export default class StatDetail extends Component {
@@ -12,11 +13,14 @@ export default class StatDetail extends Component {
     super(props);
     const { navigation } = this.props;
     const arduinoSerial = navigation.getParam('serial', 'no serial');
+    const statName = navigation.getParam('statname','no statname');
     this.state = {
       arduinoserial: arduinoSerial,
       user:"",
       Interval:"",
-      isLoadig: true
+      isLoadig: true,
+      dataSource:"",
+      statname: statName,
     };
   }
 
@@ -27,6 +31,7 @@ export default class StatDetail extends Component {
   }
 
   changeReq = async (interval) => {
+
     await this.setState({Interval: interval});
     await this.getData();
   }

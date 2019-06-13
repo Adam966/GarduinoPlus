@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Container, Body, Content, Button, Text, Header, Thumbnail, Footer, FooterTab, Left, Icon } from 'native-base';
 import { StyleSheet, TouchableOpacity, FlatList, AsyncStorage, ActivityIndicator, Dimensions, Image } from 'react-native';
 import io from 'socket.io-client';
- 
 
 import Info  from '../Modules/PlantInfo/Info';
  
@@ -159,7 +158,7 @@ export default class PlantInfo extends Component {
               data={this.state.socketData}
               renderItem={({item}) => 
                 <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.state.name})}
+                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.state.name, statname:this.state.index})}
                     style = {{margin: 10, marginBottom: 0}}
                 >
                   <Info value={item.value} name={item.index} height={item.height} sign={item.sign} color={item.color}/>
