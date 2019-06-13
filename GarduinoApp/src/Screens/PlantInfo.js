@@ -56,7 +56,7 @@ export default class PlantInfo extends Component {
       isLoading: true
     };
 
-    this.socket = io('http://192.168.0.103:1205');
+    this.socket = io('http://192.168.2.15:1205');
     this.socket.emit('setIdentifierApp', {"IDUser":this.state.user.id, "ArduinoSerial": this.state.arduiserial});
     this.socket.on('plantData', plantData => {
       console.log("socket");
@@ -103,7 +103,7 @@ export default class PlantInfo extends Component {
   
   getData = async () => {
     console.log('data');
-    await fetch('http://192.168.1.14:1205/minmax', {
+    await fetch('http://192.168.2.15:1205/minmax', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export default class PlantInfo extends Component {
               data={this.state.socketData}
               renderItem={({item}) => 
                 <TouchableOpacity 
-                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.state.name, statname:this.state.index})}
+                    onPress={() => this.props.navigation.navigate('StatDetailRoute', {serial: this.state.arduiserial, name: this.state.name, statname: item.index})}
                     style = {{margin: 10, marginBottom: 0}}
                 >
                   <Info value={item.value} name={item.index} height={item.height} sign={item.sign} color={item.color}/>

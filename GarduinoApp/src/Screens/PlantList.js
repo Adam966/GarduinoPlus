@@ -24,7 +24,7 @@ export default class PlantList extends Component {
   }
 
   getData = async () => {
-    await fetch('http://192.168.1.14:1205/plants', {
+    await fetch('http://192.168.2.15:1205/plants', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

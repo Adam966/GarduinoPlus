@@ -21,6 +21,7 @@ export default class StatDetail extends Component {
       isLoadig: true,
       dataSource:"",
       statname: statName,
+      filteredData:null,
     };
   }
 
@@ -31,16 +32,15 @@ export default class StatDetail extends Component {
   }
 
   changeReq = async (interval) => {
-
-    await this.setState({Interval: interval});
     console.log("test");
     console.log(this.state.statname);
     this.setState({Interval: interval});
     await this.getData();
+    await this.filterData(this.state.dataSource,this.state.statname);
   }
 
   getData = async () => {
-    await fetch('http://192.168.1.14:1205/plantData', {
+    await fetch('http://192.168.2.15:1205/plantData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,6 +69,27 @@ export default class StatDetail extends Component {
     return this.setState({user: JSON.parse(User)});
   };
 
+  filterData = (data,statname) => {
+    console.log("Filter data");
+    //AirHum,Date,SoilHum,Temp,WatSurf
+    //let newStatName;
+    let newStateName;
+    if(statname === "Temperature"){
+      newStatName = "Temp";
+    }else if(statname === "Air Humidity"){
+      newStatName = "AirHum";
+    }else if(statname === "Soil Humidity"){
+      newStatName = "SoilHum";
+    }else if(statname === "WaterSurface"){
+      newStatName = "WaterSurf"
+    }
+    
+    let arr = data.map(({newStatName}) => newStatName);
+    this.state.setState({filteredData: arr});
+    
+    } 
+    
+
   render() {
     if(this.state.isLoadig) {
       return (<ActivityIndicator style={{marginTop: Dimensions.get('window').height / 2}} size="large" color="'#1f313a"/>)
@@ -89,11 +110,11 @@ export default class StatDetail extends Component {
           <Text style={styles.name}>{this.props.name}</Text>  
         </Header>
         <Body >
-          <Graph />
+          <Graph data={this.state.filteredData}/>
         </Body>
         <Footer>
           <FooterTab style={{backgroundColor: '#1f313a'}}>
-          <Button onPress={() => this.changeReq("DAY")}>
+          <Button onPress={() => {this.changeReq("DAY");}}>
                 <Text style={{color: 'white',fontWeight:'bold'}}>Today</Text> 
               </Button>
               <Button onPress={() => this.changeReq("WEEK")}>

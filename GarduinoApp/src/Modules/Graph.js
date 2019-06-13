@@ -4,49 +4,28 @@ import { Content } from 'native-base';
 import { Dimensions } from 'react-native';
 
 
-const data = {
-    labels: [],
-    datasets: [{
-      data: ['1','2','3'],
-    }]
-}
 
-export default class componentName extends Component {
+export default class Chart extends Component {
   constructor(props) {
+    const data = {
+      labels: [],
+      datasets: [{
+        data:this.props.data
+      }]
+    }
     super(props);
     this.state = {
-     /* data:this.props.data,
-      newData:[],
-      statname:this.props.statName*/
+      //data:this.props.data,
+      data:data
+     // statname:this.props.statname
     };
   }
-
-filterData = (data,statname) => {
-
-//AirHum,Date,SoilHum,Temp,WatSurf
-let newStatName;
-
-if(statname === "Temperature"){
-  newStatName = "Temp";
-}else if(statname === "Air Humidity"){
-  newStatName = "AirHum";
-}else if(statname === "Soil Humidity"){
-  newStatName = "SoilHum";
-}else if(statname === "WaterSurface"){
-  newStatName = "WaterSurf"
-}
-
-let arr = obj.map(({newStatName}) => newStatName);
-//this.setState({newData: arr});
-
-} 
 
   render() {
     return (
         <Content>
             <LineChart
-                data={data}
-                //data = {this.state.newData}
+                data = {this.state.data}
                     width={Dimensions.get('window').width - 30} 
                     height={220}
                     //yAxisLabel={data.datasets.data}
