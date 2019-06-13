@@ -569,13 +569,13 @@ $(document).ready(() => {
 			           		if(!$.trim(result)){
 			           			console.log("blank data");
 			           		}else{
-			                let obj = JSON.parse(result);
-					       	console.log(obj);
+			                let obj =result;
+					       	console.log("obj"+obj);
 
-							let tempToChart = obj.map(({ Temperature }) => Temperature);
-							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
-							let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
-							let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
+							let tempToChart = obj.map(({ Temp }) => Temp);
+							let airhToChart = obj.map(({ AirHum }) => AirHum);
+							let soilhToChart = obj.map(({ SoilHum }) => SoilHum);
+							let waterToChart = obj.map(({ WatSurf }) => WatSurf);
 							let date = obj.map(({ Date }) => moment(Date).format("hh:mm A"));
 
 					    	Chart1.data.datasets[0].data = tempToChart;
@@ -642,13 +642,13 @@ $(document).ready(() => {
 			           		if(!$.trim(result)){
 			           			console.log("blank data");
 			           		}else{
-			                let obj = JSON.parse(result);
+			                let obj = result;
 					       	console.log(obj);
 
-							let tempToChart = obj.map(({ Temperature }) => Temperature);
-							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
-							let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
-							let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
+							let tempToChart = obj.map(({ Temp }) => Temp);
+							let airhToChart = obj.map(({ AirHum }) => AirHum);
+							let soilhToChart = obj.map(({ SoilHum }) => SoilHum);
+							let waterToChart = obj.map(({ WatSurf }) => WatSurf);
 	   						let date = obj.map(({ Date }) => moment(Date).format('DD-MMM-YYYY'));
 
 					    	Chart1.data.datasets[0].data = tempToChart;
@@ -713,13 +713,13 @@ $(document).ready(() => {
 			           		if(!$.trim(result)){
 			           			console.log("blank data");
 			           		}else{
-			                let obj = JSON.parse(result);
+			                let obj = result;
 					       	console.log(obj);
 
-							let tempToChart = obj.map(({ Temperature }) => Temperature);
-							let airhToChart = obj.map(({ AirHumidity }) => AirHumidity);
-							let soilhToChart = obj.map(({ SoilHumidity }) => SoilHumidity);
-							let waterToChart = obj.map(({ WaterSurface }) => WaterSurface);
+							let tempToChart = obj.map(({ Temp }) => Temp);
+							let airhToChart = obj.map(({ AirHum }) => AirHum);
+							let soilhToChart = obj.map(({ SoilHum }) => SoilHum);
+							let waterToChart = obj.map(({ WatSurf }) => WatSurf);
 	   						let date = obj.map(({ Date }) => moment(Date).format('DD-MMM-YYYY'));
 
 					    	Chart1.data.datasets[0].data = tempToChart;
